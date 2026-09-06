@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "https://creator-guard-gamma.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
