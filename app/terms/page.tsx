@@ -9,7 +9,7 @@ export default function TermsPage() {
             href="/"
             className="text-xl font-bold tracking-tight"
           >
-            CreatorGuard
+            Creatoriva
           </Link>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
@@ -59,14 +59,14 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              By accessing or using the CreatorGuard website, tools, and related
+              By accessing or using the Creatoriva website, tools, and related
               services, you agree to be bound by these Terms of Service
               (“Terms”).
             </p>
 
             <p className="mt-4">
               If you do not agree with these Terms, please do not use
-              CreatorGuard.
+              Creatoriva.
             </p>
           </section>
 
@@ -76,14 +76,16 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard provides tools that help creators review written
-              content for potentially sensitive language, claims, patterns, and
-              contextual concerns before publishing.
+              Creatoriva provides tools that help creators review written
+              content for potentially sensitive language, claims, patterns,
+              contextual concerns, and platform-related considerations before
+              publishing.
             </p>
 
             <p className="mt-4">
-              The tools may include content checkers, script analysis,
-              educational articles, suggestions, and related features.
+              The tools may include platform-specific content checkers, script
+              analysis, educational articles, content guidance, and related
+              features.
             </p>
 
             <p className="mt-4">
@@ -98,21 +100,29 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard provides general information and content review
-              guidance. Results are based on predefined content patterns,
-              contextual signals, and other techniques used by the service.
+              Creatoriva provides general information and content review
+              guidance. Results may be based on predefined content patterns,
+              contextual signals, claims, risk dimensions, platform-related
+              considerations, and other techniques used by the service.
             </p>
 
             <p className="mt-4">
-              CreatorGuard does not guarantee that content will be approved,
+              Creatoriva does not guarantee that content will be approved,
               monetized, recommended, distributed, advertised, or otherwise
-              treated in a particular way by TikTok, YouTube, Instagram, or any
-              other platform.
+              treated in a particular way by TikTok, YouTube, Instagram,
+              Facebook, X, or any other platform.
             </p>
 
             <p className="mt-4">
               A low-risk result does not mean that content is guaranteed to
-              comply with the policies of a particular platform.
+              comply with the policies, terms, or guidelines of a particular
+              platform.
+            </p>
+
+            <p className="mt-4">
+              Platform policies and enforcement practices may change without
+              notice. Users are responsible for reviewing the current rules of
+              the platforms on which they publish content.
             </p>
           </section>
 
@@ -122,9 +132,15 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard content and tools are not intended to provide legal,
+              Creatoriva content and tools are not intended to provide legal,
               financial, medical, investment, tax, accounting, or other
               professional advice.
+            </p>
+
+            <p className="mt-4">
+              Any information relating to financial, health, legal, commercial,
+              or other sensitive topics is provided for general informational
+              and content-review purposes only.
             </p>
 
             <p className="mt-4">
@@ -141,7 +157,7 @@ export default function TermsPage() {
             <p className="mt-4">
               You are solely responsible for the content you create, submit,
               publish, distribute, or otherwise use in connection with
-              CreatorGuard.
+              Creatoriva.
             </p>
 
             <p className="mt-4">
@@ -149,6 +165,12 @@ export default function TermsPage() {
               complies with applicable laws, regulations, platform rules,
               advertising requirements, intellectual property rights, and other
               obligations.
+            </p>
+
+            <p className="mt-4">
+              Creatoriva results should be treated as one source of information
+              rather than a substitute for your own judgment, platform review,
+              or professional advice where appropriate.
             </p>
           </section>
 
@@ -158,7 +180,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              You agree not to use CreatorGuard in a way that:
+              You agree not to use Creatoriva in a way that:
             </p>
 
             <ul className="mt-5 space-y-3 pl-5">
@@ -185,8 +207,9 @@ export default function TermsPage() {
               </li>
 
               <li className="list-disc">
-                attempts to misuse, overload, reverse engineer, or circumvent
-                reasonable restrictions of the service.
+                attempts to misuse, overload, reverse engineer, scrape,
+                circumvent, or otherwise interfere with reasonable restrictions
+                of the service.
               </li>
             </ul>
           </section>
@@ -198,7 +221,7 @@ export default function TermsPage() {
 
             <p className="mt-4">
               You retain responsibility for content that you submit to
-              CreatorGuard.
+              Creatoriva.
             </p>
 
             <p className="mt-4">
@@ -212,6 +235,11 @@ export default function TermsPage() {
               authentication credentials, government identification numbers, or
               other highly sensitive information through content input fields.
             </p>
+
+            <p className="mt-4">
+              Creatoriva does not claim ownership of content you submit solely
+              because you use the service to analyze it.
+            </p>
           </section>
 
           <section>
@@ -220,15 +248,15 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard and its original website design, branding, text,
+              Creatoriva and its original website design, branding, text,
               graphics, software, interfaces, and other materials are owned by
-              or licensed to CreatorGuard unless otherwise stated.
+              or licensed to Creatoriva unless otherwise stated.
             </p>
 
             <p className="mt-4">
               You may use the website and its tools for their intended purposes,
               but you may not copy, reproduce, distribute, sell, modify, or
-              commercially exploit CreatorGuard materials without appropriate
+              commercially exploit Creatoriva materials without appropriate
               authorization.
             </p>
           </section>
@@ -239,7 +267,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may rely on third-party services for hosting,
+              Creatoriva may rely on third-party services for hosting,
               analytics, advertising, security, consent management, or other
               technical functions.
             </p>
@@ -250,8 +278,13 @@ export default function TermsPage() {
             </p>
 
             <p className="mt-4">
-              CreatorGuard is not responsible for the availability, content,
+              Creatoriva is not responsible for the availability, content,
               policies, security, or practices of third-party services.
+            </p>
+
+            <p className="mt-4">
+              Your use of third-party services may be subject to their own
+              terms, policies, and conditions.
             </p>
           </section>
 
@@ -261,7 +294,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may display advertisements from third-party
+              Creatoriva may display advertisements from third-party
               providers, including Google or other advertising partners.
             </p>
 
@@ -272,8 +305,8 @@ export default function TermsPage() {
             </p>
 
             <p className="mt-4">
-              CreatorGuard does not guarantee the availability, accuracy, or
-              suitability of third-party advertisements.
+              Creatoriva does not guarantee the availability, accuracy,
+              completeness, or suitability of third-party advertisements.
             </p>
           </section>
 
@@ -284,7 +317,8 @@ export default function TermsPage() {
 
             <p className="mt-4">
               We may modify, suspend, restrict, or discontinue all or part of
-              CreatorGuard at any time, with or without notice.
+              Creatoriva at any time, with or without notice where permitted by
+              applicable law.
             </p>
 
             <p className="mt-4">
@@ -300,14 +334,21 @@ export default function TermsPage() {
 
             <p className="mt-4">
               Although we aim to provide useful and reasonably accurate
-              information, CreatorGuard does not guarantee that its results,
+              information, Creatoriva does not guarantee that its results,
               classifications, suggestions, or other outputs are complete,
               current, accurate, or error-free.
             </p>
 
             <p className="mt-4">
-              Content may contain phrases or meanings that our tools do not
-              detect, and detected phrases may require additional human review.
+              Content may contain phrases, meanings, context, or risks that our
+              tools do not detect, and detected content may require additional
+              human review.
+            </p>
+
+            <p className="mt-4">
+              Creatoriva should not be relied upon as the sole basis for
+              publishing, business, financial, legal, medical, or other
+              significant decisions.
             </p>
           </section>
 
@@ -317,8 +358,8 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              To the maximum extent permitted by applicable law, CreatorGuard
-              is provided on an “as is” and “as available” basis, without
+              To the maximum extent permitted by applicable law, Creatoriva is
+              provided on an “as is” and “as available” basis, without
               warranties of any kind, express or implied.
             </p>
 
@@ -335,8 +376,8 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              To the maximum extent permitted by applicable law, CreatorGuard
-              and its operators will not be liable for indirect, incidental,
+              To the maximum extent permitted by applicable law, Creatoriva and
+              its operators will not be liable for indirect, incidental,
               special, consequential, exemplary, or similar damages arising
               from or related to your use of the service.
             </p>
@@ -344,8 +385,7 @@ export default function TermsPage() {
             <p className="mt-4">
               This includes losses related to content moderation, monetization,
               advertising, distribution, account restrictions, business
-              decisions, financial losses, or reliance on CreatorGuard
-              results.
+              decisions, financial losses, or reliance on Creatoriva results.
             </p>
           </section>
 
@@ -356,7 +396,7 @@ export default function TermsPage() {
 
             <p className="mt-4">
               To the extent permitted by applicable law, you agree to
-              indemnify and hold harmless CreatorGuard and its operators from
+              indemnify and hold harmless Creatoriva and its operators from
               claims, liabilities, damages, losses, and reasonable expenses
               arising from your misuse of the service, violation of these Terms,
               or violation of another person’s rights.
@@ -369,7 +409,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4">
-              We may suspend or restrict access to CreatorGuard when reasonably
+              We may suspend or restrict access to Creatoriva when reasonably
               necessary to protect the service, users, systems, or third-party
               rights, or when these Terms are violated.
             </p>
@@ -404,7 +444,7 @@ export default function TermsPage() {
 
             <p className="mt-4">
               These Terms will be governed by the laws applicable to the
-              operation of CreatorGuard, without regard to conflict-of-law
+              operation of Creatoriva, without regard to conflict-of-law
               principles, except where applicable law requires otherwise.
             </p>
           </section>
@@ -428,7 +468,7 @@ export default function TermsPage() {
 
             <p className="mt-4">
               If you have questions about these Terms of Service, please use
-              the contact information provided on the CreatorGuard website.
+              the contact method made available on the Creatoriva website.
             </p>
           </section>
 
@@ -439,10 +479,16 @@ export default function TermsPage() {
 
             <p className="mt-4">
               These Terms are general website terms and are not legal advice.
-              Before operating CreatorGuard commercially, you should consider
+              Before operating Creatoriva commercially, you should consider
               having the final Terms reviewed by a qualified lawyer based on
               your business location, target users, services, payment
               arrangements, and applicable laws.
+            </p>
+
+            <p className="mt-4">
+              As Creatoriva evolves, these Terms should be reviewed and updated
+              to reflect new features, services, payment methods, data
+              practices, or other material changes to the website.
             </p>
           </section>
         </div>
@@ -466,7 +512,7 @@ export default function TermsPage() {
 
       <footer className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 CreatorGuard. All rights reserved.</p>
+          <p>© 2026 Creatoriva. All rights reserved.</p>
 
           <div className="flex gap-5">
             <Link

@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
             href="/"
             className="text-xl font-bold tracking-tight"
           >
-            CreatorGuard
+            Creatoriva
           </Link>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
@@ -59,18 +59,18 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard (“CreatorGuard,” “we,” “us,” or “our”) operates the
-              CreatorGuard website and related content review tools. This
-              Privacy Policy explains how information may be collected, used,
+              Creatoriva (“Creatoriva,” “we,” “us,” or “our”) operates the
+              Creatoriva website and related content review tools. This Privacy
+              Policy explains how information may be collected, used, processed,
               stored, and shared when you access or use our website.
             </p>
 
             <p className="mt-4">
-              CreatorGuard is designed to help creators review potentially
-              sensitive wording and content patterns before publishing online.
-              Our tools provide general guidance and do not guarantee how any
-              social media platform will moderate, monetize, distribute, or
-              advertise particular content.
+              Creatoriva is designed to help creators review potentially
+              sensitive wording, content patterns, and platform-related
+              concerns before publishing online. Our tools provide general
+              guidance and do not guarantee how any social media platform will
+              moderate, monetize, distribute, or advertise particular content.
             </p>
           </section>
 
@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              Some CreatorGuard tools allow you to enter text such as social
+              Some Creatoriva tools allow you to enter text such as social
               media captions, titles, descriptions, scripts, promotional
               content, or other written material for analysis.
             </p>
@@ -93,33 +93,41 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <p className="mt-4">
-              Unless a particular feature states otherwise, CreatorGuard does
-              not require an account merely to use the currently available
-              content review tools.
+              Unless a particular feature states otherwise, Creatoriva does not
+              require an account merely to use the currently available content
+              review tools.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              3. Content Submitted to CreatorGuard
+              3. Content Submitted to Creatoriva
             </h2>
 
             <p className="mt-4">
-              Content submitted to CreatorGuard may be processed for the purpose
-              of producing the requested analysis or recommendations.
+              Content submitted to Creatoriva may be processed for the purpose
+              of providing the analysis or other functionality requested by
+              the user.
             </p>
 
             <p className="mt-4">
-              Depending on how the website is configured at the time of use,
-              submitted content may be processed locally in your browser or by
-              services used to operate the website.
+              Depending on the feature and how the website is configured at the
+              time of use, submitted content may be processed locally in your
+              browser or through services used to operate or support the
+              website.
             </p>
 
             <p className="mt-4">
-              We do not intentionally use submitted content for purposes
-              unrelated to providing, maintaining, securing, or improving
-              CreatorGuard unless otherwise stated or permitted by applicable
-              law.
+              Creatoriva does not intentionally use submitted content for
+              purposes unrelated to providing, maintaining, securing, or
+              improving the relevant service, except where otherwise disclosed,
+              authorized by you, or permitted or required by applicable law.
+            </p>
+
+            <p className="mt-4">
+              Users should avoid submitting confidential or highly sensitive
+              information unless a particular feature expressly requires it and
+              provides appropriate information about its handling.
             </p>
           </section>
 
@@ -129,7 +137,7 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              When you visit CreatorGuard, certain technical information may be
+              When you visit Creatoriva, certain technical information may be
               collected automatically by our hosting provider, security
               services, analytics services, advertising providers, or other
               infrastructure used to operate the website.
@@ -176,21 +184,21 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may use cookies, local storage, web beacons, pixels,
+              Creatoriva may use cookies, local storage, web beacons, pixels,
               tags, and similar technologies for website functionality,
               security, analytics, advertising, preference management, and
               measurement.
             </p>
 
             <p className="mt-4">
-              Some technologies may be provided by third-party services rather
-              than directly by CreatorGuard.
+              Some of these technologies may be provided by third-party
+              services rather than directly by Creatoriva.
             </p>
 
             <p className="mt-4">
               You can control or restrict cookies through your browser
-              settings. Some functionality may not work correctly if certain
-              technologies are disabled.
+              settings. Some website functionality may not work correctly if
+              certain technologies are disabled.
             </p>
           </section>
 
@@ -200,14 +208,14 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may use Google Analytics or other Google
-              measurement products to understand how visitors use the website,
-              improve site performance, identify technical problems, and
-              evaluate general traffic patterns.
+              Creatoriva may use Google Analytics or other measurement services
+              to understand how visitors use the website, improve site
+              performance, identify technical problems, and evaluate general
+              traffic patterns.
             </p>
 
             <p className="mt-4">
-              When enabled, Google Analytics may collect information such as
+              When enabled, analytics services may collect information such as
               device information, browser information, approximate location,
               pages visited, interactions, and other usage or measurement data,
               depending on the configuration of the service.
@@ -215,8 +223,8 @@ export default function PrivacyPolicyPage() {
 
             <p className="mt-4">
               The specific information collected and how it is processed may
-              depend on the Google Analytics configuration used by
-              CreatorGuard.
+              depend on the analytics configuration used by Creatoriva and the
+              applicable policies of the relevant provider.
             </p>
           </section>
 
@@ -226,7 +234,7 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may use Google AdSense and other third-party
+              Creatoriva may use Google AdSense and other third-party
               advertising services to display advertisements on the website.
             </p>
 
@@ -235,30 +243,32 @@ export default function PrivacyPolicyPage() {
               Google and its partners, may use cookies, web beacons, IP
               addresses, device identifiers, or similar technologies to serve,
               measure, personalize, or limit advertising, subject to the
-              applicable service configuration and user choices.
+              applicable service configuration, consent requirements, and user
+              choices.
             </p>
 
             <p className="mt-4">
               Advertising providers may use information about visits to this
               and other websites to help provide relevant advertisements or
-              measure advertising performance.
+              measure advertising performance, subject to their applicable
+              policies and settings.
             </p>
 
             <p className="mt-4">
-              Google requires publishers using its advertising products to
-              provide users with appropriate disclosures relating to data
-              collection and advertising technologies.
+              Where required, Creatoriva will provide disclosures and consent
+              mechanisms applicable to the advertising technologies used on the
+              website.
             </p>
 
             <p className="mt-4">
               For more information about how Google may use information when
-              advertising or measurement services are present, please review
-              Google’s applicable privacy and data-use information.
+              advertising or measurement services are present, users should
+              review Google’s applicable privacy and data-use information.
             </p>
 
             <p className="mt-4">
-              Users may also have access to Google advertising controls that
-              allow them to manage certain advertising preferences.
+              Users may also have access to advertising controls that allow
+              them to manage certain advertising preferences.
             </p>
           </section>
 
@@ -268,30 +278,28 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              Where required by applicable law, CreatorGuard may request
-              consent before using certain cookies, local storage technologies,
-              or personal data for analytics, advertising personalization, or
+              Where required by applicable law, Creatoriva may request consent
+              before using certain cookies, local storage technologies, or
+              personal data for analytics, advertising personalization, or
               related purposes.
             </p>
 
             <p className="mt-4">
               When Google publisher advertising products are used for visitors
               in the European Economic Area, the United Kingdom, or Switzerland,
-              Google may require a certified Consent Management Platform (CMP)
-              and appropriate user choices for personalized advertising.
+              additional consent requirements may apply depending on the
+              advertising configuration and applicable rules.
             </p>
 
             <p className="mt-4">
-              The specific consent experience may vary depending on the
-              services enabled, the visitor’s location, and applicable
+              The specific consent experience may vary depending on the services
+              enabled, the visitor’s location, and applicable legal
               requirements.
             </p>
 
             <p className="mt-4">
-              Google currently states that publishers serving personalized ads
-              to users in the EEA, UK, or Switzerland must use a Google
-              certified CMP integrated with the IAB Transparency and Consent
-              Framework.
+              Where required, Creatoriva will use appropriate consent
+              mechanisms for applicable advertising and analytics technologies.
             </p>
           </section>
 
@@ -306,7 +314,7 @@ export default function PrivacyPolicyPage() {
 
             <ul className="mt-5 space-y-3 pl-5">
               <li className="list-disc">
-                providing and operating CreatorGuard;
+                providing and operating Creatoriva;
               </li>
 
               <li className="list-disc">
@@ -327,7 +335,7 @@ export default function PrivacyPolicyPage() {
               </li>
 
               <li className="list-disc">
-                measuring traffic and content performance; and
+                measuring traffic and website performance; and
               </li>
 
               <li className="list-disc">
@@ -343,8 +351,8 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may rely on third-party providers for services such
-              as website hosting, infrastructure, security, analytics,
+              Creatoriva may rely on third-party providers for services such as
+              website hosting, infrastructure, security, analytics,
               advertising, consent management, email delivery, and other
               technical functions.
             </p>
@@ -352,7 +360,7 @@ export default function PrivacyPolicyPage() {
             <p className="mt-4">
               These providers may process information necessary to provide
               their services. Their processing may be governed by their
-              respective privacy policies and contractual arrangements.
+              respective privacy policies, terms, and contractual arrangements.
             </p>
           </section>
 
@@ -362,15 +370,15 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard does not sell personal information as part of the
-              basic service.
+              Creatoriva does not sell personal information as part of the basic
+              service.
             </p>
 
             <p className="mt-4">
               Information may be shared with or processed by service providers
               when reasonably necessary to operate the website, provide
               requested services, maintain security, measure performance, or
-              serve advertising.
+              serve advertising when applicable.
             </p>
 
             <p className="mt-4">
@@ -395,6 +403,13 @@ export default function PrivacyPolicyPage() {
               Retention periods may vary depending on the type of information,
               the service involved, and the reason the information was
               collected.
+            </p>
+
+            <p className="mt-4">
+              Where a feature processes submitted content only for the purpose
+              of providing an immediate analysis, the handling and retention of
+              that content may differ from information collected for website
+              operation, security, analytics, or advertising.
             </p>
           </section>
 
@@ -421,10 +436,10 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may be accessed by users around the world.
-              Information may therefore be processed in countries other than
-              the country in which you are located, depending on our hosting
-              providers and third-party services.
+              Creatoriva may be accessed by users around the world. Information
+              may therefore be processed in countries other than the country in
+              which you are located, depending on our hosting providers and
+              third-party services.
             </p>
 
             <p className="mt-4">
@@ -440,15 +455,16 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard is not specifically directed to children under the
-              age of 13, and we do not knowingly request personal information
-              from children under 13.
+              Creatoriva is not specifically directed to children under the age
+              of 13, and we do not knowingly request personal information from
+              children under 13.
             </p>
 
             <p className="mt-4">
               If you believe that a child under 13 has provided personal
-              information to us, please contact us so that we can review the
-              situation and take appropriate action.
+              information to us, please contact us through the contact method
+              made available on the website so that we can review the situation
+              and take appropriate action.
             </p>
           </section>
 
@@ -485,14 +501,14 @@ export default function PrivacyPolicyPage() {
             <p className="mt-4">
               Certain U.S. states provide residents with additional privacy
               rights. Depending on where you live and whether a particular law
-              applies to CreatorGuard, you may have rights concerning access to,
+              applies to Creatoriva, you may have rights concerning access to,
               correction of, deletion of, or control over certain personal
               information.
             </p>
 
             <p className="mt-4">
-              Where applicable, we will provide additional disclosures and
-              mechanisms required by law.
+              Where applicable, Creatoriva will provide additional disclosures
+              and mechanisms required by law.
             </p>
           </section>
 
@@ -502,8 +518,8 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              Where applicable data protection laws such as the GDPR apply, users
-              may have rights including access, rectification, erasure,
+              Where applicable data protection laws such as the GDPR apply,
+              users may have rights including access, rectification, erasure,
               restriction of processing, objection, data portability, and the
               right to withdraw consent where processing is based on consent.
             </p>
@@ -520,9 +536,9 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              CreatorGuard may contain links to third-party websites,
-              services, or resources. We are not responsible for the privacy
-              practices or content of third-party websites.
+              Creatoriva may contain links to third-party websites, services,
+              or resources. We are not responsible for the privacy practices or
+              content of third-party websites.
             </p>
 
             <p className="mt-4">
@@ -554,9 +570,9 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              If you have questions about this Privacy Policy or CreatorGuard’s
-              privacy practices, please contact us through the contact
-              information provided on the website.
+              If you have questions about this Privacy Policy or Creatoriva’s
+              privacy practices, please contact us through the contact method
+              made available on the website.
             </p>
           </section>
 
@@ -566,12 +582,18 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              This Privacy Policy is intended to describe CreatorGuard’s
-              anticipated privacy practices in a general manner and does not
-              constitute legal advice. Actual disclosures should match the
-              services, cookies, analytics tools, advertising providers, data
-              processing activities, and consent mechanisms that are actually
-              enabled on the website.
+              This Privacy Policy is intended to describe Creatoriva’s privacy
+              practices in a general manner and does not constitute legal
+              advice. Actual disclosures should match the services, cookies,
+              analytics tools, advertising providers, data processing
+              activities, and consent mechanisms that are actually enabled on
+              the website.
+            </p>
+
+            <p className="mt-4">
+              If the website introduces new features or services that collect,
+              store, or process additional information, this Privacy Policy
+              should be reviewed and updated as appropriate.
             </p>
           </section>
         </div>
@@ -595,7 +617,7 @@ export default function PrivacyPolicyPage() {
 
       <footer className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 CreatorGuard. All rights reserved.</p>
+          <p>© 2026 Creatoriva. All rights reserved.</p>
 
           <div className="flex gap-5">
             <Link
