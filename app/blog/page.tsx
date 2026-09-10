@@ -44,7 +44,7 @@ export default function BlogPage() {
             href="/"
             className="text-xl font-bold tracking-tight"
           >
-            CreatorGuard
+            Creatoriva
           </Link>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
@@ -54,20 +54,6 @@ export default function BlogPage() {
             >
               Home
             </Link>
-
-            <Link
-              href="/#tools"
-              className="transition hover:text-black"
-            >
-              Tools
-            </Link>
-
-            <Link
-              href="/blog"
-              className="font-medium text-black"
-            >
-              Blog
-            </Link>
           </nav>
         </div>
       </header>
@@ -75,7 +61,7 @@ export default function BlogPage() {
       <section className="border-b border-zinc-200 bg-zinc-50">
         <div className="mx-auto max-w-4xl px-6 py-16 text-center">
           <span className="inline-flex rounded-full border border-zinc-300 bg-white px-4 py-1.5 text-xs font-medium text-zinc-700">
-            CreatorGuard Blog
+            Creatoriva Blog
           </span>
 
           <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -133,12 +119,12 @@ export default function BlogPage() {
           </h2>
 
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-            Use CreatorGuard tools to review captions, scripts, promotional
+            Use Creatoriva tools to review captions, scripts, promotional
             language, and other content before you publish.
           </p>
 
           <Link
-            href="/tiktok-checker"
+            href="/#checker"
             className="mt-6 inline-block rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
           >
             Explore Tools
@@ -148,7 +134,7 @@ export default function BlogPage() {
 
       <footer className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 CreatorGuard. All rights reserved.</p>
+          <p>© 2026 Creatoriva. All rights reserved.</p>
 
           <div className="flex gap-5">
             <Link

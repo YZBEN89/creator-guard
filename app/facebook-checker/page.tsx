@@ -7,18 +7,18 @@ import {
   type RiskLevel,
 } from "@/lib/analyzer";
 import {
-  reviewYouTubeContent,
-  type YouTubePlatformReview,
-} from "@/lib/platform/youtube";
+  reviewFacebookContent,
+  type FacebookPlatformReview,
+} from "@/lib/platform/facebook";
 
-export default function YouTubeCheckerPage() {
+export default function FacebookCheckerPage() {
   const [text, setText] = useState("");
   const [result, setResult] =
     useState<AnalysisResult | null>(null);
 
-  const platformReview: YouTubePlatformReview | null =
+  const platformReview: FacebookPlatformReview | null =
     result
-      ? reviewYouTubeContent({
+      ? reviewFacebookContent({
           risk: result.risk,
           score: result.score,
           context: result.context.primary,
@@ -99,7 +99,7 @@ export default function YouTubeCheckerPage() {
       Safety:
         "Content involving potentially dangerous behavior or safety concerns.",
       Violence:
-        "References to violence, threats, or physical harm.",
+        "Content involving violence, threats, or physical harm.",
       Adult:
         "Sexual or adult-oriented content signals.",
       Drugs:
@@ -213,7 +213,7 @@ export default function YouTubeCheckerPage() {
 
       <section className="mx-auto max-w-4xl px-6 pb-10 pt-16 text-center">
         <div className="mb-4 inline-flex rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700">
-          YouTube Content Checker
+          Facebook Content Checker
         </div>
 
         <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -249,7 +249,7 @@ export default function YouTubeCheckerPage() {
             }
             maxLength={10000}
             rows={12}
-            placeholder="Paste your YouTube title, description, script, or promotional content here..."
+            placeholder="Paste your Facebook caption, script, or promotional content here..."
             className="w-full resize-y rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-sm leading-7 outline-none transition placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white"
           />
 
@@ -275,7 +275,6 @@ export default function YouTubeCheckerPage() {
 
         {result && (
           <div className="mt-8 space-y-6">
-            {/* Overall Assessment */}
             <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
               <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                 <div className="min-w-0">
@@ -330,13 +329,12 @@ export default function YouTubeCheckerPage() {
               </div>
             </section>
 
-            {/* YouTube Platform Review */}
             {platformReview && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <p className="text-sm font-medium text-zinc-500">
-                      YouTube Platform Review
+                      Facebook Platform Review
                     </p>
 
                     <h2 className="mt-2 text-xl font-semibold tracking-tight">
@@ -386,7 +384,6 @@ export default function YouTubeCheckerPage() {
               </section>
             )}
 
-            {/* Analysis Overview */}
             <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
               <div className="mb-6">
                 <p className="text-sm font-medium text-zinc-500">
@@ -405,7 +402,6 @@ export default function YouTubeCheckerPage() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
-                {/* Context */}
                 <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
                     Context
@@ -441,7 +437,6 @@ export default function YouTubeCheckerPage() {
                   )}
                 </div>
 
-                {/* Intent */}
                 <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
                     Intent
@@ -477,7 +472,6 @@ export default function YouTubeCheckerPage() {
                   )}
                 </div>
 
-                {/* Claims */}
                 <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
                     Claims
@@ -500,16 +494,14 @@ export default function YouTubeCheckerPage() {
                       </p>
 
                       <div className="flex flex-wrap gap-2">
-                        {result.claims.types.map(
-                          (claim) => (
-                            <span
-                              key={claim}
-                              className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
-                            >
-                              {claim}
-                            </span>
-                          )
-                        )}
+                        {result.claims.types.map((claim) => (
+                          <span
+                            key={claim}
+                            className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                          >
+                            {claim}
+                          </span>
+                        ))}
 
                         {result.claims.signals
                           .slice(0, 4)
@@ -532,7 +524,6 @@ export default function YouTubeCheckerPage() {
               </div>
             </section>
 
-            {/* Detected Issues */}
             {result.riskMatches.length > 0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-6">
@@ -619,7 +610,6 @@ export default function YouTubeCheckerPage() {
               </section>
             )}
 
-            {/* Risk Dimensions */}
             {result.riskDimensions.length > 0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-6">
@@ -716,7 +706,6 @@ export default function YouTubeCheckerPage() {
               </section>
             )}
 
-            {/* Content Optimization */}
             {result.optimizationMatches.length >
               0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
@@ -791,7 +780,6 @@ export default function YouTubeCheckerPage() {
               </section>
             )}
 
-            {/* Context Review */}
             {result.contextualRiskMatches.length >
               0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
@@ -834,7 +822,6 @@ export default function YouTubeCheckerPage() {
               </section>
             )}
 
-            {/* No Issues */}
             {result.riskMatches.length === 0 &&
               result.optimizationMatches.length ===
                 0 &&
@@ -857,7 +844,6 @@ export default function YouTubeCheckerPage() {
                 </section>
               )}
 
-            {/* General Suggestions */}
             <section className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
               <p className="text-sm font-medium text-zinc-500">
                 Before You Publish
@@ -881,7 +867,6 @@ export default function YouTubeCheckerPage() {
               </ul>
             </section>
 
-            {/* Important Note */}
             <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
               <h2 className="text-lg font-semibold text-amber-900">
                 Important Note
@@ -893,7 +878,7 @@ export default function YouTubeCheckerPage() {
                 It is intended as general guidance and does
                 not represent or guarantee the moderation,
                 monetization, or advertising decisions of
-                YouTube or any other platform.
+                Facebook or any other platform.
               </p>
             </section>
           </div>

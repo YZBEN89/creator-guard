@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Context Matters: Why Keywords Alone Are Not Enough | Creatoriva",
+  description:
+    "Understand why content context matters and how intent, surrounding language, and keyword use can affect content review.",
+};
 
 export default function ContextMattersContentAnalysisPage() {
   return (
@@ -9,7 +16,7 @@ export default function ContextMattersContentAnalysisPage() {
             href="/"
             className="text-xl font-bold tracking-tight"
           >
-            CreatorGuard
+            Creatoriva
           </Link>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
@@ -18,20 +25,6 @@ export default function ContextMattersContentAnalysisPage() {
               className="transition hover:text-black"
             >
               Home
-            </Link>
-
-            <Link
-              href="/#tools"
-              className="transition hover:text-black"
-            >
-              Tools
-            </Link>
-
-            <Link
-              href="/blog"
-              className="font-medium text-black"
-            >
-              Blog
             </Link>
           </nav>
         </div>
@@ -48,7 +41,7 @@ export default function ContextMattersContentAnalysisPage() {
           </h1>
 
           <p className="mt-5 text-sm text-zinc-500">
-            September 6, 2026 · CreatorGuard
+            September 6, 2026 · Creatoriva
           </p>
         </div>
 
@@ -303,6 +296,56 @@ export default function ContextMattersContentAnalysisPage() {
           </section>
         </div>
 
+        <section className="mt-14 border-t border-zinc-200 pt-10">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Related Articles
+          </h2>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <Link
+              href="/blog/why-content-gets-flagged"
+              className="rounded-2xl border border-zinc-200 p-5 transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <h3 className="font-semibold">
+                Why Content Gets Flagged: A Practical Guide for Creators
+              </h3>
+
+              <p className="mt-2 text-sm leading-6 text-zinc-600">
+                Learn how context, claims, promotional language, and sensitive
+                topics can affect content review.
+              </p>
+            </Link>
+
+            <Link
+              href="/blog/how-to-write-safer-promotional-content"
+              className="rounded-2xl border border-zinc-200 p-5 transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <h3 className="font-semibold">
+                How to Write Safer Promotional Content
+              </h3>
+
+              <p className="mt-2 text-sm leading-6 text-zinc-600">
+                Learn how to make promotional language clearer, more precise,
+                and easier for audiences to trust.
+              </p>
+            </Link>
+
+            <Link
+              href="/blog/financial-claims-content-credibility"
+              className="rounded-2xl border border-zinc-200 p-5 transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <h3 className="font-semibold">
+                Financial Claims That Can Hurt Content Credibility
+              </h3>
+
+              <p className="mt-2 text-sm leading-6 text-zinc-600">
+                Explore how financial claims, certainty, and urgency can affect
+                content credibility.
+              </p>
+            </Link>
+          </div>
+        </section>
+
         <div className="mt-14 flex flex-col gap-4 border-t border-zinc-200 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href="/blog"
@@ -322,7 +365,7 @@ export default function ContextMattersContentAnalysisPage() {
 
       <footer className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 CreatorGuard. All rights reserved.</p>
+          <p>© 2026 Creatoriva. All rights reserved.</p>
 
           <div className="flex gap-5">
             <Link

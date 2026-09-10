@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   analyzeContent,
   type AnalysisResult,
@@ -15,6 +15,19 @@ export default function TikTokCheckerPage() {
   const [text, setText] = useState("");
   const [result, setResult] =
     useState<AnalysisResult | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(
+      window.location.search
+    );
+
+    const content = params.get("content");
+
+    if (content && content.trim()) {
+      setText(content);
+      setResult(analyzeContent(content));
+    }
+  }, []);
 
   const platformReview: TikTokPlatformReview | null =
     result
@@ -42,20 +55,24 @@ export default function TikTokCheckerPage() {
   const handleClear = () => {
     setText("");
     setResult(null);
+
+    window.history.replaceState(
+      {},
+      "",
+      window.location.pathname
+    );
   };
 
-  const riskBadgeClass = (
-    level: RiskLevel
-  ) => {
+  const riskBadgeClass = (level: RiskLevel) => {
     if (level === "High") {
-      return "bg-red-100 text-red-700";
+      return "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200";
     }
 
     if (level === "Medium") {
-      return "bg-amber-100 text-amber-700";
+      return "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200";
     }
 
-    return "bg-zinc-100 text-zinc-600";
+    return "bg-zinc-100 text-zinc-600 ring-1 ring-inset ring-zinc-200";
   };
 
   const scoreBarClass = () => {
@@ -74,11 +91,115 @@ export default function TikTokCheckerPage() {
     return "bg-emerald-500";
   };
 
-  const riskDimensionLabel = (
+  const scoreLabel = () => {
+    if (!result) return "";
+
+    if (result.risk === "High") {
+      return "Higher level of review recommended";
+    }
+
+    if (result.risk === "Medium") {
+      return "Some content areas may need review";
+    }
+
+    return "No significant risk signals detected";
+  };
+
+  const riskDimensionDescription = (
     dimension: string
   ) => {
-    return dimension;
+    const descriptions: Record<string, string> = {
+      Financial:
+        "Financial claims, investment language, and monetary outcomes.",
+      Deception:
+        "Potentially misleading, exaggerated, or deceptive claims.",
+      Health:
+        "Health, medical, treatment, disease, or wellness-related claims.",
+      Safety:
+        "Content involving potentially dangerous behavior or safety concerns.",
+      Violence:
+        "References to violence, threats, or physical harm.",
+      Adult:
+        "Sexual or adult-oriented content signals.",
+      Drugs:
+        "References to illegal substances or drug-related activity.",
+      Hate:
+        "Potentially hateful, abusive, or targeted language.",
+      Misinformation:
+        "Claims that may require additional factual verification.",
+      Advertising:
+        "Promotional or advertising-related risk signals.",
+      Platform:
+        "Patterns that may receive additional platform-level scrutiny.",
+    };
+
+    return (
+      descriptions[dimension] ??
+      "A detected risk area within the current analysis."
+    );
   };
+
+  const publishSuggestions: string[] = [];
+
+  if (result) {
+    if (result.risk === "High") {
+      publishSuggestions.push(
+        "Review or remove the high-risk portion before publishing."
+      );
+    }
+
+    if (
+      result.riskMatches.some(
+        (item) => item.category.name === "Drugs"
+      )
+    ) {
+      publishSuggestions.push(
+        "Avoid providing instructions or details that could facilitate illegal activity."
+      );
+    }
+
+    if (
+      result.claims.types.includes("Financial")
+    ) {
+      publishSuggestions.push(
+        "Avoid guaranteed returns, guaranteed profit, or other statements that present financial outcomes as certain."
+      );
+    }
+
+    if (
+      result.claims.types.includes("Health")
+    ) {
+      publishSuggestions.push(
+        "Use evidence-based language and avoid presenting treatment, cure, or health outcomes as certain."
+      );
+    }
+
+    if (
+      result.optimizationMatches.length > 0
+    ) {
+      publishSuggestions.push(
+        "Consider replacing exaggerated, promotional, or high-pressure language with more specific and realistic wording."
+      );
+    }
+
+    if (
+      result.contextualRiskMatches.length > 0
+    ) {
+      publishSuggestions.push(
+        "Keep the educational, reporting, warning, or critical context clear so the purpose of the content is easy to understand."
+      );
+    }
+
+    if (publishSuggestions.length === 0) {
+      publishSuggestions.push(
+        "Use specific and realistic descriptions whenever possible."
+      );
+
+      publishSuggestions.push(
+        "Review the full context of your content rather than relying only on individual keywords."
+      );
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white text-zinc-900">
@@ -88,7 +209,7 @@ export default function TikTokCheckerPage() {
             href="/"
             className="text-xl font-semibold tracking-tight"
           >
-            CreatorGuard
+            Creatoriva
           </a>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
@@ -175,40 +296,54 @@ export default function TikTokCheckerPage() {
           <div className="mt-8 space-y-6">
             {/* Overall Assessment */}
             <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+              <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                <div className="min-w-0">
                   <p className="text-sm font-medium text-zinc-500">
                     Overall Assessment
                   </p>
 
-                  <h2 className="mt-2 text-3xl font-semibold">
-                    {result.risk} Risk
-                  </h2>
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    <h2 className="text-3xl font-semibold tracking-tight">
+                      {result.risk} Risk
+                    </h2>
 
-                  <p className="mt-2 text-sm text-zinc-500">
-                    Based on detected content patterns,
-                    context, and risk signals.
-                  </p>
-                </div>
-
-                <div className="min-w-[180px]">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium">
-                      Risk Score
-                    </span>
-
-                    <span className="font-semibold">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${riskBadgeClass(
+                        result.risk
+                      )}`}
+                    >
                       {result.score}/100
                     </span>
                   </div>
 
-                  <div className="mt-3 h-3 overflow-hidden rounded-full bg-zinc-100">
+                  <p className="mt-3 text-sm leading-6 text-zinc-500">
+                    {scoreLabel()}
+                  </p>
+                </div>
+
+                <div className="w-full lg:max-w-sm">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-zinc-700">
+                      Risk Score
+                    </span>
+
+                    <span className="font-semibold text-zinc-900">
+                      {result.score}/100
+                    </span>
+                  </div>
+
+                  <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-zinc-100">
                     <div
                       className={`h-full rounded-full transition-all ${scoreBarClass()}`}
                       style={{
                         width: `${result.score}%`,
                       }}
                     />
+                  </div>
+
+                  <div className="mt-2 flex justify-between text-[11px] text-zinc-400">
+                    <span>Lower</span>
+                    <span>Higher</span>
                   </div>
                 </div>
               </div>
@@ -223,7 +358,7 @@ export default function TikTokCheckerPage() {
                       TikTok Platform Review
                     </p>
 
-                    <h2 className="mt-2 text-xl font-semibold">
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight">
                       {platformReview.title}
                     </h2>
 
@@ -235,10 +370,10 @@ export default function TikTokCheckerPage() {
                   <span
                     className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
                       platformReview.level === "High"
-                        ? "bg-red-100 text-red-700"
+                        ? "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200"
                         : platformReview.level === "Medium"
-                          ? "bg-amber-100 text-amber-700"
-                          : "bg-zinc-100 text-zinc-600"
+                          ? "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200"
+                          : "bg-zinc-100 text-zinc-600 ring-1 ring-inset ring-zinc-200"
                     }`}
                   >
                     {platformReview.level} Review
@@ -270,112 +405,146 @@ export default function TikTokCheckerPage() {
               </section>
             )}
 
-            {/* Analysis Summary */}
+            {/* Analysis Overview */}
             <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold">
-                  Analysis Summary
+                <p className="text-sm font-medium text-zinc-500">
+                  Analysis Overview
+                </p>
+
+                <h2 className="mt-1 text-xl font-semibold tracking-tight">
+                  Context, intent, and claims
                 </h2>
 
-                <p className="mt-1 text-sm leading-6 text-zinc-500">
-                  Signals detected from the broader context
-                  of your content.
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-500">
+                  The analysis looks beyond individual
+                  keywords to identify the broader meaning
+                  and characteristics of your content.
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-zinc-200 p-5">
+              <div className="grid gap-4 sm:grid-cols-3">
+                {/* Context */}
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                    Primary Context
+                    Context
                   </p>
 
                   <p className="mt-2 text-lg font-semibold">
                     {result.context.primary}
                   </p>
 
-                  {result.context.signals.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {result.context.signals
-                        .slice(0, 4)
-                        .map((signal) => (
-                          <span
-                            key={signal}
-                            className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs text-zinc-600"
-                          >
-                            {signal}
-                          </span>
-                        ))}
+                  {result.context.signals.length > 0 ? (
+                    <div className="mt-4">
+                      <p className="mb-2 text-xs text-zinc-400">
+                        Supporting signals
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {result.context.signals
+                          .slice(0, 4)
+                          .map((signal) => (
+                            <span
+                              key={signal}
+                              className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                            >
+                              {signal}
+                            </span>
+                          ))}
+                      </div>
                     </div>
+                  ) : (
+                    <p className="mt-4 text-xs text-zinc-400">
+                      No additional context signals detected.
+                    </p>
                   )}
                 </div>
 
-                <div className="rounded-2xl border border-zinc-200 p-5">
+                {/* Intent */}
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                    Primary Intent
+                    Intent
                   </p>
 
                   <p className="mt-2 text-lg font-semibold">
                     {result.intent.primary}
                   </p>
 
-                  {result.intent.signals.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {result.intent.signals
-                        .slice(0, 4)
-                        .map((signal) => (
-                          <span
-                            key={signal}
-                            className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs text-zinc-600"
-                          >
-                            {signal}
-                          </span>
-                        ))}
+                  {result.intent.signals.length > 0 ? (
+                    <div className="mt-4">
+                      <p className="mb-2 text-xs text-zinc-400">
+                        Supporting signals
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {result.intent.signals
+                          .slice(0, 4)
+                          .map((signal) => (
+                            <span
+                              key={signal}
+                              className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                            >
+                              {signal}
+                            </span>
+                          ))}
+                      </div>
                     </div>
-                  )}
-                </div>
-
-                <div className="rounded-2xl border border-zinc-200 p-5">
-                  <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                    Claim Types
-                  </p>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {result.claims.types.map(
-                      (claim) => (
-                        <span
-                          key={claim}
-                          className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600"
-                        >
-                          {claim}
-                        </span>
-                      )
-                    )}
-                  </div>
-
-                  {result.claims.signals.length > 0 && (
-                    <p className="mt-3 text-xs leading-5 text-zinc-500">
-                      Signals:{" "}
-                      {result.claims.signals
-                        .slice(0, 4)
-                        .join(", ")}
+                  ) : (
+                    <p className="mt-4 text-xs text-zinc-400">
+                      No additional intent signals detected.
                     </p>
                   )}
                 </div>
 
-                <div className="rounded-2xl border border-zinc-200 p-5">
+                {/* Claims */}
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
                   <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                    Analysis Version
+                    Claims
                   </p>
 
                   <p className="mt-2 text-lg font-semibold">
-                    {result.analysisVersion}
+                    {result.claims.types.includes("None")
+                      ? "No claims detected"
+                      : `${result.claims.types.length} ${
+                          result.claims.types.length === 1
+                            ? "type"
+                            : "types"
+                        } detected`}
                   </p>
 
-                  <p className="mt-2 text-xs leading-5 text-zinc-500">
-                    Context, intent, claims, and risk
-                    dimensions are included in this
-                    analysis.
-                  </p>
+                  {result.claims.types.length > 0 ? (
+                    <div className="mt-4">
+                      <p className="mb-2 text-xs text-zinc-400">
+                        Supporting signals
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {result.claims.types.map((claim) => (
+                          <span
+                            key={claim}
+                            className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                          >
+                            {claim}
+                          </span>
+                        ))}
+
+                        {result.claims.signals
+                          .slice(0, 4)
+                          .map((signal) => (
+                            <span
+                              key={signal}
+                              className="rounded-lg bg-white px-2.5 py-1.5 text-xs text-zinc-600 ring-1 ring-inset ring-zinc-200"
+                            >
+                              {signal}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-4 text-xs text-zinc-400">
+                      No additional claim signals detected.
+                    </p>
+                  )}
                 </div>
               </div>
             </section>
@@ -384,11 +553,15 @@ export default function TikTokCheckerPage() {
             {result.riskMatches.length > 0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold">
+                  <p className="text-sm font-medium text-zinc-500">
+                    Risk Signals
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-semibold tracking-tight">
                     Detected Issues
                   </h2>
 
-                  <p className="mt-1 text-sm text-zinc-500">
+                  <p className="mt-2 text-sm leading-6 text-zinc-500">
                     These detected categories contribute
                     to the current risk score.
                   </p>
@@ -417,17 +590,20 @@ export default function TikTokCheckerPage() {
 
                         <div className="mt-5">
                           <p className="text-sm font-medium">
-                            Why this may be risky
+                            Why this matters
                           </p>
 
                           <p className="mt-2 text-sm leading-6 text-zinc-600">
-                            {item.category.explanation}
+                            {item.reason}
                           </p>
                         </div>
 
                         <div className="mt-5">
                           <p className="text-sm font-medium">
-                            Detected phrases
+                            Detected phrase
+                            {item.matches.length !== 1
+                              ? "s"
+                              : ""}
                           </p>
 
                           <div className="mt-2 flex flex-wrap gap-2">
@@ -446,7 +622,7 @@ export default function TikTokCheckerPage() {
 
                         <div className="mt-5">
                           <p className="text-sm font-medium">
-                            Suggested direction
+                            What to do
                           </p>
 
                           <p className="mt-2 text-sm leading-6 text-zinc-600">
@@ -464,38 +640,87 @@ export default function TikTokCheckerPage() {
             {result.riskDimensions.length > 0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold">
+                  <p className="text-sm font-medium text-zinc-500">
+                    Risk Profile
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-semibold tracking-tight">
                     Risk Dimensions
                   </h2>
 
-                  <p className="mt-1 text-sm leading-6 text-zinc-500">
-                    The main risk areas detected across
-                    the content.
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-500">
+                    A breakdown of the main risk areas
+                    identified across your content.
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="grid gap-3">
                   {result.riskDimensions.map(
                     (item) => (
                       <div
                         key={item.dimension}
                         className="rounded-2xl border border-zinc-200 p-4"
                       >
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-sm font-medium">
-                            {riskDimensionLabel(
-                              item.dimension
-                            )}
-                          </span>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-semibold">
+                                {item.dimension}
+                              </span>
 
-                          <span className="text-sm font-semibold">
+                              {item.score >= 60 && (
+                                <>
+                                  <span
+                                    className="text-xs text-zinc-300"
+                                    aria-hidden="true"
+                                  >
+                                    •
+                                  </span>
+
+                                  <span className="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-700 ring-1 ring-inset ring-red-200">
+                                    Elevated
+                                  </span>
+                                </>
+                              )}
+
+                              {item.score >= 20 &&
+                                item.score < 60 && (
+                                  <>
+                                    <span
+                                      className="text-xs text-zinc-300"
+                                      aria-hidden="true"
+                                    >
+                                      •
+                                    </span>
+
+                                    <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700 ring-1 ring-inset ring-amber-200">
+                                      Moderate
+                                    </span>
+                                  </>
+                                )}
+                            </div>
+
+                            <p className="mt-1 text-xs leading-5 text-zinc-400">
+                              {riskDimensionDescription(
+                                item.dimension
+                              )}
+                            </p>
+                          </div>
+
+                          <span className="shrink-0 text-sm font-semibold text-zinc-900">
                             {item.score}/100
                           </span>
                         </div>
 
                         <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-100">
                           <div
-                            className="h-full rounded-full bg-zinc-700 transition-all"
+                            className={`h-full rounded-full transition-all ${
+                              item.score >= 60
+                                ? "bg-red-500"
+                                : item.score >= 20
+                                  ? "bg-amber-500"
+                                  : "bg-zinc-400"
+                            }`}
                             style={{
                               width: `${item.score}%`,
                             }}
@@ -514,11 +739,17 @@ export default function TikTokCheckerPage() {
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-6">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <h2 className="text-xl font-semibold">
-                      Content Optimization
-                    </h2>
+                    <div>
+                      <p className="text-sm font-medium text-zinc-500">
+                        Content Quality
+                      </p>
 
-                    <span className="w-fit rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600">
+                      <h2 className="mt-1 text-xl font-semibold tracking-tight">
+                        Content Optimization
+                      </h2>
+                    </div>
+
+                    <span className="w-fit rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200">
                       Does not affect score
                     </span>
                   </div>
@@ -582,11 +813,17 @@ export default function TikTokCheckerPage() {
               0 && (
               <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <h2 className="text-xl font-semibold">
-                    Context Review
-                  </h2>
+                  <div>
+                    <p className="text-sm font-medium text-zinc-500">
+                      Contextual Signals
+                    </p>
 
-                  <span className="w-fit rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600">
+                    <h2 className="mt-1 text-xl font-semibold tracking-tight">
+                      Context Review
+                    </h2>
+                  </div>
+
+                  <span className="w-fit rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200">
                     Not included in score
                   </span>
                 </div>
@@ -621,7 +858,11 @@ export default function TikTokCheckerPage() {
               result.contextualRiskMatches.length ===
                 0 && (
                 <section className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
-                  <h2 className="text-xl font-semibold text-emerald-900">
+                  <p className="text-sm font-medium text-emerald-700">
+                    Content Review
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-semibold text-emerald-900">
                     No Significant Issues Detected
                   </h2>
 
@@ -635,36 +876,25 @@ export default function TikTokCheckerPage() {
 
             {/* General Suggestions */}
             <section className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
-              <h2 className="text-xl font-semibold">
+              <p className="text-sm font-medium text-zinc-500">
+                Before You Publish
+              </p>
+
+              <h2 className="mt-1 text-xl font-semibold tracking-tight">
                 General Suggestions
               </h2>
 
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
-                <li>
-                  - Avoid absolute promises or claims that
-                  guarantee a specific outcome.
-                </li>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-zinc-600">
+                {publishSuggestions.map((suggestion) => (
+                  <li
+                    key={suggestion}
+                    className="flex gap-3"
+                  >
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-400" />
 
-                <li>
-                  - Use specific and realistic descriptions
-                  whenever possible.
-                </li>
-
-                <li>
-                  - Avoid unnecessary urgency or pressure
-                  in promotional content.
-                </li>
-
-                <li>
-                  - For sensitive subjects, keep surrounding
-                  context factual and clear.
-                </li>
-
-                <li>
-                  - Review the full context of your content
-                  rather than relying only on individual
-                  keywords.
-                </li>
+                    <span>{suggestion}</span>
+                  </li>
+                ))}
               </ul>
             </section>
 
@@ -690,7 +920,7 @@ export default function TikTokCheckerPage() {
       <footer className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © 2026 CreatorGuard. All rights reserved.
+            © 2026 Creatoriva. All rights reserved.
           </p>
 
           <div className="flex gap-5">

@@ -84,9 +84,10 @@ export type RiskDimension =
 export type AnalysisResult = {
   score: number;
   risk: RiskLevel;
-  riskMatches: {
+   riskMatches: {
     category: RiskCategory | PatternCategory;
     matches: Match[];
+    reason: string;
   }[];
   optimizationMatches: {
     category: PatternCategory;
@@ -363,6 +364,69 @@ const riskCategories: RiskCategory[] = [
     direction:
       "Avoid explicit sexual content and transactional sexual language.",
   },
+
+{
+    name: "Harassment",
+    level: "Medium",
+    keywords: [
+      "idiot",
+      "stupid",
+      "moron",
+      "loser",
+      "pathetic",
+      "worthless",
+      "shut up",
+      "nobody likes you",
+      "you're an idiot",
+      "you are an idiot",
+      "you're stupid",
+      "you are stupid",
+      "you're pathetic",
+      "you are pathetic",
+    ],
+    explanation:
+      "Targeted insults or degrading language directed at another person can create harassment and safety concerns.",
+    direction:
+      "Avoid targeted insults, degrading language, or abusive attacks toward individuals.",
+  },
+
+  {
+name: "Threat",
+level: "High",
+keywords: [
+"i will hurt you",
+"i'll hurt you",
+"i will fucking hurt you",
+"i'll fucking hurt you",
+
+"i will kill you",
+"i'll kill you",
+"i will fucking kill you",
+"i'll fucking kill you",
+
+"i am going to hurt you",
+"i'm going to hurt you",
+"i am fucking going to hurt you",
+"i'm fucking going to hurt you",
+
+"i am going to kill you",
+"i'm going to kill you",
+"i am fucking going to kill you",
+"i'm fucking going to kill you",
+
+"you will die",
+"you are going to die",
+
+"i will attack you",
+"i'll attack you",
+"i will fucking attack you",
+"i'll fucking attack you",
+],
+explanation:
+"Direct threats of physical harm or violence can create serious safety concerns.",
+direction:
+"Avoid threatening individuals with physical harm, violence, or death.",
+},
 
   {
     name: "Hate & Harassment",
@@ -708,18 +772,11 @@ const contextSignals: Record<ContextType, string[]> = {
   ],
 
   Instructional: [
-    "how to",
-    "how do i",
-    "step by step",
-    "step-by-step",
     "tutorial",
     "guide",
     "instructions",
-    "follow these steps",
-    "here's how",
-    "heres how",
-    "here is how",
-    "steps to",
+    "step by step",
+    "step-by-step",
   ],
 
   Promotional: [
@@ -934,10 +991,6 @@ const intentSignals: Record<IntentType, string[]> = {
   Instruct: [
     "how to",
     "how do i",
-    "step by step",
-    "step-by-step",
-    "tutorial",
-    "instructions",
     "follow these steps",
     "here's how",
     "heres how",
@@ -1587,29 +1640,408 @@ function detectContext(text: string): {
     }
   }
 
+/*
+   * Implicit personal-experience signals.
+   *
+   * Some first-person experiences do not explicitly use phrases
+   * such as "I tried" or "in my experience".
+   *
+   * Expressions such as "it helped me feel better" can still
+   * indicate that the author is describing a personal outcome.
+   */
+  const implicitPersonalExperienceSignals = [
+    "helped me",
+    "helped me feel",
+    "worked for me",
+    "worked well for me",
+    "made me feel",
+    "made me feel better",
+    "i felt better",
+    "i felt worse",
+    "i feel better",
+    "i feel worse",
+    "my symptoms improved",
+    "my symptoms got better",
+    "my symptoms got worse",
+    "personally helped",
+    "personally worked",
+  ];
+
+  let implicitPersonalExperienceCount = 0;
+
+  for (const signal of implicitPersonalExperienceSignals) {
+    if (findMatches(text, signal).length > 0) {
+      implicitPersonalExperienceCount += 1;
+
+      if (
+        !matchedSignals["Personal Experience"].includes(signal)
+      ) {
+        matchedSignals["Personal Experience"].push(signal);
+      }
+    }
+  }
+
+  if (implicitPersonalExperienceCount > 0) {
+    scores["Personal Experience"] +=
+      4 + implicitPersonalExperienceCount;
+  }
+
   /*
    * Explicit instructional phrases are strong signals.
+   *
+   * A clear tutorial / step-by-step / instruction format
+   * should take precedence over generic educational wording
+   * such as "explains" or "explains how".
    */
-  if (
-    findMatches(text, "how to").length > 0 ||
-    findMatches(text, "step by step").length > 0 ||
-    findMatches(text, "tutorial").length > 0
-  ) {
+  const explicitInstructionalSignals = [
+    "tutorial",
+    "step by step",
+    "step-by-step",
+    "instructions",
+  ];
+
+  const explicitHowToSignals = [
+    "how to",
+    "how do i",
+    "here's how",
+    "heres how",
+    "here is how",
+    "steps to",
+  ];
+
+  for (const signal of explicitInstructionalSignals) {
+    if (findMatches(text, signal).length > 0) {
+      if (!matchedSignals.Instructional.includes(signal)) {
+        matchedSignals.Instructional.push(signal);
+      }
+    }
+  }
+
+  for (const signal of explicitHowToSignals) {
+    if (findMatches(text, signal).length > 0) {
+      if (!matchedSignals.Instructional.includes(signal)) {
+        matchedSignals.Instructional.push(signal);
+      }
+    }
+  }
+
+  const hasExplicitInstructional =
+    explicitInstructionalSignals.some(
+      (signal) => findMatches(text, signal).length > 0
+    );
+
+  const hasExplicitHowTo =
+    explicitHowToSignals.some(
+      (signal) => findMatches(text, signal).length > 0
+    );
+
+  if (hasExplicitInstructional) {
+    scores.Instructional += 5;
+  } else if (hasExplicitHowTo) {
     scores.Instructional += 3;
   }
 
   /*
-   * Explicit transaction phrases are stronger than generic promotion.
+   * Transactional language.
+   *
+   * Strong direct calls to action remain the strongest signals.
+   * Natural purchase expressions such as "buy this program" are
+   * also recognized, but negative / cautionary wording should not
+   * automatically become transactional.
    */
-  if (
-    findMatches(text, "buy now").length > 0 ||
-    findMatches(text, "purchase now").length > 0 ||
-    findMatches(text, "order now").length > 0 ||
-    findMatches(text, "checkout").length > 0 ||
-    findMatches(text, "for sale").length > 0
-  ) {
-    scores.Transactional += 4;
+  const transactionalSignals = [
+    "buy now",
+    "purchase now",
+    "order now",
+    "shop now",
+    "get yours",
+    "get started now",
+    "sign up now",
+    "subscribe now",
+    "book now",
+    "checkout",
+    "check out now",
+    "for sale",
+    "limited offer",
+    "special offer",
+  ];
+
+  let transactionalSignalCount = 0;
+
+  for (const signal of transactionalSignals) {
+    if (findMatches(text, signal).length > 0) {
+      transactionalSignalCount += 1;
+
+      if (!matchedSignals.Transactional.includes(signal)) {
+        matchedSignals.Transactional.push(signal);
+      }
+    }
   }
+
+  /*
+   * Natural purchase expressions.
+   *
+   * These cover sentences such as:
+   * "Buy this investment program today."
+   *
+   * They are treated as transactional only when the surrounding
+   * sentence does not clearly negate or discourage the action.
+   */
+  const naturalTransactionalSignals = [
+  "buy this",
+  "buy the",
+  "buy our",
+  "buy my",
+  "purchase this",
+  "purchase the",
+  "purchase our",
+  "purchase my",
+  "order this",
+  "order the",
+  "order our",
+  "order my",
+];
+
+  let naturalTransactionalCount = 0;
+
+  for (const signal of naturalTransactionalSignals) {
+    const matches = findMatches(text, signal);
+
+    for (const match of matches) {
+      const sentence = getSentenceAtPosition(
+        text,
+        match.start
+      );
+
+      const negativeAction = /\b(don't|dont|do not|never|avoid|shouldn't|shouldnt|cannot|can't|cant)\b/i.test(sentence);
+      if (negativeAction) {
+        continue;
+      }
+
+      naturalTransactionalCount += 1;
+
+      if (!matchedSignals.Transactional.includes(signal)) {
+        matchedSignals.Transactional.push(signal);
+      }
+    }
+  }
+
+  if (transactionalSignalCount > 0) {
+    scores.Transactional +=
+      4 + transactionalSignalCount;
+  }
+
+  if (naturalTransactionalCount > 0) {
+    scores.Transactional +=
+      4 + naturalTransactionalCount;
+  }
+
+  /*
+   * Promotional language.
+   *
+   * These phrases indicate an attempt to promote an offer,
+   * opportunity, product, service, or financial action.
+   */
+  const promotionalSignals = [
+    "invest now",
+    "join now",
+    "act now",
+    "don't miss",
+    "dont miss",
+    "limited time",
+    "limited opportunity",
+    "special opportunity",
+    "exclusive offer",
+    "exclusive opportunity",
+    "get yours",
+    "try it today",
+    "start today",
+    "start now",
+    "sign up today",
+    "subscribe today",
+  ];
+
+  let promotionalSignalCount = 0;
+
+  for (const signal of promotionalSignals) {
+    if (findMatches(text, signal).length > 0) {
+      promotionalSignalCount += 1;
+
+      if (!matchedSignals.Promotional.includes(signal)) {
+        matchedSignals.Promotional.push(signal);
+      }
+    }
+  }
+
+  if (promotionalSignalCount > 0) {
+    scores.Promotional += 4 + promotionalSignalCount;
+  }
+
+  /*
+   * Persuasive language.
+   *
+   * These phrases attempt to convince the reader to take an action,
+   * but are not necessarily direct transactions.
+   */
+  const persuasiveSignals = [
+    "you should buy",
+    "you should invest",
+    "you need this",
+    "you need to buy",
+    "you need to invest",
+    "don't wait",
+    "dont wait",
+    "you won't regret",
+    "you wont regret",
+    "this is your chance",
+    "don't miss out",
+    "dont miss out",
+    "take advantage",
+    "now is the time",
+    "best opportunity",
+  ];
+
+  let persuasiveSignalCount = 0;
+
+  for (const signal of persuasiveSignals) {
+    if (findMatches(text, signal).length > 0) {
+      persuasiveSignalCount += 1;
+
+      if (!matchedSignals.Persuasive.includes(signal)) {
+        matchedSignals.Persuasive.push(signal);
+      }
+    }
+  }
+
+  if (persuasiveSignalCount > 0) {
+    scores.Persuasive += 4 + persuasiveSignalCount;
+  }
+
+  /*
+   * Strong financial action patterns.
+   *
+   * "Invest now" is promotional even when no other promotional
+   * keyword is present.
+   */
+  if (findMatches(text, "invest now").length > 0) {
+    scores.Promotional += 3;
+  }
+
+  /*
+   * Guaranteed financial outcomes are normally persuasive,
+   * but they should not automatically override clear reporting
+   * context.
+   */
+  const guaranteedOutcomeSignals = [
+    "guaranteed to double",
+    "guaranteed return",
+    "guaranteed returns",
+  ];
+
+  const hasGuaranteedOutcome =
+    guaranteedOutcomeSignals.some(
+      (signal) => findMatches(text, signal).length > 0
+    );
+
+  if (hasGuaranteedOutcome) {
+    scores.Persuasive += 2;
+
+    if (!matchedSignals.Persuasive.includes("guaranteed outcome")) {
+      matchedSignals.Persuasive.push("guaranteed outcome");
+    }
+  }
+
+  /*
+   * Explicit news-reporting framing.
+   *
+   * These phrases indicate that the author is reporting,
+   * attributing, or describing a claim made by another source.
+   */
+  const explicitNewsSignals = [
+    "the company claims",
+    "the company claimed",
+    "the company says",
+    "the company said",
+    "the company stated",
+    "according to",
+    "reports say",
+    "reports suggest",
+    "the report says",
+    "the report states",
+    "the report found",
+    "officials said",
+    "officials stated",
+    "investigators found",
+    "investigators said",
+    "analysts said",
+    "analysts expect",
+    "experts said",
+    "experts warned",
+    "was reported",
+    "were reported",
+    "reportedly",
+    "news reports",
+    "news report",
+  ];
+
+  let explicitNewsSignalCount = 0;
+
+  for (const signal of explicitNewsSignals) {
+    if (findMatches(text, signal).length > 0) {
+      explicitNewsSignalCount += 1;
+
+      if (!matchedSignals["News Reporting"].includes(signal)) {
+        matchedSignals["News Reporting"].push(signal);
+      }
+    }
+  }
+
+  if (explicitNewsSignalCount > 0) {
+    scores["News Reporting"] +=
+      5 + explicitNewsSignalCount;
+  }
+
+/*
+
+Explicit fictional / entertainment framing.
+
+
+These signals indicate that potentially risky language is being
+described as part of a movie, film, scene, character, or fictional
+story rather than presented as a real-world action.
+*/
+const explicitFictionalSignals = [
+"movie",
+"film",
+"scene",
+"character",
+"fictional character",
+"fictional story",
+"in this movie",
+"in this film",
+"in the movie",
+"in the film",
+"this scene",
+"this character",
+];
+
+let explicitFictionalSignalCount = 0;
+
+for (const signal of explicitFictionalSignals) {
+if (findMatches(text, signal).length > 0) {
+explicitFictionalSignalCount += 1;
+
+if (!matchedSignals.Fictional.includes(signal)) {
+  matchedSignals.Fictional.push(signal);
+}
+
+}
+}
+
+if (explicitFictionalSignalCount > 0) {
+scores.Fictional +=
+5 + explicitFictionalSignalCount;
+}
 
   /*
    * Warning/debunking language gets a strong priority because
@@ -1630,6 +2062,101 @@ function detectContext(text: string): {
     scores.Educational += 2;
   }
 
+  /*
+   * When explicit instructional language exists, it should remain
+   * stronger than generic promotional language.
+   */
+  if (hasExplicitInstructional) {
+    scores.Instructional += 2;
+  }
+
+  /*
+   * A normal explanatory "how to buy..." sentence should not become
+   * promotional merely because it contains the word "buy".
+   *
+   * Explicit instructional framing therefore suppresses weak
+   * promotional / transactional interpretations.
+   */
+  if (hasExplicitHowTo || hasExplicitInstructional) {
+    scores.Promotional = Math.max(
+      0,
+      scores.Promotional - 2
+    );
+
+    scores.Persuasive = Math.max(
+      0,
+      scores.Persuasive - 2
+    );
+
+    /*
+     * Transactional phrases such as "buy now" are still strong enough
+     * to remain transactional, because they contain a direct call to action.
+     */
+    if (transactionalSignalCount === 0) {
+      scores.Transactional = Math.max(
+        0,
+        scores.Transactional - 2
+      );
+    }
+  }
+
+  /*
+   * Warning / debunking / reporting contexts should take precedence
+   * over promotional interpretations when the content clearly warns,
+   * debunks, or reports the behavior.
+   */
+  if (
+    scores.Warning > 0 ||
+    scores.Debunking > 0 ||
+    scores["News Reporting"] > 0
+  ) {
+    scores.Promotional = Math.max(
+      0,
+      scores.Promotional - 3
+    );
+
+    scores.Persuasive = Math.max(
+      0,
+      scores.Persuasive - 3
+    );
+
+    if (transactionalSignalCount === 0) {
+      scores.Transactional = Math.max(
+        0,
+        scores.Transactional - 2
+      );
+    }
+  }
+
+  /*
+   * Clear news-reporting attribution should not be classified
+   * as persuasive merely because the reported statement contains
+   * a guaranteed financial outcome.
+   */
+  if (
+    scores["News Reporting"] > 0 &&
+    explicitNewsSignalCount > 0
+  ) {
+    scores.Persuasive = Math.max(
+      0,
+      scores.Persuasive - 3
+    );
+
+    /*
+     * Remove the generic guaranteed-outcome signal from the
+     * persuasive display when it is clearly being reported.
+     */
+    if (hasGuaranteedOutcome) {
+      matchedSignals.Persuasive =
+        matchedSignals.Persuasive.filter(
+          (signal) => signal !== "guaranteed outcome"
+        );
+    }
+  }
+
+  /*
+   * Recalculate the best context after all contextual adjustments.
+   */
   let bestContext: ContextType = "Neutral";
   let bestScore = 0;
 
@@ -1727,25 +2254,293 @@ function detectIntent(
 
   /*
    * Explicit instructional patterns must beat generic selling.
+   *
    * Example:
    * "how to buy illegal drugs"
-   * should be Instruct, not Sell.
+   * should remain Instruct, not Sell.
    */
-  const explicitInstruction =
-    findMatches(text, "how to").length > 0 ||
-    findMatches(text, "how do i").length > 0 ||
-    findMatches(text, "step by step").length > 0 ||
-    findMatches(text, "step-by-step").length > 0 ||
-    findMatches(text, "tutorial").length > 0 ||
-    findMatches(text, "instructions").length > 0 ||
-    findMatches(text, "follow these steps").length > 0;
+  const explicitInstructionSignals = [
+    "how to",
+    "how do i",
+    "step by step",
+    "step-by-step",
+    "tutorial",
+    "instructions",
+    "follow these steps",
+    "here's how",
+    "heres how",
+    "here is how",
+    "steps to",
+  ];
 
-  if (explicitInstruction) {
+  let instructionSignalCount = 0;
+
+  for (const signal of explicitInstructionSignals) {
+    if (findMatches(text, signal).length > 0) {
+      instructionSignalCount += 1;
+
+      if (!matchedSignals.Instruct.includes(signal)) {
+        matchedSignals.Instruct.push(signal);
+      }
+    }
+  }
+
+  if (instructionSignalCount > 0) {
     scores.Instruct += 5;
   }
 
-  if (detectTransactionalIntent(text)) {
-    scores.Sell += 4;
+  /*
+ * Transactional intent.
+ *
+ * Strong action-oriented phrases should produce Sell intent.
+ * Natural purchase expressions such as "buy this" are also
+ * recognized, but negative instructions such as "don't buy this"
+ * must not be treated as transactional.
+ */
+const transactionalIntentSignals = [
+  "buy now",
+  "purchase now",
+  "order now",
+  "shop now",
+  "get yours",
+  "checkout",
+  "check out now",
+  "for sale",
+  "sign up now",
+  "subscribe now",
+  "book now",
+  "limited offer",
+  "special offer",
+];
+
+let transactionalIntentCount = 0;
+
+for (const signal of transactionalIntentSignals) {
+  if (findMatches(text, signal).length > 0) {
+    transactionalIntentCount += 1;
+
+    if (!matchedSignals.Sell.includes(signal)) {
+      matchedSignals.Sell.push(signal);
+    }
+  }
+}
+
+/*
+ * Natural purchase expressions.
+ *
+ * "buy this", "buy the", "purchase this", etc. are transactional
+ * when they are used as a direct purchase action.
+ *
+ * Do not classify negative statements such as
+ * "don't buy this" as Sell intent.
+ */
+const naturalTransactionalIntentSignals = [
+  "buy this",
+  "buy the",
+  "purchase this",
+  "purchase the",
+  "order this",
+  "order the",
+];
+
+for (const signal of naturalTransactionalIntentSignals) {
+  const matches = findMatches(text, signal);
+
+  for (const match of matches) {
+    const sentence = getSentenceAtPosition(
+      text,
+      match.start
+    );
+
+    const negativeAction =
+      /\b(don't|dont|do not|never|avoid|shouldn't|shouldnt|cannot|can't|cant)\b/i.test(
+        sentence
+      );
+
+    if (negativeAction) {
+      continue;
+    }
+
+    transactionalIntentCount += 1;
+
+    if (!matchedSignals.Sell.includes(signal)) {
+      matchedSignals.Sell.push(signal);
+    }
+  }
+}
+
+/*
+ * Recommendation-based purchase intent.
+ *
+ * Expressions such as "recommend buying it" indicate that
+ * the author is encouraging a purchase even when there is
+ * no direct command such as "buy this".
+ *
+ * Negative recommendations remain protected.
+ */
+const recommendationIntentSignals = [
+  "recommend buying",
+  "recommend purchasing",
+  "recommend ordering",
+  "recommend this",
+  "recommend the",
+  "highly recommend buying",
+  "highly recommend purchasing",
+  "highly recommend ordering",
+  "highly recommend this",
+];
+
+for (const signal of recommendationIntentSignals) {
+  const matches = findMatches(text, signal);
+
+  for (const match of matches) {
+    const sentence = getSentenceAtPosition(
+      text,
+      match.start
+    );
+
+    const negativeAction =
+      /\b(don't|dont|do not|never|avoid|shouldn't|shouldnt|cannot|can't|cant)\b/i.test(
+        sentence
+      );
+
+    if (negativeAction) {
+      continue;
+    }
+
+    transactionalIntentCount += 1;
+
+    if (!matchedSignals.Sell.includes(signal)) {
+      matchedSignals.Sell.push(signal);
+    }
+  }
+}
+
+if (transactionalIntentCount > 0) {
+  scores.Sell += 4 + transactionalIntentCount;
+}
+
+  /*
+   * Promotional intent.
+   *
+   * These patterns indicate an attempt to promote an offer,
+   * opportunity, service, or action.
+   */
+  const promotionalIntentSignals = [
+  "invest now",
+  "join now",
+  "act now",
+  "don't miss",
+  "dont miss",
+  "limited time",
+  "limited opportunity",
+  "special opportunity",
+  "exclusive offer",
+  "exclusive opportunity",
+  "get yours",
+  "try it today",
+  "start today",
+  "start now",
+  "sign up today",
+  "subscribe today",
+
+  /*
+   * Soft recommendation signals.
+   *
+   * These indicate that the author is encouraging the reader
+   * to consider or try something, even without an explicit
+   * purchase action.
+   */
+  "highly recommend",
+  "strongly recommend",
+  "recommend giving it a try",
+  "recommend giving this a try",
+  "recommend trying it",
+  "recommend trying this",
+  "give it a try",
+];
+
+  let promotionalIntentCount = 0;
+
+  for (const signal of promotionalIntentSignals) {
+    if (findMatches(text, signal).length > 0) {
+      promotionalIntentCount += 1;
+
+      if (!matchedSignals.Promote.includes(signal)) {
+        matchedSignals.Promote.push(signal);
+      }
+    }
+  }
+
+  if (promotionalIntentCount > 0) {
+    scores.Promote += 4 + promotionalIntentCount;
+  }
+
+  /*
+   * Persuasive intent.
+   */
+  const persuasiveIntentSignals = [
+    "you should buy",
+    "you should invest",
+    "you need this",
+    "you need to buy",
+    "you need to invest",
+    "don't wait",
+    "dont wait",
+    "you won't regret",
+    "you wont regret",
+    "this is your chance",
+    "don't miss out",
+    "dont miss out",
+    "take advantage",
+    "now is the time",
+    "best opportunity",
+  ];
+
+  let persuasiveIntentCount = 0;
+
+  for (const signal of persuasiveIntentSignals) {
+    if (findMatches(text, signal).length > 0) {
+      persuasiveIntentCount += 1;
+
+      if (!matchedSignals.Persuade.includes(signal)) {
+        matchedSignals.Persuade.push(signal);
+      }
+    }
+  }
+
+  if (persuasiveIntentCount > 0) {
+    scores.Persuade += 4 + persuasiveIntentCount;
+  }
+
+  /*
+   * Guaranteed financial outcomes are usually persuasive
+   * when combined with an investment action.
+   */
+  const hasInvestmentAction =
+    findMatches(text, "invest now").length > 0 ||
+    findMatches(text, "you should invest").length > 0 ||
+    findMatches(text, "you need to invest").length > 0;
+
+  const hasGuaranteedFinancialOutcome =
+    findMatches(text, "guaranteed to double").length > 0 ||
+    findMatches(text, "guaranteed return").length > 0 ||
+    findMatches(text, "guaranteed returns").length > 0 ||
+    findMatches(text, "guaranteed profit").length > 0 ||
+    findMatches(text, "guaranteed profits").length > 0;
+
+  if (hasInvestmentAction && hasGuaranteedFinancialOutcome) {
+    scores.Persuade += 5;
+
+    if (
+      !matchedSignals.Persuade.includes(
+        "guaranteed financial outcome"
+      )
+    ) {
+      matchedSignals.Persuade.push(
+        "guaranteed financial outcome"
+      );
+    }
   }
 
   /*
@@ -1776,7 +2571,7 @@ function detectIntent(
   }
 
   if (context === "Promotional") {
-    scores.Promote += 3;
+    scores.Promote += 5;
   }
 
   if (context === "Transactional") {
@@ -1784,7 +2579,7 @@ function detectIntent(
   }
 
   if (context === "Persuasive") {
-    scores.Persuade += 3;
+    scores.Persuade += 5;
   }
 
   if (context === "Personal Experience") {
@@ -1797,6 +2592,108 @@ function detectIntent(
 
   if (context === "Satirical" || context === "Fictional") {
     scores.Entertain += 4;
+  }
+
+/*
+   * Explicit illegal-drug acquisition questions.
+   *
+   * These questions ask how or where to obtain illegal drugs.
+   * They should be classified as Instruct because the user is
+   * explicitly asking for a method or source of acquisition.
+   *
+   * This rule is intentionally limited to illegal-drug phrases
+   * so ordinary purchase questions such as "How can I buy this
+   * camera?" are not incorrectly classified as Instruct.
+   */
+  const illegalDrugInstructionSignals = [
+    "how can i buy illegal drugs",
+    "how can i purchase illegal drugs",
+    "how can i get illegal drugs",
+    "how do i buy illegal drugs",
+    "how do i purchase illegal drugs",
+    "where can i buy illegal drugs",
+    "where can i purchase illegal drugs",
+    "where can i get illegal drugs",
+    "where to buy illegal drugs",
+    "where to purchase illegal drugs",
+    "how to obtain illegal drugs",
+    "how can i obtain illegal drugs",
+  ];
+
+  let illegalDrugInstructionCount = 0;
+
+  for (const signal of illegalDrugInstructionSignals) {
+    if (findMatches(text, signal).length > 0) {
+      illegalDrugInstructionCount += 1;
+
+      if (!matchedSignals.Instruct.includes(signal)) {
+        matchedSignals.Instruct.push(signal);
+      }
+    }
+  }
+
+  if (illegalDrugInstructionCount > 0) {
+    scores.Instruct += 8;
+  }
+
+  /*
+   * Explicit instructional intent overrides generic transaction
+   * signals when the content is clearly teaching something.
+   *
+   * "This article explains how to buy a house."
+   * should be Educate/Instruct rather than Sell.
+   */
+  if (instructionSignalCount > 0) {
+  /*
+   * "How to" does not automatically mean the content is
+   * instructional in intent.
+   *
+   * Educational articles often explain "how to..." something
+   * without actually instructing the reader to perform it.
+   *
+   * Strong instructional formats such as tutorials,
+   * step-by-step instructions, and explicit instructions
+   * remain Instruct.
+   */
+
+  const strongInstructionFormat =
+    findMatches(text, "tutorial").length > 0 ||
+    findMatches(text, "step by step").length > 0 ||
+    findMatches(text, "step-by-step").length > 0 ||
+    findMatches(text, "instructions").length > 0 ||
+    findMatches(text, "follow these steps").length > 0;
+
+  if (context === "Educational" && !strongInstructionFormat) {
+    scores.Educate += 5;
+    scores.Instruct = Math.max(0, scores.Instruct - 2);
+  } else {
+    scores.Instruct += 3;
+  }
+
+  if (transactionalIntentCount === 0) {
+    scores.Sell = Math.max(0, scores.Sell - 3);
+  }
+
+  scores.Promote = Math.max(0, scores.Promote - 2);
+  scores.Persuade = Math.max(0, scores.Persuade - 2);
+}
+
+  /*
+   * Warning / debunking / criticism should not be interpreted
+   * as an attempt to sell or persuade unless there is a very
+   * explicit transactional call to action.
+   */
+  if (
+    context === "Warning" ||
+    context === "Debunking" ||
+    context === "Criticism"
+  ) {
+    scores.Promote = Math.max(0, scores.Promote - 3);
+    scores.Persuade = Math.max(0, scores.Persuade - 3);
+
+    if (transactionalIntentCount === 0) {
+      scores.Sell = Math.max(0, scores.Sell - 2);
+    }
   }
 
   const priority: IntentType[] = [
@@ -2022,6 +2919,7 @@ function shouldReduceRiskForContext(
     "Educational",
     "Commentary",
     "Quoting",
+    "Fictional",
   ];
 
   const contextualIntents: IntentType[] = [
@@ -2031,6 +2929,7 @@ function shouldReduceRiskForContext(
     "Criticize",
     "Educate",
     "Quote",
+    "Entertain",
   ];
 
   if (
@@ -2200,23 +3099,141 @@ function calculateCategoryRisk(
   if (matches.length === 0) return 0;
 
   /*
-   * Explicit drug facilitation must be preserved even when
-   * the broader document is classified as Warning, Education,
-   * Reporting, or another contextual category.
+   * Explicit drug facilitation.
    *
-   * This prevents a long mixed-context document from hiding
-   * explicit instructions for obtaining or selling illegal drugs.
+   * A drug reference alone should not be treated as operational
+   * facilitation when the surrounding content is educational,
+   * reporting, warning, debunking, critical, quoted, or fictional.
+   *
+   * Genuine instructional or transactional requests remain
+   * protected as high-risk behavior.
    */
-
   const explicitDrugFacilitation =
     category.name === "Drugs" &&
     (
       findMatches(text, "how to buy illegal drugs").length > 0 ||
       findMatches(text, "where to purchase drugs").length > 0 ||
       findMatches(text, "how to sell drugs").length > 0 ||
-      findMatches(text, "buy illegal drugs").length > 0 ||
-      findMatches(text, "purchase illegal drugs").length > 0 ||
-      findMatches(text, "sell illegal drugs").length > 0
+      findMatches(text, "how can i buy illegal drugs").length > 0 ||
+      findMatches(text, "how can i purchase illegal drugs").length > 0 ||
+      findMatches(text, "how can i get illegal drugs").length > 0 ||
+      findMatches(text, "how do i buy illegal drugs").length > 0 ||
+      findMatches(text, "how do i purchase illegal drugs").length > 0 ||
+      findMatches(text, "where can i buy illegal drugs").length > 0 ||
+      findMatches(text, "where can i purchase illegal drugs").length > 0 ||
+      findMatches(text, "where can i get illegal drugs").length > 0 ||
+      findMatches(text, "where to buy illegal drugs").length > 0 ||
+      findMatches(text, "where to purchase illegal drugs").length > 0 ||
+      findMatches(text, "how to obtain illegal drugs").length > 0 ||
+      findMatches(text, "how can i obtain illegal drugs").length > 0
+    ) &&
+    !(
+      context === "Educational" ||
+      context === "Warning" ||
+      context === "News Reporting" ||
+      context === "Debunking" ||
+      context === "Criticism" ||
+      context === "Quoting" ||
+      context === "Fictional" ||
+      intent === "Educate" ||
+      intent === "Warn" ||
+      intent === "Report" ||
+      intent === "Debunk" ||
+      intent === "Criticize" ||
+      intent === "Quote" ||
+      intent === "Entertain"
+    );
+
+  /*
+   * Explicit direct-threat signals.
+   *
+   * A phrase such as:
+   * "I will fucking hurt you if you don't do what I say."
+   *
+   * contains the negative word "don't", but that negative clause
+   * does NOT negate the threat. It is part of the condition
+   * attached to the threat.
+   *
+   * Therefore Threat / Violence should not be reduced merely
+   * because a negative word appears nearby.
+   */
+
+  const explicitDirectThreat =
+    category.name === "Threat" &&
+    (
+      findMatches(text, "i will hurt you").length > 0 ||
+      findMatches(text, "i'll hurt you").length > 0 ||
+      findMatches(text, "i will fucking hurt you").length > 0 ||
+      findMatches(text, "i'll fucking hurt you").length > 0 ||
+      findMatches(text, "i will kill you").length > 0 ||
+      findMatches(text, "i'll kill you").length > 0 ||
+      findMatches(text, "i will fucking kill you").length > 0 ||
+      findMatches(text, "i'll fucking kill you").length > 0 ||
+      findMatches(text, "i am going to hurt you").length > 0 ||
+      findMatches(text, "i'm going to hurt you").length > 0 ||
+      findMatches(text, "i am fucking going to hurt you").length > 0 ||
+      findMatches(text, "i'm fucking going to hurt you").length > 0 ||
+      findMatches(text, "i am going to kill you").length > 0 ||
+      findMatches(text, "i'm going to kill you").length > 0 ||
+      findMatches(text, "i am fucking going to kill you").length > 0 ||
+      findMatches(text, "i'm fucking going to kill you").length > 0 ||
+      findMatches(text, "you will die").length > 0 ||
+      findMatches(text, "you are going to die").length > 0 ||
+      findMatches(text, "i will attack you").length > 0 ||
+      findMatches(text, "i'll attack you").length > 0 ||
+      findMatches(text, "i will fucking attack you").length > 0 ||
+      findMatches(text, "i'll fucking attack you").length > 0
+    );
+
+  /*
+   * Contexts that legitimately describe or quote threatening
+   * language rather than expressing a real-world threat.
+   *
+   * These must continue to receive contextual protection.
+   */
+
+  const threatContextProtected =
+    context === "News Reporting" ||
+    context === "Educational" ||
+    context === "Warning" ||
+    context === "Debunking" ||
+    context === "Criticism" ||
+    context === "Quoting" ||
+    context === "Fictional" ||
+    intent === "Report" ||
+    intent === "Educate" ||
+    intent === "Warn" ||
+    intent === "Debunk" ||
+    intent === "Criticize" ||
+    intent === "Quote" ||
+    intent === "Entertain";
+
+  /*
+   * Explicit violence phrases that should remain meaningful
+   * even when a nearby negative clause exists.
+   *
+   * We only use this protection for direct violence expressions.
+   */
+
+  const explicitDirectViolence =
+    category.name === "Violence" &&
+    (
+      findMatches(text, "i will hurt you").length > 0 ||
+      findMatches(text, "i'll hurt you").length > 0 ||
+      findMatches(text, "i will fucking hurt you").length > 0 ||
+      findMatches(text, "i'll fucking hurt you").length > 0 ||
+      findMatches(text, "i will kill you").length > 0 ||
+      findMatches(text, "i'll kill you").length > 0 ||
+      findMatches(text, "i will fucking kill you").length > 0 ||
+      findMatches(text, "i'll fucking kill you").length > 0 ||
+      findMatches(text, "i am going to hurt you").length > 0 ||
+      findMatches(text, "i'm going to hurt you").length > 0 ||
+      findMatches(text, "i am going to kill you").length > 0 ||
+      findMatches(text, "i'm going to kill you").length > 0 ||
+      findMatches(text, "you will die").length > 0 ||
+      findMatches(text, "you are going to die").length > 0 ||
+      findMatches(text, "i will attack you").length > 0 ||
+      findMatches(text, "i'll attack you").length > 0
     );
 
   const activeMatches = matches.filter((match) => {
@@ -2227,6 +3244,23 @@ function calculateCategoryRisk(
      * suppress the specific high-risk facilitation signal.
      */
     if (explicitDrugFacilitation) {
+      return true;
+    }
+
+    /*
+     * Direct Threat / Violence expressions are not reduced by
+     * nearby negative words such as "don't".
+     *
+     * However, genuine contextual protection still applies to
+     * fictional, quoted, educational, reporting, warning, etc.
+     */
+    if (
+      (
+        explicitDirectThreat ||
+        explicitDirectViolence
+      ) &&
+      !threatContextProtected
+    ) {
       return true;
     }
 
@@ -2274,9 +3308,47 @@ function calculateCategoryRisk(
       intent,
       text
     ) &&
-    !explicitDrugFacilitation
+    !explicitDrugFacilitation &&
+    !(
+      (
+        explicitDirectThreat ||
+        explicitDirectViolence
+      ) &&
+      !threatContextProtected
+    )
   ) {
     score *= multiplier;
+  }
+
+  /*
+   * Explicit direct threat scoring.
+   *
+   * A clear first-person threat such as:
+   * "I will kill you."
+   *
+   * should be materially higher than a generic mention of
+   * violence. This does not override contextual protection.
+   */
+
+  if (
+    explicitDirectThreat &&
+    !threatContextProtected
+  ) {
+    score = Math.max(score, 75);
+  }
+
+  /*
+   * Explicit direct violence scoring.
+   *
+   * When the violence category is also triggered by a direct
+   * threat, keep it in the high-risk range.
+   */
+
+  if (
+    explicitDirectViolence &&
+    !threatContextProtected
+  ) {
+    score = Math.max(score, 70);
   }
 
   /*
@@ -2347,47 +3419,96 @@ function calculateCategoryRisk(
    */
 
   if (category.name === "Drugs") {
-    const explicitDrugInstruction =
-      findMatches(text, "how to buy illegal drugs").length > 0 ||
-      findMatches(text, "where to purchase drugs").length > 0 ||
-      findMatches(text, "how to sell drugs").length > 0;
+  const explicitDrugInstruction =
+    findMatches(text, "how to buy illegal drugs").length > 0 ||
+    findMatches(text, "how can i buy illegal drugs").length > 0 ||
+    findMatches(text, "how can i purchase illegal drugs").length > 0 ||
+    findMatches(text, "how can i get illegal drugs").length > 0 ||
+    findMatches(text, "how do i buy illegal drugs").length > 0 ||
+    findMatches(text, "how do i purchase illegal drugs").length > 0 ||
+    findMatches(text, "where can i buy illegal drugs").length > 0 ||
+    findMatches(text, "where can i purchase illegal drugs").length > 0 ||
+    findMatches(text, "where can i get illegal drugs").length > 0 ||
+    findMatches(text, "where to buy illegal drugs").length > 0 ||
+    findMatches(text, "where to purchase illegal drugs").length > 0 ||
+    findMatches(text, "how to obtain illegal drugs").length > 0 ||
+    findMatches(text, "how can i obtain illegal drugs").length > 0 ||
+    findMatches(text, "how to sell drugs").length > 0;
 
-    const explicitDrugTransaction =
-      findMatches(text, "buy illegal drugs").length > 0 ||
-      findMatches(text, "purchase illegal drugs").length > 0 ||
-      findMatches(text, "sell illegal drugs").length > 0 ||
-      findMatches(text, "buy drugs").length > 0 ||
-      findMatches(text, "sell drugs").length > 0 ||
-      findMatches(text, "purchase drugs").length > 0;
+  const explicitDrugTransaction =
+    findMatches(text, "buy illegal drugs").length > 0 ||
+    findMatches(text, "purchase illegal drugs").length > 0 ||
+    findMatches(text, "sell illegal drugs").length > 0 ||
+    findMatches(text, "buy drugs").length > 0 ||
+    findMatches(text, "sell drugs").length > 0 ||
+    findMatches(text, "purchase drugs").length > 0;
 
-    if (
-      intent === "Instruct" &&
-      (
-        explicitDrugInstruction ||
-        explicitDrugTransaction
-      )
-    ) {
-      score = 70;
-    } else if (
-      detectTransactionalIntent(text) &&
-      (
-        explicitDrugInstruction ||
-        explicitDrugTransaction
-      )
-    ) {
-      score = 70;
-    } else if (
-      explicitDrugFacilitation
-    ) {
-      /*
-       * Preserve explicit facilitation even when the overall
-       * document intent is Warning, Reporting, or Educational.
-       *
-       * This is especially important for mixed long-form content.
-       */
-      score = Math.max(score, 70);
-    }
+  /*
+   * Educational, warning, reporting, debunking, criticism,
+   * quoting, and fictional contexts may reduce the apparent
+   * risk of a drug reference when the content is discussing
+   * the topic rather than facilitating the activity.
+   *
+   * However, explicit instructional or transactional requests
+   * for obtaining or selling illegal drugs remain high risk.
+   */
+  const drugContextProtected =
+    context === "Educational" ||
+    context === "Warning" ||
+    context === "News Reporting" ||
+    context === "Debunking" ||
+    context === "Criticism" ||
+    context === "Quoting" ||
+    context === "Fictional" ||
+    intent === "Educate" ||
+    intent === "Warn" ||
+    intent === "Report" ||
+    intent === "Debunk" ||
+    intent === "Criticize" ||
+    intent === "Quote" ||
+    intent === "Entertain";
+
+  /*
+   * Operational drug behavior requires both a drug-acquisition
+   * pattern and an action-oriented intent.
+   *
+   * Merely discussing "buy illegal drugs" inside an educational
+   * or reporting context is not sufficient.
+   */
+  const operationalDrugInstruction =
+    (
+      explicitDrugInstruction ||
+      explicitDrugTransaction
+    ) &&
+    (
+      intent === "Instruct" ||
+      intent === "Sell" ||
+      detectTransactionalIntent(text)
+    );
+
+  /*
+   * Keep genuine acquisition/selling instructions high risk,
+   * even when the surrounding content is described as educational.
+   */
+  if (operationalDrugInstruction) {
+    score = 70;
+  } else if (
+    explicitDrugFacilitation
+  ) {
+    score = Math.max(score, 70);
+  } else if (
+    drugContextProtected
+  ) {
+    /*
+     * Non-operational drug discussion in a protected context
+     * should not inherit the full Drugs baseline.
+     *
+     * Keep the underlying signal visible, but allow context
+     * reduction to lower the final category score.
+     */
+    score = Math.min(score, 20);
   }
+}
 
   return Math.round(Math.min(100, score));
 }
@@ -2412,6 +3533,12 @@ function calculateRiskDimensions(
     Record<RiskDimension, number>
   > = {};
 
+  /*
+   * First calculate the existing category-based risk score.
+   *
+   * This keeps the original scoring model stable and applies
+   * contextual adjustments only after a real risk signal exists.
+   */
   for (const item of riskMatches) {
     const dimension =
       dimensionMap[item.category.name];
@@ -2445,9 +3572,309 @@ function calculateRiskDimensions(
   }
 
   /*
-   * Special drug facilitation boost.
+   * Context × Intent × Claim adjustments.
+   *
+   * The purpose is not to replace the original risk model,
+   * but to make the dimension score sensitive to what the
+   * content is doing.
    */
 
+  const hasFinancialClaim =
+    riskMatches.some(
+      (item) =>
+        dimensionMap[item.category.name] ===
+        "Financial"
+    ) ||
+    (
+      findMatches(text, "investment").length > 0 ||
+      findMatches(text, "invest").length > 0 ||
+      findMatches(text, "investing").length > 0 ||
+      findMatches(text, "invested").length > 0 ||
+      findMatches(text, "money").length > 0 ||
+      findMatches(text, "profit").length > 0 ||
+      findMatches(text, "profits").length > 0 ||
+      findMatches(text, "return").length > 0 ||
+      findMatches(text, "returns").length > 0
+    );
+
+  /*
+   * Financial content is more concerning when it is being
+   * actively promoted, persuaded, or sold.
+   */
+  if (
+    dimensionScores.Financial !== undefined &&
+    hasFinancialClaim
+  ) {
+    let adjustment = 0;
+
+    if (context === "Educational") {
+      adjustment -= 8;
+    }
+
+    if (
+      context === "Warning" ||
+      context === "Debunking"
+    ) {
+      adjustment -= 12;
+    }
+
+    if (context === "News Reporting") {
+      adjustment -= 8;
+    }
+
+    if (context === "Criticism") {
+      adjustment -= 8;
+    }
+
+    if (context === "Promotional") {
+      adjustment += 10;
+    }
+
+    if (context === "Persuasive") {
+      adjustment += 12;
+    }
+
+    if (context === "Transactional") {
+      adjustment += 8;
+    }
+
+    if (intent === "Promote") {
+      adjustment += 4;
+    }
+
+    if (intent === "Persuade") {
+      adjustment += 5;
+    }
+
+    if (intent === "Sell") {
+      adjustment += 4;
+    }
+
+    if (
+      context === "Educational" &&
+      (
+        intent === "Educate" ||
+        intent === "Inform"
+      )
+    ) {
+      adjustment -= 3;
+    }
+
+    /*
+     * Guaranteed financial outcomes are particularly important
+     * when combined with promotional or persuasive intent.
+     */
+    const hasGuaranteedFinancialOutcome =
+      findMatches(
+        text,
+        "guaranteed to double"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "guaranteed return"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "guaranteed returns"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "guaranteed profit"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "guaranteed profits"
+      ).length > 0;
+
+    if (
+      hasGuaranteedFinancialOutcome &&
+      (
+        context === "Promotional" ||
+        context === "Persuasive" ||
+        intent === "Promote" ||
+        intent === "Persuade" ||
+        intent === "Sell"
+      )
+    ) {
+      adjustment += 10;
+    }
+
+    /*
+     * A warning or debunking context should not receive the
+     * promotional certainty penalty.
+     */
+    if (
+      hasGuaranteedFinancialOutcome &&
+      (
+        context === "Warning" ||
+        context === "Debunking"
+      )
+    ) {
+      adjustment -= 4;
+    }
+
+    dimensionScores.Financial = Math.min(
+      100,
+      Math.max(
+        0,
+        dimensionScores.Financial + adjustment
+      )
+    );
+  }
+
+  /*
+   * Health claims receive similar contextual treatment.
+   *
+   * Educational, warning, debunking, and reporting contexts
+   * reduce the interpretation of the claim as a direct harmful
+   * or promotional medical assertion.
+   */
+  const hasHealthClaim =
+    riskMatches.some(
+      (item) =>
+        dimensionMap[item.category.name] ===
+        "Health"
+    ) ||
+    (
+      findMatches(text, "cure").length > 0 ||
+      findMatches(text, "cures").length > 0 ||
+      findMatches(text, "treatment").length > 0 ||
+      findMatches(text, "treat").length > 0 ||
+      findMatches(text, "heal").length > 0 ||
+      findMatches(text, "healing").length > 0 ||
+      findMatches(text, "disease").length > 0 ||
+      findMatches(text, "medical").length > 0
+    );
+
+  if (
+    dimensionScores.Health !== undefined &&
+    hasHealthClaim
+  ) {
+    let adjustment = 0;
+
+    if (context === "Educational") {
+      adjustment -= 8;
+    }
+
+    if (
+      context === "Warning" ||
+      context === "Debunking"
+    ) {
+      adjustment -= 12;
+    }
+
+    if (context === "News Reporting") {
+      adjustment -= 8;
+    }
+
+    if (context === "Criticism") {
+      adjustment -= 8;
+    }
+
+    if (context === "Promotional") {
+      adjustment += 8;
+    }
+
+    if (context === "Persuasive") {
+      adjustment += 10;
+    }
+
+    if (context === "Transactional") {
+      adjustment += 6;
+    }
+
+    if (intent === "Promote") {
+      adjustment += 3;
+    }
+
+    if (intent === "Persuade") {
+      adjustment += 4;
+    }
+
+    if (intent === "Sell") {
+      adjustment += 3;
+    }
+
+    if (
+      context === "Educational" &&
+      (
+        intent === "Educate" ||
+        intent === "Inform"
+      )
+    ) {
+      adjustment -= 3;
+    }
+
+    dimensionScores.Health = Math.min(
+      100,
+      Math.max(
+        0,
+        dimensionScores.Health + adjustment
+      )
+    );
+  }
+
+  /*
+   * Deception is more significant when misleading language
+   * is combined with active promotion or persuasion.
+   */
+  if (dimensionScores.Deception !== undefined) {
+    let adjustment = 0;
+
+    if (context === "Warning") {
+      adjustment -= 6;
+    }
+
+    if (context === "Debunking") {
+      adjustment -= 8;
+    }
+
+    if (context === "News Reporting") {
+      adjustment -= 5;
+    }
+
+    if (context === "Criticism") {
+      adjustment -= 5;
+    }
+
+    if (context === "Promotional") {
+      adjustment += 6;
+    }
+
+    if (context === "Persuasive") {
+      adjustment += 8;
+    }
+
+    if (context === "Transactional") {
+      adjustment += 5;
+    }
+
+    if (intent === "Promote") {
+      adjustment += 3;
+    }
+
+    if (intent === "Persuade") {
+      adjustment += 4;
+    }
+
+    if (intent === "Sell") {
+      adjustment += 3;
+    }
+
+    dimensionScores.Deception = Math.min(
+      100,
+      Math.max(
+        0,
+        dimensionScores.Deception + adjustment
+      )
+    );
+  }
+
+  /*
+   * Special drug facilitation boost.
+   *
+   * This preserves the existing high-risk behavior.
+   */
   if (
     dimensionScores.Drugs !== undefined &&
     intent === "Instruct" &&
@@ -2460,7 +3887,10 @@ function calculateRiskDimensions(
   ) {
     dimensionScores.Drugs = Math.min(
       100,
-      Math.max(dimensionScores.Drugs, 70)
+      Math.max(
+        dimensionScores.Drugs,
+        70
+      )
     );
   }
 
@@ -2487,8 +3917,89 @@ function collectContextualRiskMatches(
 ): Match[] {
   const contextual: Match[] = [];
 
+  const threatContextProtected =
+    context === "News Reporting" ||
+    context === "Educational" ||
+    context === "Warning" ||
+    context === "Debunking" ||
+    context === "Criticism" ||
+    context === "Quoting" ||
+    context === "Fictional" ||
+    intent === "Report" ||
+    intent === "Educate" ||
+    intent === "Warn" ||
+    intent === "Debunk" ||
+    intent === "Criticize" ||
+    intent === "Quote" ||
+    intent === "Entertain";
+
+  const explicitDirectThreat =
+    findMatches(text, "i will hurt you").length > 0 ||
+    findMatches(text, "i'll hurt you").length > 0 ||
+    findMatches(text, "i will fucking hurt you").length > 0 ||
+    findMatches(text, "i'll fucking hurt you").length > 0 ||
+    findMatches(text, "i will kill you").length > 0 ||
+    findMatches(text, "i'll kill you").length > 0 ||
+    findMatches(text, "i will fucking kill you").length > 0 ||
+    findMatches(text, "i'll fucking kill you").length > 0 ||
+    findMatches(text, "i am going to hurt you").length > 0 ||
+    findMatches(text, "i'm going to hurt you").length > 0 ||
+    findMatches(text, "i am fucking going to hurt you").length > 0 ||
+    findMatches(text, "i'm fucking going to hurt you").length > 0 ||
+    findMatches(text, "i am going to kill you").length > 0 ||
+    findMatches(text, "i'm going to kill you").length > 0 ||
+    findMatches(text, "i am fucking going to kill you").length > 0 ||
+    findMatches(text, "i'm fucking going to kill you").length > 0 ||
+    findMatches(text, "you will die").length > 0 ||
+    findMatches(text, "you are going to die").length > 0 ||
+    findMatches(text, "i will attack you").length > 0 ||
+    findMatches(text, "i'll attack you").length > 0 ||
+    findMatches(text, "i will fucking attack you").length > 0 ||
+    findMatches(text, "i'll fucking attack you").length > 0;
+
+  const explicitDirectViolence =
+    findMatches(text, "i will hurt you").length > 0 ||
+    findMatches(text, "i'll hurt you").length > 0 ||
+    findMatches(text, "i will fucking hurt you").length > 0 ||
+    findMatches(text, "i'll fucking hurt you").length > 0 ||
+    findMatches(text, "i will kill you").length > 0 ||
+    findMatches(text, "i'll kill you").length > 0 ||
+    findMatches(text, "i will fucking kill you").length > 0 ||
+    findMatches(text, "i'll fucking kill you").length > 0 ||
+    findMatches(text, "i am going to hurt you").length > 0 ||
+    findMatches(text, "i'm going to hurt you").length > 0 ||
+    findMatches(text, "i am going to kill you").length > 0 ||
+    findMatches(text, "i'm going to kill you").length > 0 ||
+    findMatches(text, "you will die").length > 0 ||
+    findMatches(text, "you are going to die").length > 0 ||
+    findMatches(text, "i will attack you").length > 0 ||
+    findMatches(text, "i'll attack you").length > 0;
+
   for (const item of riskMatches) {
     for (const match of item.matches) {
+      /*
+       * A direct real-world Threat / Violence signal has already
+       * been preserved in the risk score.
+       *
+       * Do not also display the same phrase as a contextual
+       * signal unless the surrounding content is genuinely
+       * contextual, such as a movie, news report, warning,
+       * educational discussion, or quotation.
+       */
+      if (
+        (
+          item.category.name === "Threat" ||
+          item.category.name === "Violence"
+        ) &&
+        (
+          explicitDirectThreat ||
+          explicitDirectViolence
+        ) &&
+        !threatContextProtected
+      ) {
+        continue;
+      }
+
       const reduced =
         shouldReduceRiskForContext(
           context,
@@ -2512,6 +4023,607 @@ function collectContextualRiskMatches(
   }
 
   return mergeMatches(contextual);
+}
+
+/* =========================================================
+   Risk explainability
+   ========================================================= */
+
+function getRiskReason(
+  category: RiskCategory | PatternCategory,
+  text: string,
+  context: ContextType,
+  intent: IntentType
+): string {
+  /* -------------------------------------------------------
+     Drugs
+     ------------------------------------------------------- */
+
+  if (category.name === "Drugs") {
+    const explicitDrugFacilitation =
+      findMatches(
+        text,
+        "how to buy illegal drugs"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "where to purchase drugs"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "how to sell drugs"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "buy illegal drugs"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "purchase illegal drugs"
+      ).length > 0 ||
+      findMatches(
+        text,
+        "sell illegal drugs"
+      ).length > 0;
+
+    if (
+      explicitDrugFacilitation &&
+      intent === "Instruct"
+    ) {
+      return (
+        "The content contains an instructional pattern " +
+        "associated with obtaining or selling illegal " +
+        "substances. Because the wording can facilitate " +
+        "harmful or illegal activity, the risk remains high " +
+        "even when the surrounding content is instructional."
+      );
+    }
+
+    if (explicitDrugFacilitation) {
+      return (
+        "The content contains explicit language associated " +
+        "with obtaining or selling illegal substances. " +
+        "This type of facilitation can present a serious " +
+        "safety concern."
+      );
+    }
+
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Educational" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Educate"
+    ) {
+      return (
+        "The content references illegal drugs or related " +
+        "activity, but the surrounding context appears " +
+        "educational, cautionary, critical, or informational " +
+        "rather than directly promotional."
+      );
+    }
+
+    return (
+      "The content references illegal drugs or related " +
+      "activity. The risk depends on whether the content " +
+      "is discussing, promoting, facilitating, or warning " +
+      "about the activity."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Financial Claims
+     ------------------------------------------------------- */
+
+  if (category.name === "Financial Claims") {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "Financial language is present, but the surrounding " +
+        "content appears to warn against, question, report on, " +
+        "or criticize the financial claim rather than directly " +
+        "promote it."
+      );
+    }
+
+    if (
+      context === "Promotional" ||
+      context === "Persuasive" ||
+      context === "Transactional" ||
+      intent === "Promote" ||
+      intent === "Persuade" ||
+      intent === "Sell"
+    ) {
+      return (
+        "The content uses financial language in a promotional " +
+        "or persuasive context. Claims about profits, returns, " +
+        "or financial outcomes may require additional scrutiny " +
+        "when presented as expected or certain results."
+      );
+    }
+
+    return (
+      "The content contains financial language that may be " +
+      "interpreted as a claim about investments, returns, " +
+      "profits, or other financial outcomes."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Health & Medical
+     ------------------------------------------------------- */
+
+  if (category.name === "Health & Medical") {
+    if (
+      context === "Educational" ||
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Criticism" ||
+      intent === "Educate" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content contains health-related claims, but " +
+        "the surrounding context appears educational, " +
+        "critical, cautionary, or informational rather than " +
+        "directly promotional."
+      );
+    }
+
+    if (
+      context === "Promotional" ||
+      context === "Persuasive" ||
+      context === "Transactional" ||
+      intent === "Promote" ||
+      intent === "Persuade" ||
+      intent === "Sell"
+    ) {
+      return (
+        "The content presents health or medical claims in a " +
+        "promotional or persuasive context. Claims involving " +
+        "treatment, cures, or health outcomes can require " +
+        "additional scrutiny, especially when expressed with " +
+        "strong certainty."
+      );
+    }
+
+    return (
+      "The content contains health or medical claims that " +
+      "may be sensitive, particularly when treatment, cure, " +
+      "or health outcomes are presented with strong certainty."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Scam & Fraud
+     ------------------------------------------------------- */
+
+  if (category.name === "Scam & Fraud") {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content references scams or fraudulent activity, " +
+        "but the surrounding context appears to warn against, " +
+        "report on, or criticize the behavior rather than " +
+        "promote it."
+      );
+    }
+
+    return (
+      "The content contains language associated with scams, " +
+      "fraud, or deceptive activity. This can create serious " +
+      "trust and safety concerns, particularly when the content " +
+      "appears to encourage or facilitate the behavior."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Deceptive or Misleading Claims
+     ------------------------------------------------------- */
+
+  if (
+    category.name ===
+    "Deceptive or Misleading Claims"
+  ) {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content contains potentially misleading language, " +
+        "but the surrounding context appears to question, " +
+        "criticize, or warn against the claim rather than " +
+        "present it as established fact."
+      );
+    }
+
+    return (
+      "The content contains language that may present a claim " +
+      "with more certainty than the available evidence supports."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Gambling
+     ------------------------------------------------------- */
+
+  if (category.name === "Gambling") {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Educational" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Educate" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content references gambling-related activity, " +
+        "but the surrounding context appears educational, " +
+        "cautionary, critical, or informational rather than " +
+        "directly encouraging participation."
+      );
+    }
+
+    if (
+      context === "Promotional" ||
+      context === "Persuasive" ||
+      context === "Transactional" ||
+      intent === "Promote" ||
+      intent === "Persuade" ||
+      intent === "Sell"
+    ) {
+      return (
+        "The content uses gambling-related language in a " +
+        "promotional, persuasive, or transactional context, " +
+        "which may encourage financially risky activity."
+      );
+    }
+
+    return (
+      "The content contains gambling-related language that " +
+      "may encourage or promote financially risky activity."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Violence
+     ------------------------------------------------------- */
+
+  if (category.name === "Violence") {
+    if (
+      context === "News Reporting" ||
+      context === "Educational" ||
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "Criticism" ||
+      context === "Fictional" ||
+      intent === "Report" ||
+      intent === "Educate" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Criticize" ||
+      intent === "Entertain"
+    ) {
+      return (
+        "The content contains references to violence or harm, " +
+        "but the surrounding context appears informational, " +
+        "educational, cautionary, critical, or fictional rather " +
+        "than directly encouraging real-world violence."
+      );
+    }
+
+    return (
+      "The content contains language associated with serious " +
+      "violence or violent activity, which can create significant " +
+      "safety concerns."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Adult Content
+     ------------------------------------------------------- */
+
+  if (category.name === "Adult Content") {
+    if (
+      context === "News Reporting" ||
+      context === "Educational" ||
+      context === "Criticism" ||
+      context === "Warning" ||
+      context === "Fictional" ||
+      intent === "Report" ||
+      intent === "Educate" ||
+      intent === "Criticize" ||
+      intent === "Warn" ||
+      intent === "Entertain"
+    ) {
+      return (
+        "The content contains sexual or adult-related language, " +
+        "but the surrounding context appears informational, " +
+        "educational, critical, cautionary, or fictional rather " +
+        "than directly promotional."
+      );
+    }
+
+    return (
+      "The content contains sexual or adult-related language " +
+      "that may raise platform safety or policy concerns."
+    );
+  }
+
+/* -------------------------------------------------------
+   Harassment
+   ------------------------------------------------------- */
+
+if (category.name === "Harassment") {
+  if (
+    context === "News Reporting" ||
+    context === "Educational" ||
+    context === "Warning" ||
+    context === "Debunking" ||
+    context === "Criticism" ||
+    context === "Quoting" ||
+    context === "Fictional" ||
+    intent === "Report" ||
+    intent === "Educate" ||
+    intent === "Warn" ||
+    intent === "Debunk" ||
+    intent === "Criticize" ||
+    intent === "Quote" ||
+    intent === "Entertain"
+  ) {
+    return (
+      "The content contains language that may be insulting " +
+      "or degrading, but the surrounding context appears " +
+      "informational, educational, cautionary, critical, " +
+      "quoted, or fictional rather than directly targeting " +
+      "another person."
+    );
+  }
+
+  return (
+    "The content contains language that may target or " +
+    "degrade another person through insults or abusive " +
+    "language. This can create harassment and safety concerns."
+  );
+}
+
+/* -------------------------------------------------------
+Threat
+------------------------------------------------------- */
+
+if (category.name === "Threat") {
+if (
+context === "News Reporting" ||
+context === "Educational" ||
+context === "Warning" ||
+context === "Debunking" ||
+context === "Criticism" ||
+context === "Quoting" ||
+context === "Fictional" ||
+intent === "Report" ||
+intent === "Educate" ||
+intent === "Warn" ||
+intent === "Debunk" ||
+intent === "Criticize" ||
+intent === "Quote" ||
+intent === "Entertain"
+) {
+return (
+"The content contains language describing a threat or " +
+"threatening behavior, but the surrounding context appears " +
+"informational, educational, cautionary, critical, quoted, " +
+"or fictional rather than a direct real-world threat."
+);
+}
+
+return (
+"The content contains language that may express a direct " +
+"threat of physical harm, violence, or death toward another " +
+"person. This can create a serious safety concern."
+);
+}
+
+  /* -------------------------------------------------------
+     Hate & Harassment
+     ------------------------------------------------------- */
+
+  if (
+    category.name ===
+    "Hate & Harassment"
+  ) {
+    if (
+      context === "News Reporting" ||
+      context === "Educational" ||
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "Criticism" ||
+      context === "Quoting" ||
+      intent === "Report" ||
+      intent === "Educate" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Criticize" ||
+      intent === "Quote"
+    ) {
+      return (
+        "The content contains potentially hateful, abusive, " +
+        "or threatening language, but the surrounding context " +
+        "appears to be reporting, discussing, criticizing, " +
+        "quoting, or warning about the language rather than " +
+        "directly targeting or encouraging harm."
+      );
+    }
+
+    return (
+      "The content contains language associated with threats, " +
+      "hateful expression, or targeted harassment."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Weight Loss
+     ------------------------------------------------------- */
+
+  if (category.name === "Weight Loss") {
+    if (
+      context === "Educational" ||
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Criticism" ||
+      intent === "Educate" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content discusses weight-loss claims, but the " +
+        "surrounding context appears educational, critical, " +
+        "cautionary, or informational rather than directly " +
+        "promotional."
+      );
+    }
+
+    if (
+      context === "Promotional" ||
+      context === "Persuasive" ||
+      context === "Transactional" ||
+      intent === "Promote" ||
+      intent === "Persuade" ||
+      intent === "Sell"
+    ) {
+      return (
+        "The content presents weight-loss claims in a " +
+        "promotional or persuasive context. Claims involving " +
+        "rapid, guaranteed, or unrealistic results may be " +
+        "misleading or require additional scrutiny."
+      );
+    }
+
+    return (
+      "The content contains weight-loss language that may " +
+      "become risky when results are presented as rapid, " +
+      "guaranteed, or unrealistic."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Quick Wealth / Easy Money
+     ------------------------------------------------------- */
+
+  if (
+    category.name ===
+    "Quick Wealth / Easy Money"
+  ) {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "News Reporting" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Report" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content references promises of quick or easy " +
+        "financial gains, but the surrounding context appears " +
+        "to question, report on, or warn against those claims."
+      );
+    }
+
+    return (
+      "The content contains promises of easy, rapid, or " +
+      "guaranteed financial gains, which can be misleading " +
+      "or financially risky."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Extreme Certainty
+     ------------------------------------------------------- */
+
+  if (
+    category.name === "Extreme Certainty"
+  ) {
+    if (
+      context === "Warning" ||
+      context === "Debunking" ||
+      context === "Criticism" ||
+      intent === "Warn" ||
+      intent === "Debunk" ||
+      intent === "Criticize"
+    ) {
+      return (
+        "The content uses unusually certain language, but the " +
+        "surrounding context appears to question or criticize " +
+        "the certainty of the claim rather than present the " +
+        "outcome as guaranteed."
+      );
+    }
+
+    if (
+      context === "Promotional" ||
+      context === "Persuasive" ||
+      context === "Transactional" ||
+      intent === "Promote" ||
+      intent === "Persuade" ||
+      intent === "Sell"
+    ) {
+      return (
+        "The content uses unusually certain language in a " +
+        "promotional or persuasive context. This can make an " +
+        "outcome appear guaranteed or more reliable than the " +
+        "available evidence supports."
+      );
+    }
+
+    return (
+      "The content uses unusually certain language that may " +
+      "make an outcome appear guaranteed or more reliable " +
+      "than the available evidence supports."
+    );
+  }
+
+  /* -------------------------------------------------------
+     Fallback
+     ------------------------------------------------------- */
+
+  return (
+    category.explanation
+  );
 }
 
 /* =========================================================
@@ -2728,6 +4840,260 @@ export function analyzeContent(
   }
 
   /*
+   * Context × Intent × Claim adjustment.
+   *
+   * The same claim can carry very different levels of risk
+   * depending on why and how it is presented.
+   *
+   * Educational, warning, debunking, and reporting contexts
+   * should remain relatively low-risk.
+   *
+   * Promotional, persuasive, and transactional financial claims
+   * receive a stronger overall signal.
+   */
+
+  const hasFinancialClaim =
+    claimsResult.types.includes("Financial");
+
+  const hasGuaranteedFinancialOutcome =
+    /guaranteed\s+(?:returns?|profit|profits?|gains?|income|money|double|triple)/i.test(
+      cleanText
+    ) ||
+    /guaranteed\s+to\s+(?:make|earn|double|triple)/i.test(
+      cleanText
+    ) ||
+    /(?:double|triple)\s+(?:your|my|the)\s+(?:money|investment|returns?)/i.test(
+      cleanText
+    );
+
+  if (hasFinancialClaim) {
+    if (
+      contextResult.primary === "Promotional" ||
+      contextResult.primary === "Persuasive" ||
+      contextResult.primary === "Transactional"
+    ) {
+      score += 6;
+    }
+
+    if (
+      intentResult.primary === "Promote" ||
+      intentResult.primary === "Persuade" ||
+      intentResult.primary === "Sell"
+    ) {
+      score += 5;
+    }
+
+    if (hasGuaranteedFinancialOutcome) {
+      if (
+        contextResult.primary === "Promotional" ||
+        contextResult.primary === "Persuasive" ||
+        contextResult.primary === "Transactional"
+      ) {
+        score += 10;
+      }
+    }
+  }
+
+  /*
+   * Strong commercial action detection.
+   *
+   * Context / intent detection can sometimes remain Neutral or
+   * Unknown even when the sentence clearly attempts to sell,
+   * promote, or obtain a transaction.
+   *
+   * This local signal is intentionally narrower than a general
+   * promotional classifier.
+   */
+
+  const hasStrongCommercialAction =
+    /\b(?:buy|purchase|order|shop|join|invest|subscribe|book|sign\s+up|checkout)\b[\s\S]{0,60}\b(?:today|now|immediately)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:buy|purchase|order|shop|invest)\s+(?:this|the|our|my)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:for sale|limited offer|special offer|exclusive offer)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:get yours|start today|start now|act now)\b/i.test(
+      cleanText
+    );
+
+  const hasCommercialIntent =
+    hasStrongCommercialAction ||
+    contextResult.primary === "Promotional" ||
+    contextResult.primary === "Persuasive" ||
+    contextResult.primary === "Transactional" ||
+    intentResult.primary === "Promote" ||
+    intentResult.primary === "Persuade" ||
+    intentResult.primary === "Sell";
+
+  /*
+   * Strong financial promotion combination.
+   *
+   * Examples:
+   * "Invest now and we guarantee that you will double your money."
+   * "Join our investment program today and make guaranteed profits."
+   *
+   * These combinations should not remain around the Medium
+   * range simply because individual category scores are moderate.
+   */
+
+  const protectedContext =
+    contextResult.primary === "Educational" ||
+    contextResult.primary === "Warning" ||
+    contextResult.primary === "Debunking" ||
+    contextResult.primary === "News Reporting" ||
+    contextResult.primary === "Criticism" ||
+    contextResult.primary === "Fictional" ||
+    intentResult.primary === "Educate" ||
+    intentResult.primary === "Warn" ||
+    intentResult.primary === "Debunk" ||
+    intentResult.primary === "Report" ||
+    intentResult.primary === "Criticize" ||
+    intentResult.primary === "Entertain";
+
+  if (
+    hasFinancialClaim &&
+    hasCommercialIntent &&
+    hasGuaranteedFinancialOutcome &&
+    !protectedContext
+  ) {
+    /*
+     * Strong financial guarantee + commercial action is a
+     * high-priority combination.
+     *
+     * Use a floor instead of repeatedly stacking points so
+     * related signals do not inflate the score excessively.
+     */
+    score = Math.max(score, 68);
+  } else if (
+    hasFinancialClaim &&
+    hasCommercialIntent &&
+    !protectedContext
+  ) {
+    /*
+     * Commercial financial claims without an explicit guarantee
+     * should receive a meaningful but lower increase.
+     */
+    score = Math.max(score, 30);
+  }
+
+  /*
+   * Strong health / medical commercial combination.
+   *
+   * Examples:
+   * "Buy our treatment today and we guarantee that it will cure
+   * your disease completely."
+   *
+   * This is materially stronger than a normal product review or
+   * personal experience.
+   */
+
+  const hasHealthClaim =
+    claimsResult.types.includes("Health");
+
+  const hasCureOrTreatmentClaim =
+    /\b(?:cure|cures|cured|curing|treat|treats|treated|treatment|heal|heals|healed|healing)\b/i.test(
+      cleanText
+    );
+
+  const hasGuaranteedHealthOutcome =
+    /\bguarantee(?:d|s)?\b[\s\S]{0,80}\b(?:cure|cures|cured|curing|treat|treats|treated|treatment|heal|heals|healed|healing|completely|completely\s+recover)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:cure|cures|cured|curing|treat|treats|treated|treatment|heal|heals|healed|healing)\b[\s\S]{0,60}\bguarantee(?:d|s)?\b/i.test(
+      cleanText
+    ) ||
+    /\bguaranteed\s+to\s+(?:cure|treat|heal|completely\s+recover)\b/i.test(
+      cleanText
+    ) ||
+    /*
+     * Strong certainty health outcomes.
+     *
+     * These patterns capture highly certain medical outcomes
+     * even when the word "guarantee" is not used.
+     */
+    /\b(?:will|can)\b[\s\S]{0,50}\b(?:completely|fully|totally)\b[\s\S]{0,30}\b(?:cure|treat|heal|recover)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:completely|fully|totally)\s+(?:cure|cures|cured|treat|treats|treated|heal|heals|healed)\b/i.test(
+      cleanText
+    ) ||
+    /\b(?:will|can)\b[\s\S]{0,40}\b(?:cure|cures|treat|treats|heal|heals)\b[\s\S]{0,50}\b(?:within|in)\b[\s\S]{0,20}\b(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:day|days|week|weeks|month|months)\b/i.test(
+      cleanText
+    );
+
+  /*
+   * Strong certainty health outcomes should increase risk
+   * even when there is no commercial intent.
+   *
+   * This distinguishes ordinary health discussion from
+   * highly certain treatment or cure claims.
+   */
+  if (
+    hasHealthClaim &&
+    hasCureOrTreatmentClaim &&
+    hasGuaranteedHealthOutcome &&
+    !protectedContext
+  ) {
+    /*
+     * Commercial health claims with strong certainty remain
+     * the strongest case and should reach High Risk.
+     */
+    if (hasCommercialIntent) {
+      score = Math.max(score, 65);
+    } else {
+      /*
+       * Strong medical outcome claims without commercial intent
+       * are still meaningful risks, but should remain below High
+       * Risk unless other factors increase the score.
+       */
+      score = Math.max(score, 45);
+    }
+  } else if (
+    hasHealthClaim &&
+    hasCureOrTreatmentClaim &&
+    hasCommercialIntent &&
+    !protectedContext
+  ) {
+    /*
+     * Commercial health claims without a strong outcome guarantee
+     * remain meaningful, but should not automatically become High Risk.
+     */
+    score = Math.max(score, 30);
+  }
+
+  /*
+   * Strong contextual protection.
+   *
+   * Educational, warning, debunking, reporting, and critical
+   * content should not be treated like promotional content
+   * simply because it contains a risky claim phrase.
+   */
+
+  if (
+    contextResult.primary === "Educational" ||
+    contextResult.primary === "Warning" ||
+    contextResult.primary === "Debunking" ||
+    contextResult.primary === "News Reporting" ||
+    contextResult.primary === "Criticism"
+  ) {
+    if (
+      intentResult.primary === "Educate" ||
+      intentResult.primary === "Warn" ||
+      intentResult.primary === "Debunk" ||
+      intentResult.primary === "Report" ||
+      intentResult.primary === "Criticize"
+    ) {
+      score = Math.max(
+        0,
+        score - 8
+      );
+    }
+  }
+
+  /*
    * Drug instructional facilitation remains significant.
    */
 
@@ -2834,6 +5200,12 @@ export function analyzeContent(
       .map((item) => ({
         category: item.category,
         matches: item.matches,
+        reason: getRiskReason(
+          item.category,
+          cleanText,
+          contextResult.primary,
+          intentResult.primary
+        ),
       })),
 
     optimizationMatches,

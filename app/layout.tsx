@@ -14,35 +14,41 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "CreatorGuard | Content Safety & Optimization Tools",
-    template: "%s | CreatorGuard",
+    default: "Creatoriva | Content Checker & Creator Tools",
+    template: "%s | Creatoriva",
   },
 
   description:
-    "Review social media captions, scripts, titles, and promotional content for potentially sensitive language and content-related risks before publishing.",
+    "Review social media captions, scripts, titles, and promotional content for potential content risks, sensitive language, and platform-related concerns before publishing.",
 
-  applicationName: "CreatorGuard",
+  applicationName: "Creatoriva",
 
   keywords: [
     "content checker",
     "content safety",
     "social media content checker",
+    "content analysis",
+    "content risk checker",
     "TikTok content checker",
     "YouTube content checker",
     "Instagram content checker",
+    "Facebook content checker",
+    "X content checker",
     "script analyzer",
+    "promotional content checker",
     "content optimization",
+    "creator tools",
   ],
 
   authors: [
     {
-      name: "CreatorGuard",
+      name: "Creatoriva",
     },
   ],
 
-  creator: "CreatorGuard",
+  creator: "Creatoriva",
 
-  publisher: "CreatorGuard",
+  publisher: "Creatoriva",
 
   robots: {
     index: true,
@@ -50,16 +56,16 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "CreatorGuard | Content Safety & Optimization Tools",
+    title: "Creatoriva | Content Checker & Creator Tools",
     description:
-      "Review captions, scripts, titles, and promotional content before publishing.",
-    siteName: "CreatorGuard",
+      "Review captions, scripts, titles, and promotional content for potential content risks before publishing.",
+    siteName: "Creatoriva",
     type: "website",
   },
 
   twitter: {
     card: "summary",
-    title: "CreatorGuard | Content Safety & Optimization Tools",
+    title: "Creatoriva | Content Checker & Creator Tools",
     description:
       "Review captions, scripts, titles, and promotional content before publishing.",
   },
