@@ -659,11 +659,19 @@ export default function Home() {
       <header className="border-b border-zinc-200">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <a
-            href="/"
-            className="text-xl font-semibold tracking-tight"
-          >
-            Creatoriva
-          </a>
+  href="/"
+  className="flex items-center gap-2"
+>
+  <img
+    src="/creatoriva-logo.png"
+    alt="Creatoriva"
+    className="h-6 w-auto"
+  />
+
+  <span className="text-xl font-semibold tracking-tight">
+    Creatoriva
+  </span>
+</a>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
   <a
