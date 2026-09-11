@@ -692,108 +692,112 @@ export default function Home() {
       </header>
 
       <section
-        id="checker"
-        className="mx-auto max-w-5xl px-6 pb-16 pt-20 sm:pt-28"
-      >
-        <div className="text-center">
-          <div className="mb-5 inline-flex rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700">
-            Creator Content Review Tools
-          </div>
+  id="checker"
+  className="mx-auto max-w-5xl px-6 pb-10 pt-10 sm:pb-16 sm:pt-28"
+>
+  <div className="text-center">
+    <div className="mb-4 hidden rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700 sm:mb-5 sm:inline-flex">
+      Creator Content Review Tools
+    </div>
 
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
-            Create with confidence.
-            <br />
-            Check your content before you post.
-          </h1>
+    <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-6xl">
+      <span className="block">
+        Create with confidence.
+      </span>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">
-            Creatoriva helps creators identify potentially
-            risky words, phrases, claims, and patterns before
-            publishing content on social platforms.
-          </p>
+      <span className="block">
+        Check your content before you post.
+      </span>
+    </h1>
+
+    <p className="mx-auto mt-6 hidden max-w-2xl text-base leading-7 text-zinc-600 sm:block sm:text-lg">
+      Creatoriva helps creators identify potentially
+      risky words, phrases, claims, and patterns before
+      publishing content on social platforms.
+    </p>
+  </div>
+
+  <div className="mx-auto mt-7 max-w-4xl sm:mt-10">
+    <div className="overflow-visible rounded-3xl border border-zinc-300 bg-white shadow-sm transition focus-within:border-zinc-500 focus-within:shadow-md">
+      <div className="relative">
+        <textarea
+          value={content}
+          onChange={(event) =>
+            setContent(event.target.value)
+          }
+          placeholder={selectedPlatform.placeholder}
+          className="min-h-[250px] w-full resize-none rounded-t-3xl border-0 bg-transparent px-6 pb-6 pt-6 text-sm leading-7 text-zinc-900 outline-none placeholder:text-zinc-400"
+          maxLength={10000}
+        />
+      </div>
+
+      <div className="relative flex items-center justify-between border-t border-zinc-100 px-5 py-4">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:text-black"
+          >
+            {selectedPlatform.name}
+          </button>
+
+          {open && (
+            <div className="absolute bottom-full left-0 z-20 mb-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-1 shadow-lg">
+              {platforms.map((platform) => (
+                <button
+                  key={platform.name}
+                  type="button"
+                  onClick={() =>
+                    handlePlatformChange(platform)
+                  }
+                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-zinc-50 ${
+                    selectedPlatform.name ===
+                    platform.name
+                      ? "font-medium text-black"
+                      : "text-zinc-600"
+                  }`}
+                >
+                  {platform.name}
+
+                  {selectedPlatform.name ===
+                    platform.name && (
+                    <span className="text-zinc-900">
+                      ✓
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl">
-          <div className="overflow-visible rounded-3xl border border-zinc-300 bg-white shadow-sm transition focus-within:border-zinc-500 focus-within:shadow-md">
-            <div className="relative">
-              <textarea
-                value={content}
-                onChange={(event) =>
-                  setContent(event.target.value)
-                }
-                placeholder={selectedPlatform.placeholder}
-                className="min-h-[250px] w-full resize-none rounded-t-3xl border-0 bg-transparent px-6 pb-6 pt-6 text-sm leading-7 text-zinc-900 outline-none placeholder:text-zinc-400"
-                maxLength={10000}
-              />
-            </div>
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={handleClear}
+            className="text-sm font-medium text-zinc-500 transition hover:text-black"
+          >
+            Clear
+          </button>
 
-            <div className="relative flex items-center justify-between border-t border-zinc-100 px-5 py-4">
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setOpen(!open)}
-                  className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:text-black"
-                >
-                  {selectedPlatform.name}
-                </button>
-
-                {open && (
-                  <div className="absolute bottom-full left-0 z-20 mb-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-1 shadow-lg">
-                    {platforms.map((platform) => (
-                      <button
-                        key={platform.name}
-                        type="button"
-                        onClick={() =>
-                          handlePlatformChange(platform)
-                        }
-                        className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-zinc-50 ${
-                          selectedPlatform.name ===
-                          platform.name
-                            ? "font-medium text-black"
-                            : "text-zinc-600"
-                        }`}
-                      >
-                        {platform.name}
-
-                        {selectedPlatform.name ===
-                          platform.name && (
-                          <span className="text-zinc-900">
-                            ✓
-                          </span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center gap-4">
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  className="text-sm font-medium text-zinc-500 transition hover:text-black"
-                >
-                  Clear
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleCheck}
-                  disabled={!content.trim()}
-                  className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400"
-                >
-                  Check
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-3 text-center text-xs text-zinc-400">
-            Long-form content supported ·{" "}
-            {content.length.toLocaleString()} / 10,000 characters
-          </p>
+          <button
+            type="button"
+            onClick={handleCheck}
+            disabled={!content.trim()}
+            className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400"
+          >
+            Check
+          </button>
         </div>
-      </section>
+      </div>
+    </div>
+
+    <p className="mt-3 text-center text-xs text-zinc-400">
+      Long-form content supported ·{" "}
+      {content.length.toLocaleString()} / 10,000 characters
+    </p>
+  </div>
+</section>
 
       {result && (
         <AnalysisResults
