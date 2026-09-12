@@ -657,7 +657,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-zinc-900">
       <header className="border-b border-zinc-200">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
           <a
   href="/"
   className="flex items-center gap-2"
@@ -693,7 +693,7 @@ export default function Home() {
 
       <section
   id="checker"
-  className="mx-auto max-w-5xl px-6 pb-10 pt-10 sm:pb-16 sm:pt-28"
+  className="mx-auto max-w-5xl px-6 pb-10 pt-6 sm:pb-16 sm:pt-28"
 >
   <div className="text-center">
     <div className="mb-4 hidden rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700 sm:mb-5 sm:inline-flex">
@@ -717,7 +717,7 @@ export default function Home() {
     </p>
   </div>
 
-  <div className="mx-auto mt-7 max-w-4xl sm:mt-10">
+  <div className="mx-auto mt-5 max-w-4xl sm:mt-10">
     <div className="overflow-visible rounded-3xl border border-zinc-300 bg-white shadow-sm transition focus-within:border-zinc-500 focus-within:shadow-md">
       <div className="relative">
         <textarea
