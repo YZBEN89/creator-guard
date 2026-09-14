@@ -76,7 +76,7 @@ const parenthesizedMap = createUnicodeMap(
 
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝔢𝔣𝔤𝔥𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
 
 const frakturMap = createUnicodeMap(
@@ -106,7 +106,7 @@ const sansItalicMap = createUnicodeMap(
 
 const sansBoldItalicMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣"
+  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝚚𝚛𝙨𝚝𝙪𝙫𝙬𝚡𝚢𝚣"
 );
 
 const smallCapsMap: Record<string, string> = {
@@ -833,9 +833,8 @@ const symbols = {
 export default function FancyTextPage() {
   const [inputText, setInputText] = useState("Create something amazing");
   const [selectedStyle, setSelectedStyle] = useState("bold");
-
+  const [styleOpen, setStyleOpen] = useState(false);
   const [symbolsOpen, setSymbolsOpen] = useState(false);
-
   const [copied, setCopied] = useState(false);
   const [symbolCopied, setSymbolCopied] = useState("");
 
@@ -872,6 +871,11 @@ export default function FancyTextPage() {
     }
   }
 
+  function selectStyle(styleId: string) {
+    setSelectedStyle(styleId);
+    setStyleOpen(false);
+  }
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
@@ -890,39 +894,33 @@ export default function FancyTextPage() {
               </span>
             </a>
 
-            <div className="flex items-center gap-5 text-sm">
-              <a
-                href="/"
-                className="font-medium text-slate-600 transition hover:text-slate-950"
-              >
-                Home
-              </a>
-            </div>
+            <a
+              href="/"
+              className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
+            >
+              Home
+            </a>
           </div>
         </nav>
 
-        <div className="py-12">
+        <div className="py-8 sm:py-12">
           {/* Header */}
-          <section className="mb-10 text-center">
-            <div className="mb-4 inline-flex rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600">
-              Creatoriva Tools
-            </div>
-
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          <section className="mb-7 text-center sm:mb-10">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">
               Fancy Text &amp; Symbols Generator
             </h1>
 
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Create stylish fancy text and copy special symbols for social
-              media captions, bios, comments, posts, usernames, and profiles.
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:mt-4 sm:text-lg sm:leading-7">
+              Create stylish text and copy special symbols for captions, bios,
+              posts, usernames, and profiles.
             </p>
           </section>
 
           {/* Fancy Text */}
           <section className="mb-8">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+              <div className="mb-5">
+                <h2 className="text-xl font-semibold sm:text-2xl">
                   Fancy Text Generator
                 </h2>
 
@@ -931,59 +929,129 @@ export default function FancyTextPage() {
                 </p>
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-                {/* Mobile Preview */}
-                <div className="order-1 lg:hidden">
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                          Selected Style
-                        </div>
+              {/* Mobile Editor */}
+              <div className="lg:hidden">
+                <label
+                  htmlFor="fancy-text-input-mobile"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Your Text
+                </label>
 
-                        <div className="mt-1 text-base font-semibold text-slate-900">
-                          {currentStyle.name}
-                        </div>
+                <textarea
+                  id="fancy-text-input-mobile"
+                  value={inputText}
+                  onChange={(event) => setInputText(event.target.value)}
+                  placeholder="Type or paste your text here..."
+                  rows={4}
+                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                />
 
-                        <div className="mt-1 text-xs text-slate-500">
-                          {currentStyle.description}
-                        </div>
-                      </div>
+                <div className="mt-5">
+                  <div className="mb-2 flex items-center justify-between">
+                    <label className="text-sm font-medium text-slate-700">
+                      Preview
+                    </label>
 
-                      <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500">
-                        Unicode
-                      </span>
+                    <span className="text-xs text-slate-400">
+                      {Array.from(outputText).length} characters
+                    </span>
+                  </div>
+
+                  <div className="min-h-28 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-900">
+                      {outputText || "Your styled text will appear here..."}
                     </div>
-
-                    <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-xs font-medium text-slate-500">
-                          Preview
-                        </span>
-
-                        <span className="text-xs text-slate-400">
-                          {Array.from(outputText).length} characters
-                        </span>
-                      </div>
-
-                      <div className="min-h-24 whitespace-pre-wrap break-words text-lg leading-8 text-slate-900">
-                        {outputText ||
-                          "Your styled text will appear here..."}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => copyText(outputText)}
-                      className="mt-3 w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-                    >
-                      {copied ? "Copied!" : "Copy Text"}
-                    </button>
                   </div>
                 </div>
 
+                <button
+                  type="button"
+                  onClick={() => copyText(outputText)}
+                  className="mt-4 w-full rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                >
+                  {copied ? "Copied!" : "Copy Text"}
+                </button>
+
+                {/* Mobile Style Selector */}
+                <div className="mt-5">
+                  <button
+                    type="button"
+                    onClick={() => setStyleOpen(!styleOpen)}
+                    className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left transition hover:bg-slate-100"
+                  >
+                    <div>
+                      <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                        Style
+                      </div>
+
+                      <div className="mt-1 text-sm font-semibold text-slate-900">
+                        {currentStyle.name}
+                      </div>
+                    </div>
+
+                    <span
+                      className={`text-lg text-slate-500 transition-transform ${
+                        styleOpen ? "rotate-180" : ""
+                      }`}
+                    >
+                      ▾
+                    </span>
+                  </button>
+
+                  {styleOpen && (
+                    <div className="mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                      <div className="max-h-80 overflow-y-auto">
+                        {styles.map((style) => {
+                          const isSelected = style.id === selectedStyle;
+
+                          return (
+                            <button
+                              key={style.id}
+                              type="button"
+                              onClick={() => selectStyle(style.id)}
+                              className={`w-full border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 ${
+                                isSelected
+                                  ? "bg-slate-100"
+                                  : "hover:bg-slate-50"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="min-w-0">
+                                  <div
+                                    className={`text-sm font-medium ${
+                                      isSelected
+                                        ? "text-slate-950"
+                                        : "text-slate-700"
+                                    }`}
+                                  >
+                                    {style.name}
+                                  </div>
+
+                                  <div className="mt-1 truncate text-xs text-slate-400">
+                                    {style.transform("Creatoriva")}
+                                  </div>
+                                </div>
+
+                                {isSelected && (
+                                  <span className="shrink-0 text-sm text-slate-900">
+                                    ✓
+                                  </span>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Desktop Editor */}
+              <div className="hidden gap-6 lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
                 {/* Style List */}
-                <div className="order-2 overflow-hidden rounded-xl border border-slate-200 bg-white lg:order-1">
+                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
                   <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
                     <div className="text-sm font-semibold">
                       Choose a Style
@@ -1003,7 +1071,7 @@ export default function FancyTextPage() {
                           key={style.id}
                           type="button"
                           onClick={() => setSelectedStyle(style.id)}
-                          className={`w-full border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 sm:py-3 ${
+                          className={`w-full border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 ${
                             isSelected
                               ? "bg-slate-100"
                               : "hover:bg-slate-50"
@@ -1038,8 +1106,8 @@ export default function FancyTextPage() {
                   </div>
                 </div>
 
-                {/* Desktop Editor */}
-                <div className="order-3 hidden rounded-xl border border-slate-200 bg-white p-5 sm:p-6 lg:order-2 lg:block">
+                {/* Desktop Editor Area */}
+                <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
                   <div className="mb-5 flex items-start justify-between gap-4">
                     <div>
                       <h3 className="text-lg font-semibold">
@@ -1066,9 +1134,7 @@ export default function FancyTextPage() {
                   <textarea
                     id="fancy-text-input"
                     value={inputText}
-                    onChange={(event) =>
-                      setInputText(event.target.value)
-                    }
+                    onChange={(event) => setInputText(event.target.value)}
                     placeholder="Type or paste your text here..."
                     rows={5}
                     className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
@@ -1105,34 +1171,6 @@ export default function FancyTextPage() {
                     Some Unicode characters may look different depending on
                     the device or platform.
                   </p>
-                </div>
-
-                {/* Mobile Text Input */}
-                <div className="order-3 lg:hidden">
-                  <div className="rounded-xl border border-slate-200 bg-white p-5">
-                    <label
-                      htmlFor="fancy-text-input-mobile"
-                      className="mb-2 block text-sm font-medium text-slate-700"
-                    >
-                      Your Text
-                    </label>
-
-                    <textarea
-                      id="fancy-text-input-mobile"
-                      value={inputText}
-                      onChange={(event) =>
-                        setInputText(event.target.value)
-                      }
-                      placeholder="Type or paste your text here..."
-                      rows={4}
-                      className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-                    />
-
-                    <p className="mt-3 text-center text-xs leading-5 text-slate-400">
-                      Some Unicode characters may look different depending on
-                      the device or platform.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
