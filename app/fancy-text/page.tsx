@@ -76,7 +76,7 @@ const parenthesizedMap = createUnicodeMap(
 
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
 
 const frakturMap = createUnicodeMap(
@@ -106,7 +106,7 @@ const sansItalicMap = createUnicodeMap(
 
 const sansBoldItalicMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
+  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝚘𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
 );
 
 const smallCapsMap: Record<string, string> = {
@@ -930,8 +930,58 @@ export default function FancyTextPage() {
               </div>
 
               <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+                {/* Mobile Preview */}
+                <div className="order-1 lg:hidden">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                          Selected Style
+                        </div>
+
+                        <div className="mt-1 text-base font-semibold text-slate-900">
+                          {currentStyle.name}
+                        </div>
+
+                        <div className="mt-1 text-xs text-slate-500">
+                          {currentStyle.description}
+                        </div>
+                      </div>
+
+                      <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500">
+                        Unicode
+                      </span>
+                    </div>
+
+                    <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs font-medium text-slate-500">
+                          Preview
+                        </span>
+
+                        <span className="text-xs text-slate-400">
+                          {Array.from(outputText).length} characters
+                        </span>
+                      </div>
+
+                      <div className="min-h-24 whitespace-pre-wrap break-words text-lg leading-8 text-slate-900">
+                        {outputText ||
+                          "Your styled text will appear here..."}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => copyText(outputText)}
+                      className="mt-3 w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                    >
+                      {copied ? "Copied!" : "Copy Text"}
+                    </button>
+                  </div>
+                </div>
+
                 {/* Style List */}
-                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div className="order-2 overflow-hidden rounded-xl border border-slate-200 bg-white lg:order-1">
                   <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
                     <div className="text-sm font-semibold">
                       Choose a Style
@@ -951,7 +1001,7 @@ export default function FancyTextPage() {
                           key={style.id}
                           type="button"
                           onClick={() => setSelectedStyle(style.id)}
-                          className={`w-full border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 ${
+                          className={`w-full border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 sm:py-3 ${
                             isSelected
                               ? "bg-slate-100"
                               : "hover:bg-slate-50"
@@ -986,8 +1036,8 @@ export default function FancyTextPage() {
                   </div>
                 </div>
 
-                {/* Editor */}
-                <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
+                {/* Desktop Editor */}
+                <div className="order-3 hidden rounded-xl border border-slate-200 bg-white p-5 sm:p-6 lg:order-2 lg:block">
                   <div className="mb-5 flex items-start justify-between gap-4">
                     <div>
                       <h3 className="text-lg font-semibold">
@@ -1053,6 +1103,34 @@ export default function FancyTextPage() {
                     Some Unicode characters may look different depending on
                     the device or platform.
                   </p>
+                </div>
+
+                {/* Mobile Text Input */}
+                <div className="order-3 lg:hidden">
+                  <div className="rounded-xl border border-slate-200 bg-white p-5">
+                    <label
+                      htmlFor="fancy-text-input-mobile"
+                      className="mb-2 block text-sm font-medium text-slate-700"
+                    >
+                      Your Text
+                    </label>
+
+                    <textarea
+                      id="fancy-text-input-mobile"
+                      value={inputText}
+                      onChange={(event) =>
+                        setInputText(event.target.value)
+                      }
+                      placeholder="Type or paste your text here..."
+                      rows={4}
+                      className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 outline-none transition placeholder:text-slate-400 focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                    />
+
+                    <p className="mt-3 text-center text-xs leading-5 text-slate-400">
+                      Some Unicode characters may look different depending on
+                      the device or platform.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
