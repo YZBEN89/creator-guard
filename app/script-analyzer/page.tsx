@@ -56,7 +56,7 @@ export default function ScriptAnalyzerPage() {
   return (
     <main className="min-h-screen bg-white text-zinc-900">
       <header className="border-b border-zinc-200">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
           <a
             href="/"
             className="text-xl font-bold tracking-tight"
@@ -83,16 +83,16 @@ export default function ScriptAnalyzerPage() {
       </header>
 
       <section className="border-b border-zinc-200 bg-zinc-50">
-        <div className="mx-auto max-w-4xl px-6 py-16 text-center">
+        <div className="mx-auto max-w-4xl px-6 py-7 text-center sm:py-16">
           <span className="inline-flex rounded-full border border-zinc-300 bg-white px-4 py-1.5 text-xs font-medium text-zinc-700">
             Script Analyzer
           </span>
 
-          <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:mt-5 sm:text-5xl">
             Review your script before you record.
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-600">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-zinc-600 sm:mt-5 sm:text-base sm:leading-7">
             Check video scripts, voice-over drafts, hooks, and long-form
             spoken content for potentially sensitive language and
             content-related risks.
@@ -100,8 +100,8 @@ export default function ScriptAnalyzerPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-12">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <section className="mx-auto max-w-4xl px-6 py-6 sm:py-12">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">
               Your Script
