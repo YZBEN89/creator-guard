@@ -874,7 +874,7 @@ export default function FancyTextPage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
+      <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
         {/* Top Navigation */}
         <nav className="flex items-center justify-between border-b border-slate-200 py-5">
           <a href="/" className="flex items-center gap-2">
