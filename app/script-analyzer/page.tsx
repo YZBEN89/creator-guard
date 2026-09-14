@@ -140,6 +140,13 @@ export default function ScriptAnalyzerPage() {
           </button>
         </div>
 
+        {/* Ad Placeholder */}
+        <div className="my-8 flex min-h-[120px] items-center justify-center rounded-xl border border-zinc-100 bg-zinc-50">
+          <span className="text-xs text-zinc-400">
+            Advertisement
+          </span>
+        </div>
+
         {result && (
           <div className="mt-10 space-y-6">
             <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">

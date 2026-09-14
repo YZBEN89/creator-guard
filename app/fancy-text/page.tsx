@@ -59,24 +59,9 @@ const boldScriptMap = createUnicodeMap(
   "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃"
 );
 
-const circledMap = createUnicodeMap(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓪①②③④⑤⑥⑦⑧⑨"
-);
-
-const squaredMap = createUnicodeMap(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉"
-);
-
-const parenthesizedMap = createUnicodeMap(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵"
-);
-
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
 
 const frakturMap = createUnicodeMap(
@@ -104,10 +89,71 @@ const sansItalicMap = createUnicodeMap(
   "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻"
 );
 
+/*
+ * Mathematical Sans-Serif Bold Italic
+ * Example:
+ * see you next time
+ * →
+ * 𝙨𝙚𝙚 𝙮𝙤𝙪 𝙣𝙚𝙭𝙩 𝙩𝙞𝙢𝙚
+ */
 const sansBoldItalicMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝚚𝚛𝙨𝚝𝙪𝙫𝙬𝚡𝚢𝚣"
+  "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
 );
+
+const monospaceMap = createUnicodeMap(
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿"
+);
+
+const circledMap = createUnicodeMap(
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓪①②③④⑤⑥⑦⑧⑨"
+);
+
+const squaredMap = createUnicodeMap(
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉"
+);
+
+const negativeSquaredMap = createUnicodeMap(
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉"
+);
+
+const negativeCircledMap = createUnicodeMap(
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓿❶❷❸❹❺❻❼❽❾"
+);
+
+const regionalIndicatorMap: Record<string, string> = {
+  A: "🇦",
+  B: "🇧",
+  C: "🇨",
+  D: "🇩",
+  E: "🇪",
+  F: "🇫",
+  G: "🇬",
+  H: "🇭",
+  I: "🇮",
+  J: "🇯",
+  K: "🇰",
+  L: "🇱",
+  M: "🇲",
+  N: "🇳",
+  O: "🇴",
+  P: "🇵",
+  Q: "🇶",
+  R: "🇷",
+  S: "🇸",
+  T: "🇹",
+  U: "🇺",
+  V: "🇻",
+  W: "🇼",
+  X: "🇽",
+  Y: "🇾",
+  Z: "🇿",
+};
 
 const smallCapsMap: Record<string, string> = {
   a: "ᴀ",
@@ -138,77 +184,103 @@ const smallCapsMap: Record<string, string> = {
   z: "ᴢ",
 };
 
-const superscriptMap: Record<string, string> = {
-  "0": "⁰",
-  "1": "¹",
-  "2": "²",
-  "3": "³",
-  "4": "⁴",
-  "5": "⁵",
-  "6": "⁶",
-  "7": "⁷",
-  "8": "⁸",
-  "9": "⁹",
-  a: "ᵃ",
-  b: "ᵇ",
-  c: "ᶜ",
-  d: "ᵈ",
-  e: "ᵉ",
-  f: "ᶠ",
-  g: "ᵍ",
-  h: "ʰ",
-  i: "ⁱ",
-  j: "ʲ",
-  k: "ᵏ",
-  l: "ˡ",
-  m: "ᵐ",
-  n: "ⁿ",
-  o: "ᵒ",
-  p: "ᵖ",
-  r: "ʳ",
-  s: "ˢ",
-  t: "ᵗ",
-  u: "ᵘ",
-  v: "ᵛ",
-  w: "ʷ",
-  x: "ˣ",
-  y: "ʸ",
-  z: "ᶻ",
+const upsideDownMap: Record<string, string> = {
+  a: "ɐ",
+  b: "q",
+  c: "ɔ",
+  d: "p",
+  e: "ǝ",
+  f: "ɟ",
+  g: "ƃ",
+  h: "ɥ",
+  i: "ᴉ",
+  j: "ɾ",
+  k: "ʞ",
+  l: "l",
+  m: "ɯ",
+  n: "u",
+  o: "o",
+  p: "d",
+  q: "b",
+  r: "ɹ",
+  s: "s",
+  t: "ʇ",
+  u: "n",
+  v: "ʌ",
+  w: "ʍ",
+  x: "x",
+  y: "ʎ",
+  z: "z",
+  "0": "0",
+  "1": "Ɩ",
+  "2": "ᄅ",
+  "3": "Ɛ",
+  "4": "ㄣ",
+  "5": "ϛ",
+  "6": "9",
+  "7": "ㄥ",
+  "8": "8",
+  "9": "6",
+  ".": "˙",
+  ",": "'",
+  "?": "¿",
+  "!": "¡",
 };
 
-const subscriptMap: Record<string, string> = {
-  "0": "₀",
-  "1": "₁",
-  "2": "₂",
-  "3": "₃",
-  "4": "₄",
-  "5": "₅",
-  "6": "₆",
-  "7": "₇",
-  "8": "₈",
-  "9": "₉",
-  a: "ₐ",
-  e: "ₑ",
-  h: "ₕ",
-  i: "ᵢ",
-  j: "ⱼ",
-  k: "ₖ",
-  l: "ₗ",
-  m: "ₘ",
-  n: "ₙ",
-  o: "ₒ",
-  p: "ₚ",
-  r: "ᵣ",
-  s: "ₛ",
-  t: "ₜ",
-  u: "ᵤ",
-  v: "ᵥ",
-  x: "ₓ",
+const mirrorMap: Record<string, string> = {
+  A: "A",
+  B: "ᗺ",
+  C: "Ɔ",
+  D: "ᗡ",
+  E: "Ǝ",
+  F: "ꟻ",
+  G: "Ꭾ",
+  H: "H",
+  I: "I",
+  J: "Ⴑ",
+  K: "ꓘ",
+  L: "⅃",
+  M: "M",
+  N: "И",
+  O: "O",
+  P: "ꟼ",
+  Q: "Ό",
+  R: "Я",
+  S: "Ƨ",
+  T: "T",
+  U: "U",
+  V: "V",
+  W: "W",
+  X: "X",
+  Y: "Y",
+  Z: "Z",
+  a: "ɒ",
+  b: "d",
+  c: "ɔ",
+  d: "b",
+  e: "ɘ",
+  f: "ꟻ",
+  g: "Ꭾ",
+  h: "ʜ",
+  i: "i",
+  j: "Ⴑ",
+  k: "ʞ",
+  l: "l",
+  m: "m",
+  n: "n",
+  o: "o",
+  p: "q",
+  q: "p",
+  r: "ɿ",
+  s: "ƨ",
+  t: "ƚ",
+  u: "u",
+  v: "v",
+  w: "w",
+  x: "x",
+  y: "y",
+  z: "z",
 };
-
-/* =========================
-   Transform Functions
-========================= */
 
 function toFullwidth(text: string) {
   return Array.from(text)
@@ -228,90 +300,70 @@ function toFullwidth(text: string) {
     .join("");
 }
 
-function toMonospace(text: string) {
-  const normal =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+function toSmallCaps(text: string) {
+  return Array.from(text)
+    .map((char) => smallCapsMap[char.toLowerCase()] ?? char)
+    .join("");
+}
 
-  const mono = Array.from(
-    "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿"
-  );
+function toUpsideDown(text: string) {
+  return Array.from(text.toLowerCase())
+    .map((char) => upsideDownMap[char] ?? char)
+    .reverse()
+    .join("");
+}
 
-  const normalChars = Array.from(normal);
+function toMirror(text: string) {
+  return Array.from(text)
+    .map((char) => mirrorMap[char] ?? char)
+    .reverse()
+    .join("");
+}
+
+function toRegionalIndicators(text: string) {
+  return Array.from(text)
+    .map((char) => regionalIndicatorMap[char.toUpperCase()] ?? char)
+    .join("");
+}
+
+function toAlternatingCase(text: string) {
+  let letterIndex = 0;
 
   return Array.from(text)
     .map((char) => {
-      const index = normalChars.indexOf(char);
-      return index !== -1 && mono[index] ? mono[index] : char;
+      if (/[a-zA-Z]/.test(char)) {
+        const result =
+          letterIndex % 2 === 0
+            ? char.toUpperCase()
+            : char.toLowerCase();
+
+        letterIndex += 1;
+        return result;
+      }
+
+      return char;
     })
     .join("");
 }
 
-function addStrikethrough(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0336`)
-    .join("");
+function toSpacedText(text: string) {
+  return Array.from(text).join(" ");
 }
 
-function addUnderline(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0332`)
-    .join("");
+function toWideText(text: string) {
+  return Array.from(text).join("  ");
 }
 
-function addDoubleUnderline(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0333`)
-    .join("");
+function toUppercase(text: string) {
+  return text.toUpperCase();
 }
 
-function addOverline(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0305`)
-    .join("");
-}
-
-function addDotted(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0307`)
-    .join("");
-}
-
-function addDoubleDotted(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0308`)
-    .join("");
-}
-
-function addTilde(text: string) {
-  return Array.from(text)
-    .map((char) => `${char}\u0303`)
-    .join("");
-}
-
-function reverseText(text: string) {
-  return Array.from(text).reverse().join("");
-}
-
-function toSmallCaps(text: string) {
-  return Array.from(text.toLowerCase())
-    .map((char) => smallCapsMap[char] ?? char)
-    .join("");
-}
-
-function toSuperscript(text: string) {
-  return Array.from(text.toLowerCase())
-    .map((char) => superscriptMap[char] ?? char)
-    .join("");
-}
-
-function toSubscript(text: string) {
-  return Array.from(text.toLowerCase())
-    .map((char) => subscriptMap[char] ?? char)
-    .join("");
+function toLowercase(text: string) {
+  return text.toLowerCase();
 }
 
 /* =========================
-   30 Pure Text Styles
+   50 Pure Text Styles
 ========================= */
 
 const styles: TextStyle[] = [
@@ -346,45 +398,9 @@ const styles: TextStyle[] = [
     transform: (text) => transformWithMap(text, boldScriptMap),
   },
   {
-    id: "circled",
-    name: "Circled",
-    description: "Circular characters",
-    transform: (text) => transformWithMap(text, circledMap),
-  },
-  {
-    id: "squared",
-    name: "Squared",
-    description: "Square characters",
-    transform: (text) => transformWithMap(text, squaredMap),
-  },
-  {
-    id: "parenthesized",
-    name: "Parenthesized",
-    description: "Parenthesized characters",
-    transform: (text) => transformWithMap(text, parenthesizedMap),
-  },
-  {
-    id: "fullwidth",
-    name: "Fullwidth",
-    description: "Wide character style",
-    transform: toFullwidth,
-  },
-  {
-    id: "small-caps",
-    name: "Small Caps",
-    description: "Compact uppercase style",
-    transform: toSmallCaps,
-  },
-  {
-    id: "monospace",
-    name: "Monospace",
-    description: "Clean technical style",
-    transform: toMonospace,
-  },
-  {
     id: "double-struck",
     name: "Double-Struck",
-    description: "Mathematical style",
+    description: "Mathematical lettering style",
     transform: (text) => transformWithMap(text, doubleStruckMap),
   },
   {
@@ -424,64 +440,66 @@ const styles: TextStyle[] = [
     transform: (text) => transformWithMap(text, sansBoldItalicMap),
   },
   {
-    id: "superscript",
-    name: "Superscript",
-    description: "Raised characters",
-    transform: toSuperscript,
+    id: "monospace",
+    name: "Monospace",
+    description: "Clean technical lettering",
+    transform: (text) => transformWithMap(text, monospaceMap),
   },
   {
-    id: "subscript",
-    name: "Subscript",
-    description: "Lowered characters",
-    transform: toSubscript,
+    id: "circled",
+    name: "Circled",
+    description: "Characters inside circles",
+    transform: (text) => transformWithMap(text, circledMap),
   },
   {
-    id: "strikethrough",
-    name: "Strikethrough",
-    description: "Crossed-out text",
-    transform: addStrikethrough,
+    id: "negative-circled",
+    name: "Negative Circled",
+    description: "Filled circular characters",
+    transform: (text) => transformWithMap(text, negativeCircledMap),
   },
   {
-    id: "underline",
-    name: "Underline",
-    description: "Underlined text",
-    transform: addUnderline,
+    id: "squared",
+    name: "Squared",
+    description: "Characters inside squares",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), squaredMap),
   },
   {
-    id: "double-underline",
-    name: "Double Underline",
-    description: "Double underlined text",
-    transform: addDoubleUnderline,
+    id: "negative-squared",
+    name: "Negative Squared",
+    description: "Filled square characters",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), negativeSquaredMap),
   },
   {
-    id: "overline",
-    name: "Overline",
-    description: "Line above the text",
-    transform: addOverline,
+    id: "fullwidth",
+    name: "Fullwidth",
+    description: "Wide Unicode characters",
+    transform: toFullwidth,
   },
   {
-    id: "dotted",
-    name: "Dotted",
-    description: "Dotted text effect",
-    transform: addDotted,
+    id: "small-caps",
+    name: "Small Caps",
+    description: "Compact uppercase lettering",
+    transform: toSmallCaps,
   },
   {
-    id: "double-dotted",
-    name: "Double Dotted",
-    description: "Double dotted effect",
-    transform: addDoubleDotted,
+    id: "regional",
+    name: "Regional Letters",
+    description: "Flag-style letter characters",
+    transform: toRegionalIndicators,
   },
   {
-    id: "tilde",
-    name: "Tilde",
-    description: "Tilde text effect",
-    transform: addTilde,
+    id: "upside-down",
+    name: "Upside Down",
+    description: "Reversed upside-down lettering",
+    transform: toUpsideDown,
   },
   {
-    id: "reverse",
-    name: "Reverse",
-    description: "Reverse character order",
-    transform: reverseText,
+    id: "mirror",
+    name: "Mirror",
+    description: "Mirrored character effect",
+    transform: toMirror,
   },
   {
     id: "bold-caps",
@@ -496,6 +514,190 @@ const styles: TextStyle[] = [
     description: "Italic uppercase lettering",
     transform: (text) =>
       transformWithMap(text.toUpperCase(), italicMap),
+  },
+  {
+    id: "sans-bold-caps",
+    name: "Sans Bold Caps",
+    description: "Modern bold uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), sansBoldMap),
+  },
+  {
+    id: "fraktur-caps",
+    name: "Fraktur Caps",
+    description: "Gothic uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), frakturMap),
+  },
+  {
+    id: "alternating",
+    name: "Alternating Case",
+    description: "Alternating uppercase and lowercase",
+    transform: toAlternatingCase,
+  },
+  {
+    id: "spaced",
+    name: "Spaced",
+    description: "Letters separated by spaces",
+    transform: toSpacedText,
+  },
+  {
+    id: "wide-spacing",
+    name: "Wide Spacing",
+    description: "Extra space between characters",
+    transform: toWideText,
+  },
+  {
+    id: "uppercase",
+    name: "Uppercase",
+    description: "Clean uppercase lettering",
+    transform: toUppercase,
+  },
+  {
+    id: "lowercase",
+    name: "Lowercase",
+    description: "Clean lowercase lettering",
+    transform: toLowercase,
+  },
+  {
+    id: "bold-lowercase",
+    name: "Bold Lowercase",
+    description: "Bold lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), boldMap),
+  },
+  {
+    id: "italic-lowercase",
+    name: "Italic Lowercase",
+    description: "Italic lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), italicMap),
+  },
+  {
+    id: "sans-uppercase",
+    name: "Sans Uppercase",
+    description: "Modern clean uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), sansMap),
+  },
+  {
+    id: "sans-lowercase",
+    name: "Sans Lowercase",
+    description: "Modern clean lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), sansMap),
+  },
+  {
+    id: "sans-bold-lowercase",
+    name: "Sans Bold Lowercase",
+    description: "Modern bold lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), sansBoldMap),
+  },
+  {
+    id: "sans-italic-uppercase",
+    name: "Sans Italic Uppercase",
+    description: "Modern italic uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), sansItalicMap),
+  },
+  {
+    id: "sans-italic-lowercase",
+    name: "Sans Italic Lowercase",
+    description: "Modern italic lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), sansItalicMap),
+  },
+  {
+    id: "sans-bold-italic-uppercase",
+    name: "Sans Bold Italic Uppercase",
+    description: "Modern bold italic uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), sansBoldItalicMap),
+  },
+  {
+    id: "sans-bold-italic-lowercase",
+    name: "Sans Bold Italic Lowercase",
+    description: "Modern bold italic lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), sansBoldItalicMap),
+  },
+  {
+    id: "monospace-uppercase",
+    name: "Monospace Uppercase",
+    description: "Technical uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), monospaceMap),
+  },
+  {
+    id: "monospace-lowercase",
+    name: "Monospace Lowercase",
+    description: "Technical lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), monospaceMap),
+  },
+  {
+    id: "double-struck-uppercase",
+    name: "Double-Struck Uppercase",
+    description: "Mathematical uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), doubleStruckMap),
+  },
+  {
+    id: "double-struck-lowercase",
+    name: "Double-Struck Lowercase",
+    description: "Mathematical lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), doubleStruckMap),
+  },
+  {
+    id: "fraktur-lowercase",
+    name: "Fraktur Lowercase",
+    description: "Gothic lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), frakturMap),
+  },
+  {
+    id: "bold-fraktur-uppercase",
+    name: "Bold Fraktur Uppercase",
+    description: "Heavy Gothic uppercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), boldFrakturMap),
+  },
+  {
+    id: "bold-fraktur-lowercase",
+    name: "Bold Fraktur Lowercase",
+    description: "Heavy Gothic lowercase lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), boldFrakturMap),
+  },
+  {
+    id: "script-uppercase",
+    name: "Script Uppercase",
+    description: "Elegant uppercase script lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), scriptMap),
+  },
+  {
+    id: "script-lowercase",
+    name: "Script Lowercase",
+    description: "Elegant lowercase script lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), scriptMap),
+  },
+  {
+    id: "bold-script-uppercase",
+    name: "Bold Script Uppercase",
+    description: "Strong uppercase script lettering",
+    transform: (text) =>
+      transformWithMap(text.toUpperCase(), boldScriptMap),
+  },
+  {
+    id: "bold-script-lowercase",
+    name: "Bold Script Lowercase",
+    description: "Strong lowercase script lettering",
+    transform: (text) =>
+      transformWithMap(text.toLowerCase(), boldScriptMap),
   },
 ];
 
@@ -525,11 +727,25 @@ const symbols = {
     "➣",
     "➤",
     "➥",
+    "➦",
+    "➧",
+    "➨",
+    "➩",
+    "➪",
+    "➫",
+    "➬",
+    "➭",
     "⟶",
     "⟵",
     "⟷",
     "⟹",
     "⟸",
+    "⤴",
+    "⤵",
+    "↩",
+    "↪",
+    "↺",
+    "↻",
   ],
 
   Stars: [
@@ -557,6 +773,12 @@ const symbols = {
     "✾",
     "❂",
     "❈",
+    "❉",
+    "❊",
+    "✵",
+    "✹",
+    "✴",
+    "✳",
   ],
 
   Hearts: [
@@ -580,6 +802,11 @@ const symbols = {
     "🖤",
     "🤍",
     "🤎",
+    "💔",
+    "❤️",
+    "🩷",
+    "🧡",
+    "💯",
   ],
 
   Checkmarks: [
@@ -598,6 +825,11 @@ const symbols = {
     "○",
     "◉",
     "◎",
+    "☐",
+    "☒",
+    "☓",
+    "✔︎",
+    "✓︎",
   ],
 
   Decorations: [
@@ -622,6 +854,15 @@ const symbols = {
     "◆",
     "◈",
     "◊",
+    "✧",
+    "✦",
+    "❥",
+    "❦",
+    "❧",
+    "☙",
+    "⚜",
+    "ꕤ",
+    "ꕥ",
   ],
 
   Separators: [
@@ -631,6 +872,8 @@ const symbols = {
     "·",
     "⋅",
     "‧",
+    "⁝",
+    "⁞",
     "|",
     "｜",
     "¦",
@@ -642,10 +885,17 @@ const symbols = {
     "━",
     "─",
     "═",
-    "〜",
-    "〰",
     "⋯",
     "…",
+    "⁕",
+    "※",
+    "⁑",
+    "⁙",
+    "⁘",
+    "∶",
+    "∷",
+    "⁚",
+    "⁝",
   ],
 
   Faces: [
@@ -664,6 +914,16 @@ const symbols = {
     "☄",
     "❄",
     "☯",
+    "☮",
+    "☢",
+    "☣",
+    "☠",
+    "⚡",
+    "☘",
+    "🍀",
+    "🌙",
+    "⭐",
+    "🌟",
   ],
 
   Music: [
@@ -680,6 +940,12 @@ const symbols = {
     "𝄪",
     "🎵",
     "🎶",
+    "🎼",
+    "♮",
+    "𝅘𝅥𝅮",
+    "𝅘𝅥𝅯",
+    "𝅘𝅥𝅰",
+    "𝅘𝅥𝅱",
   ],
 
   Shapes: [
@@ -703,6 +969,19 @@ const symbols = {
     "▷",
     "◀",
     "◁",
+    "◆",
+    "◇",
+    "⬢",
+    "⬡",
+    "⬟",
+    "⬣",
+    "⬤",
+    "◐",
+    "◑",
+    "◒",
+    "◓",
+    "◩",
+    "◪",
   ],
 
   Lines: [
@@ -730,6 +1009,15 @@ const symbols = {
     "╦",
     "╩",
     "╬",
+    "┏",
+    "┓",
+    "┗",
+    "┛",
+    "┣",
+    "┫",
+    "┳",
+    "┻",
+    "╋",
   ],
 
   Currency: [
@@ -751,6 +1039,13 @@ const symbols = {
     "₸",
     "₼",
     "₾",
+    "₿",
+    "¢",
+    "฿",
+    "₮",
+    "₭",
+    "₥",
+    "₠",
   ],
 
   Math: [
@@ -776,6 +1071,19 @@ const symbols = {
     "∵",
     "±",
     "∓",
+    "∝",
+    "∅",
+    "∈",
+    "∉",
+    "⊂",
+    "⊃",
+    "⊆",
+    "⊇",
+    "∧",
+    "∨",
+    "¬",
+    "∀",
+    "∃",
   ],
 
   Brackets: [
@@ -803,6 +1111,14 @@ const symbols = {
     "〕",
     "⟦",
     "⟧",
+    "⟨",
+    "⟩",
+    "⟪",
+    "⟫",
+    "⟮",
+    "⟯",
+    "⦃",
+    "⦄",
   ],
 
   Miscellaneous: [
@@ -819,7 +1135,6 @@ const symbols = {
     "№",
     "℡",
     "℮",
-    "✓",
     "☑",
     "☀",
     "☾",
@@ -827,6 +1142,21 @@ const symbols = {
     "♣",
     "♥",
     "♦",
+    "♤",
+    "♧",
+    "♡",
+    "♢",
+    "⚜",
+    "⚡",
+    "☮",
+    "☯",
+    "☢",
+    "☣",
+    "☠",
+    "⚠",
+    "✓",
+    "✦",
+    "❖",
   ],
 };
 
@@ -1058,7 +1388,7 @@ export default function FancyTextPage() {
                     </div>
 
                     <div className="mt-1 text-xs text-slate-500">
-                      30 text styles
+                      50 text styles
                     </div>
                   </div>
 
@@ -1176,6 +1506,11 @@ export default function FancyTextPage() {
             </div>
           </section>
 
+          {/* Ad Placeholder 1 */}
+          <div className="my-8 flex min-h-[120px] items-center justify-center rounded-xl border border-slate-100 bg-slate-50">
+            <span className="text-xs text-slate-400">Advertisement</span>
+          </div>
+
           {/* Special Symbols */}
           <section className="mb-10">
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -1249,6 +1584,11 @@ export default function FancyTextPage() {
             </div>
           </section>
 
+          {/* Ad Placeholder 2 */}
+          <div className="my-8 flex min-h-[120px] items-center justify-center rounded-xl border border-slate-100 bg-slate-50">
+            <span className="text-xs text-slate-400">Advertisement</span>
+          </div>
+
           {/* SEO Content */}
           <section className="border-t border-slate-200 pt-10">
             <div className="mx-auto max-w-3xl">
@@ -1265,18 +1605,19 @@ export default function FancyTextPage() {
                 </p>
 
                 <p>
-                  Choose from 30 different text styles, including bold,
-                  italic, script, circled, monospace, Fraktur, small caps,
-                  superscript, underline, and more. Your text is generated
-                  directly in your browser, making it quick and easy to copy
-                  and use.
+                  Choose from 50 different text styles, including bold,
+                  italic, script, circled, monospace, Fraktur, Sans,
+                  Double-Struck, fullwidth, mirrored text, uppercase styles,
+                  lowercase styles, and more. Your text is generated directly
+                  in your browser, making it quick and easy to copy and use.
                 </p>
 
                 <p>
                   You can also open the Special Symbols collection to find
                   arrows, stars, hearts, checkmarks, decorations, shapes,
-                  separators, music symbols, currency signs, math symbols, and
-                  other characters for creative posts and profiles.
+                  separators, music symbols, currency signs, math symbols,
+                  brackets, and other characters for creative posts and
+                  profiles.
                 </p>
               </div>
             </div>
