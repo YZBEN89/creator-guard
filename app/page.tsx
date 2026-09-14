@@ -47,12 +47,12 @@ const tools = [
     action: "Analyze",
   },
   {
-    name: "Creator Tools",
+    name: "Fancy Text & Symbols",
     description:
-      "Explore practical tools designed to help creators publish with more confidence.",
-    details: "Optimization · Publishing · More tools coming",
-    href: "#",
-    action: "Explore",
+      "Create stylish text and quickly copy special symbols for captions, bios, posts, and profiles.",
+    details: "Fancy text · Special symbols · Copy & paste",
+    href: "/fancy-text",
+    action: "Open Tool",
   },
 ];
 
@@ -659,145 +659,145 @@ export default function Home() {
       <header className="border-b border-zinc-200">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
           <a
-  href="/"
-  className="flex items-center gap-2"
->
-  <img
-    src="/creatoriva-logo.png"
-    alt="Creatoriva"
-    className="h-6 w-auto"
-  />
+            href="/"
+            className="flex items-center gap-2"
+          >
+            <img
+              src="/creatoriva-logo.png"
+              alt="Creatoriva"
+              className="h-6 w-auto"
+            />
 
-  <span className="text-xl font-semibold tracking-tight">
-    Creatoriva
-  </span>
-</a>
+            <span className="text-xl font-semibold tracking-tight">
+              Creatoriva
+            </span>
+          </a>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
-  <a
-    href="/blog"
-    className="transition hover:text-black"
-  >
-    Blog
-  </a>
+            <a
+              href="/blog"
+              className="transition hover:text-black"
+            >
+              Blog
+            </a>
 
-  <a
-    href="#about"
-    className="transition hover:text-black"
-  >
-    About
-  </a>
-</nav>
+            <a
+              href="#about"
+              className="transition hover:text-black"
+            >
+              About
+            </a>
+          </nav>
         </div>
       </header>
 
       <section
-  id="checker"
-  className="mx-auto max-w-5xl px-6 pb-10 pt-6 sm:pb-16 sm:pt-28"
->
-  <div className="text-center">
-    <div className="mb-4 hidden rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700 sm:mb-5 sm:inline-flex">
-      Creator Content Review Tools
-    </div>
+        id="checker"
+        className="mx-auto max-w-5xl px-6 pb-10 pt-6 sm:pb-16 sm:pt-28"
+      >
+        <div className="text-center">
+          <div className="mb-4 hidden rounded-full bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-700 sm:mb-5 sm:inline-flex">
+            Creator Content Review Tools
+          </div>
 
-    <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-6xl">
-      <span className="block">
-        Create with confidence.
-      </span>
+          <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-6xl">
+            <span className="block">
+              Create with confidence.
+            </span>
 
-      <span className="block">
-        Check your content before you post.
-      </span>
-    </h1>
+            <span className="block">
+              Check your content before you post.
+            </span>
+          </h1>
 
-    <p className="mx-auto mt-6 hidden max-w-2xl text-base leading-7 text-zinc-600 sm:block sm:text-lg">
-      Creatoriva helps creators identify potentially
-      risky words, phrases, claims, and patterns before
-      publishing content on social platforms.
-    </p>
-  </div>
+          <p className="mx-auto mt-6 hidden max-w-2xl text-base leading-7 text-zinc-600 sm:block sm:text-lg">
+            Creatoriva helps creators identify potentially
+            risky words, phrases, claims, and patterns before
+            publishing content on social platforms.
+          </p>
+        </div>
 
-  <div className="mx-auto mt-5 max-w-4xl sm:mt-10">
-    <div className="overflow-visible rounded-3xl border border-zinc-300 bg-white shadow-sm transition focus-within:border-zinc-500 focus-within:shadow-md">
-      <div className="relative">
-        <textarea
-          value={content}
-          onChange={(event) =>
-            setContent(event.target.value)
-          }
-          placeholder={selectedPlatform.placeholder}
-          className="min-h-[250px] w-full resize-none rounded-t-3xl border-0 bg-transparent px-6 pb-6 pt-6 text-sm leading-7 text-zinc-900 outline-none placeholder:text-zinc-400"
-          maxLength={10000}
-        />
-      </div>
-
-      <div className="relative flex items-center justify-between border-t border-zinc-100 px-5 py-4">
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setOpen(!open)}
-            className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:text-black"
-          >
-            {selectedPlatform.name}
-          </button>
-
-          {open && (
-            <div className="absolute bottom-full left-0 z-20 mb-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-1 shadow-lg">
-              {platforms.map((platform) => (
-                <button
-                  key={platform.name}
-                  type="button"
-                  onClick={() =>
-                    handlePlatformChange(platform)
-                  }
-                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-zinc-50 ${
-                    selectedPlatform.name ===
-                    platform.name
-                      ? "font-medium text-black"
-                      : "text-zinc-600"
-                  }`}
-                >
-                  {platform.name}
-
-                  {selectedPlatform.name ===
-                    platform.name && (
-                    <span className="text-zinc-900">
-                      ✓
-                    </span>
-                  )}
-                </button>
-              ))}
+        <div className="mx-auto mt-5 max-w-4xl sm:mt-10">
+          <div className="overflow-visible rounded-3xl border border-zinc-300 bg-white shadow-sm transition focus-within:border-zinc-500 focus-within:shadow-md">
+            <div className="relative">
+              <textarea
+                value={content}
+                onChange={(event) =>
+                  setContent(event.target.value)
+                }
+                placeholder={selectedPlatform.placeholder}
+                className="min-h-[250px] w-full resize-none rounded-t-3xl border-0 bg-transparent px-6 pb-6 pt-6 text-sm leading-7 text-zinc-900 outline-none placeholder:text-zinc-400"
+                maxLength={10000}
+              />
             </div>
-          )}
+
+            <div className="relative flex items-center justify-between border-t border-zinc-100 px-5 py-4">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpen(!open)}
+                  className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs font-medium text-zinc-700 shadow-sm transition hover:border-zinc-400 hover:text-black"
+                >
+                  {selectedPlatform.name}
+                </button>
+
+                {open && (
+                  <div className="absolute bottom-full left-0 z-20 mb-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-1 shadow-lg">
+                    {platforms.map((platform) => (
+                      <button
+                        key={platform.name}
+                        type="button"
+                        onClick={() =>
+                          handlePlatformChange(platform)
+                        }
+                        className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-zinc-50 ${
+                          selectedPlatform.name ===
+                          platform.name
+                            ? "font-medium text-black"
+                            : "text-zinc-600"
+                        }`}
+                      >
+                        {platform.name}
+
+                        {selectedPlatform.name ===
+                          platform.name && (
+                          <span className="text-zinc-900">
+                            ✓
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="text-sm font-medium text-zinc-500 transition hover:text-black"
+                >
+                  Clear
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCheck}
+                  disabled={!content.trim()}
+                  className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400"
+                >
+                  Check
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-3 text-center text-xs text-zinc-400">
+            Long-form content supported ·{" "}
+            {content.length.toLocaleString()} / 10,000 characters
+          </p>
         </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={handleClear}
-            className="text-sm font-medium text-zinc-500 transition hover:text-black"
-          >
-            Clear
-          </button>
-
-          <button
-            type="button"
-            onClick={handleCheck}
-            disabled={!content.trim()}
-            className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400"
-          >
-            Check
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <p className="mt-3 text-center text-xs text-zinc-400">
-      Long-form content supported ·{" "}
-      {content.length.toLocaleString()} / 10,000 characters
-    </p>
-  </div>
-</section>
+      </section>
 
       {result && (
         <AnalysisResults
@@ -831,32 +831,30 @@ export default function Home() {
 
           <div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-2">
             {tools.map((tool) => (
-              <div
-                key={tool.name}
-                className="group flex min-h-[270px] flex-col rounded-3xl border border-zinc-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold tracking-tight">
-                    {tool.name}
-                  </h3>
+  <a
+    key={tool.name}
+    href={tool.href}
+    className="group flex min-h-[270px] flex-col rounded-3xl border border-zinc-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+  >
+    <div className="flex-1">
+      <h3 className="text-xl font-semibold tracking-tight">
+        {tool.name}
+      </h3>
 
-                  <p className="mt-4 text-sm leading-6 text-zinc-600">
-                    {tool.description}
-                  </p>
+      <p className="mt-4 text-sm leading-6 text-zinc-600">
+        {tool.description}
+      </p>
 
-                  <p className="mt-5 text-xs leading-5 text-zinc-400">
-                    {tool.details}
-                  </p>
-                </div>
+      <p className="mt-5 text-xs leading-5 text-zinc-400">
+        {tool.details}
+      </p>
+    </div>
 
-                <a
-                  href={tool.href}
-                  className="mt-7 inline-flex w-fit items-center text-sm font-medium text-zinc-900 transition"
-                >
-                  {tool.action}
-                </a>
-              </div>
-            ))}
+    <span className="mt-7 inline-flex w-fit items-center text-sm font-medium text-zinc-900 transition">
+      {tool.action}
+    </span>
+  </a>
+))}
           </div>
         </div>
       </section>
