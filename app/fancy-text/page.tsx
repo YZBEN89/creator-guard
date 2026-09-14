@@ -76,7 +76,7 @@ const parenthesizedMap = createUnicodeMap(
 
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝔢𝔣𝔤𝔥𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
 
 const frakturMap = createUnicodeMap(
@@ -106,7 +106,7 @@ const sansItalicMap = createUnicodeMap(
 
 const sansBoldItalicMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝚘𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
+  "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝚘𝙥𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣"
 );
 
 const smallCapsMap: Record<string, string> = {
@@ -876,26 +876,28 @@ export default function FancyTextPage() {
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
         {/* Top Navigation */}
-        <nav className="flex items-center justify-between border-b border-slate-200 py-5">
-          <a href="/" className="flex items-center gap-2">
-            <img
-              src="/creatoriva-logo.png"
-              alt="Creatoriva"
-              className="h-6 w-auto"
-            />
+        <nav className="border-b border-slate-200">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
+            <a href="/" className="flex items-center gap-2">
+              <img
+                src="/creatoriva-logo.png"
+                alt="Creatoriva"
+                className="h-6 w-auto"
+              />
 
-            <span className="text-xl font-semibold tracking-tight">
-              Creatoriva
-            </span>
-          </a>
-
-          <div className="flex items-center gap-5 text-sm">
-            <a
-              href="/"
-              className="font-medium text-slate-600 transition hover:text-slate-950"
-            >
-              Home
+              <span className="text-xl font-semibold tracking-tight">
+                Creatoriva
+              </span>
             </a>
+
+            <div className="flex items-center gap-5 text-sm">
+              <a
+                href="/"
+                className="font-medium text-slate-600 transition hover:text-slate-950"
+              >
+                Home
+              </a>
+            </div>
           </div>
         </nav>
 
