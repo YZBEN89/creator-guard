@@ -98,7 +98,7 @@ const sansItalicMap = createUnicodeMap(
  */
 const sansBoldItalicMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
+  "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝓸𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯"
 );
 
 const monospaceMap = createUnicodeMap(
@@ -1210,7 +1210,7 @@ export default function FancyTextPage() {
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
         {/* Top Navigation */}
-        <nav className="border-b border-slate-200">
+        <nav className="relative left-1/2 w-screen -translate-x-1/2 border-b border-slate-200">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
             <a href="/" className="flex items-center gap-2">
               <img
@@ -1623,6 +1623,29 @@ export default function FancyTextPage() {
             </div>
           </section>
         </div>
+
+        {/* Footer */}
+        <footer className="relative left-1/2 w-screen -translate-x-1/2 border-t border-slate-200">
+  <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <p>© 2026 Creatoriva. All rights reserved.</p>
+
+            <div className="flex gap-5">
+              <a
+                href="/privacy"
+                className="transition hover:text-black"
+              >
+                Privacy
+              </a>
+
+              <a
+                href="/terms"
+                className="transition hover:text-black"
+              >
+                Terms
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
   );

@@ -54,6 +54,14 @@ const tools = [
     href: "/fancy-text",
     action: "Open Tool",
   },
+  {
+    name: "Creator Calculator",
+    description:
+      "Calculate engagement, video performance, earnings, and audience growth metrics.",
+    details: "Engagement · RPM · CPM · Growth",
+    href: "/creator-calculator",
+    action: "Calculate",
+  },
 ];
 
 type PlatformReview = {
@@ -829,7 +837,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-2">
+          <div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-3">
             {tools.map((tool) => (
   <a
     key={tool.name}

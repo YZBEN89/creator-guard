@@ -57,12 +57,16 @@ export default function ScriptAnalyzerPage() {
     <main className="min-h-screen bg-white text-zinc-900">
       <header className="border-b border-zinc-200">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
-          <a
-            href="/"
-            className="text-xl font-bold tracking-tight"
-          >
-            CreatorGuard
-          </a>
+          <a href="/" className="flex items-center gap-2">
+  <img
+    src="/creatoriva-logo.png"
+    alt="Creatoriva"
+    className="h-6 w-auto"
+  />
+  <span className="text-xl font-semibold tracking-tight">
+    Creatoriva
+  </span>
+</a>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
             <a
@@ -100,7 +104,7 @@ export default function ScriptAnalyzerPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-6 sm:py-12">
+      <section className="mx-auto max-w-4xl px-6 py-6 sm:py-20">
         <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">
@@ -426,27 +430,27 @@ export default function ScriptAnalyzerPage() {
         )}
       </section>
 
-      <footer className="border-t border-zinc-200">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 CreatorGuard. All rights reserved.</p>
+      <footer className="relative left-1/2 w-screen -translate-x-1/2 border-t border-zinc-200">
+  <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+    <p>© 2026 Creatoriva. All rights reserved.</p>
 
-          <div className="flex gap-5">
-            <a
-              href="/privacy"
-              className="transition hover:text-black"
-            >
-              Privacy
-            </a>
+    <div className="flex gap-5">
+      <a
+        href="/privacy"
+        className="transition hover:text-black"
+      >
+        Privacy
+      </a>
 
-            <a
-              href="/terms"
-              className="transition hover:text-black"
-            >
-              Terms
-            </a>
-          </div>
-        </div>
-      </footer>
+      <a
+        href="/terms"
+        className="transition hover:text-black"
+      >
+        Terms
+      </a>
+    </div>
+  </div>
+</footer>
     </main>
   );
 }
