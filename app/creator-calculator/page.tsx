@@ -98,6 +98,7 @@ export default function CreatorCalculatorPage() {
   const [watchViews, setWatchViews] = useState("");
   const [watchDuration, setWatchDuration] = useState("");
   const [watchResult, setWatchResult] = useState<number | null>(null);
+  const [videoMode, setVideoMode] = useState<"watch" | "percentage">("watch");
 
   const [videoLength, setVideoLength] = useState("");
   const [averageDuration, setAverageDuration] = useState("");
@@ -111,6 +112,7 @@ export default function CreatorCalculatorPage() {
   const [earningsImpressions, setEarningsImpressions] = useState("");
   const [earningsResult, setEarningsResult] = useState<number | null>(null);
 
+  const [growthMode, setGrowthMode] = useState<GrowthMode>("rate");
   const [startFollowers, setStartFollowers] = useState("");
   const [endFollowers, setEndFollowers] = useState("");
   const [growthDays, setGrowthDays] = useState("");
@@ -468,16 +470,17 @@ export default function CreatorCalculatorPage() {
                       What do you want to calculate?
                     </span>
                     <select
-                      value={
-                        watchResult !== null || percentageResult === null
-                          ? "watch"
-                          : "percentage"
-                      }
+                      value={videoMode}
                       onChange={(event) => {
+                        const mode = event.target.value as
+                          | "watch"
+                          | "percentage";
+
+                        setVideoMode(mode);
                         setWatchResult(null);
                         setPercentageResult(null);
 
-                        if (event.target.value === "watch") {
+                        if (mode === "watch") {
                           setVideoLength("");
                           setAverageDuration("");
                         } else {
@@ -495,10 +498,7 @@ export default function CreatorCalculatorPage() {
                   </label>
                 </div>
 
-                {percentageResult === null &&
-                watchResult === null &&
-                videoLength === "" &&
-                averageDuration === "" ? (
+                {videoMode === "watch" ? (
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
                     <NumberInput
                       label="Views"
@@ -515,52 +515,27 @@ export default function CreatorCalculatorPage() {
                     />
                   </div>
                 ) : (
-                  <div className="mt-5">
-                    {videoLength !== "" || averageDuration !== "" ? (
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <NumberInput
-                          label="Video Length (seconds)"
-                          value={videoLength}
-                          onChange={setVideoLength}
-                          placeholder="60"
-                        />
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <NumberInput
+                      label="Video Length (seconds)"
+                      value={videoLength}
+                      onChange={setVideoLength}
+                      placeholder="60"
+                    />
 
-                        <NumberInput
-                          label="Average View Duration (seconds)"
-                          value={averageDuration}
-                          onChange={setAverageDuration}
-                          placeholder="45"
-                        />
-                      </div>
-                    ) : (
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <NumberInput
-                          label="Views"
-                          value={watchViews}
-                          onChange={setWatchViews}
-                          placeholder="100000"
-                        />
-
-                        <NumberInput
-                          label="Average View Duration (seconds)"
-                          value={watchDuration}
-                          onChange={setWatchDuration}
-                          placeholder="45"
-                        />
-                      </div>
-                    )}
+                    <NumberInput
+                      label="Average View Duration (seconds)"
+                      value={averageDuration}
+                      onChange={setAverageDuration}
+                      placeholder="45"
+                    />
                   </div>
                 )}
 
                 <button
                   type="button"
                   onClick={() => {
-                    const mode =
-                      videoLength !== "" || averageDuration !== ""
-                        ? "percentage"
-                        : "watch";
-
-                    if (mode === "percentage") {
+                    if (videoMode === "percentage") {
                       calculateAveragePercentageViewed();
                     } else {
                       calculateWatchTime();
@@ -816,18 +791,17 @@ export default function CreatorCalculatorPage() {
                   </span>
 
                   <select
-                    value={
-                      growthResult !== null || dailyGrowthResult !== null
-                        ? "rate"
-                        : "projection"
-                    }
+                    value={growthMode}
                     onChange={(event) => {
+                      const mode = event.target.value as GrowthMode;
+
+                      setGrowthMode(mode);
                       setGrowthResult(null);
                       setNetGrowthResult(null);
                       setDailyGrowthResult(null);
                       setProjectionResult(null);
 
-                      if (event.target.value === "rate") {
+                      if (mode === "rate") {
                         setCurrentFollowers("");
                         setDailyFollowerGrowth("");
                       } else {
@@ -845,9 +819,7 @@ export default function CreatorCalculatorPage() {
                   </select>
                 </label>
 
-                {growthResult !== null ||
-                netGrowthResult !== null ||
-                dailyGrowthResult !== null ? (
+                {growthMode === "rate" ? (
                   <div className="mt-5 grid gap-4 sm:grid-cols-3">
                     <NumberInput
                       label="Starting Followers"
@@ -870,9 +842,7 @@ export default function CreatorCalculatorPage() {
                       placeholder="30"
                     />
                   </div>
-                ) : projectionResult !== null ||
-                  currentFollowers !== "" ||
-                  dailyFollowerGrowth !== "" ? (
+                ) : (
                   <div className="mt-5 grid gap-4 sm:grid-cols-3">
                     <NumberInput
                       label="Current Followers"
@@ -895,40 +865,12 @@ export default function CreatorCalculatorPage() {
                       placeholder="30"
                     />
                   </div>
-                ) : (
-                  <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                    <NumberInput
-                      label="Starting Followers"
-                      value={startFollowers}
-                      onChange={setStartFollowers}
-                      placeholder="10000"
-                    />
-
-                    <NumberInput
-                      label="Ending Followers"
-                      value={endFollowers}
-                      onChange={setEndFollowers}
-                      placeholder="12000"
-                    />
-
-                    <NumberInput
-                      label="Time Period (days)"
-                      value={growthDays}
-                      onChange={setGrowthDays}
-                      placeholder="30"
-                    />
-                  </div>
                 )}
 
                 <button
                   type="button"
                   onClick={() => {
-                    if (
-                      growthResult !== null ||
-                      netGrowthResult !== null ||
-                      dailyGrowthResult !== null ||
-                      (startFollowers !== "" && endFollowers !== "")
-                    ) {
+                    if (growthMode === "rate") {
                       calculateGrowthRate();
                     } else {
                       calculateProjection();
