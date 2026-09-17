@@ -31,6 +31,16 @@ function transformWithMap(text: string, map: Record<string, string>) {
 }
 
 /* =========================
+   Unicode Display Font
+========================= */
+
+const unicodeDisplayStyle = {
+  fontFamily:
+    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Noto Sans Symbols 2", sans-serif',
+  fontVariantLigatures: "none",
+} as const;
+
+/* =========================
    Unicode Maps
 ========================= */
 
@@ -61,7 +71,7 @@ const boldScriptMap = createUnicodeMap(
 
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝔢𝔣𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
 
 const frakturMap = createUnicodeMap(
@@ -1289,7 +1299,10 @@ export default function FancyTextPage() {
                   </div>
 
                   <div className="min-h-28 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-900">
+                    <div
+                      className="whitespace-pre-wrap break-words text-lg leading-8 text-slate-900"
+                      style={unicodeDisplayStyle}
+                    >
                       {outputText || "Your styled text will appear here..."}
                     </div>
                   </div>
@@ -1358,7 +1371,10 @@ export default function FancyTextPage() {
                                     {style.name}
                                   </div>
 
-                                  <div className="mt-1 truncate text-xs text-slate-400">
+                                  <div
+                                    className="mt-1 truncate text-xs text-slate-400"
+                                    style={unicodeDisplayStyle}
+                                  >
                                     {style.transform("Creatoriva")}
                                   </div>
                                 </div>
@@ -1419,7 +1435,10 @@ export default function FancyTextPage() {
                                 {style.name}
                               </div>
 
-                              <div className="mt-1 truncate text-xs text-slate-400">
+                              <div
+                                className="mt-1 truncate text-xs text-slate-400"
+                                style={unicodeDisplayStyle}
+                              >
                                 {style.transform("Creatoriva")}
                               </div>
                             </div>
@@ -1482,7 +1501,10 @@ export default function FancyTextPage() {
                     </div>
 
                     <div className="min-h-32 rounded-xl border border-slate-200 bg-slate-50 p-5">
-                      <div className="whitespace-pre-wrap break-words text-xl leading-9 text-slate-900">
+                      <div
+                        className="whitespace-pre-wrap break-words text-xl leading-9 text-slate-900"
+                        style={unicodeDisplayStyle}
+                      >
                         {outputText ||
                           "Your styled text will appear here..."}
                       </div>
@@ -1567,7 +1589,9 @@ export default function FancyTextPage() {
                                     : "border-slate-200 bg-slate-50 text-slate-800 hover:border-slate-400 hover:bg-white"
                                 }`}
                               >
-                                {isCopied ? "✓" : symbol}
+                                <span style={unicodeDisplayStyle}>
+                                  {isCopied ? "✓" : symbol}
+                                </span>
                               </button>
                             );
                           })}
@@ -1626,7 +1650,7 @@ export default function FancyTextPage() {
 
         {/* Footer */}
         <footer className="relative left-1/2 w-screen -translate-x-1/2 border-t border-slate-200">
-  <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 Creatoriva. All rights reserved.</p>
 
             <div className="flex gap-5">
