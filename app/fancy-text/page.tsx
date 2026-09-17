@@ -31,16 +31,6 @@ function transformWithMap(text: string, map: Record<string, string>) {
 }
 
 /* =========================
-   Unicode Display Font
-========================= */
-
-const unicodeDisplayStyle = {
-  fontFamily:
-    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Noto Sans Symbols 2", sans-serif',
-  fontVariantLigatures: "none",
-} as const;
-
-/* =========================
    Unicode Maps
 ========================= */
 
@@ -71,8 +61,24 @@ const boldScriptMap = createUnicodeMap(
 
 const doubleStruckMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝔠𝕕𝔢𝔣𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
+  "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 );
+
+// Mobile-safe corrections for characters that are commonly rendered
+// inconsistently by some mobile browser font stacks.
+const scriptMobileSafeMap = {
+  ...scriptMap,
+  g: "𝓰",
+  G: "𝓖",
+};
+
+const doubleStruckMobileSafeMap = {
+  ...doubleStruckMap,
+  c: "𝕔",
+  h: "𝕙",
+  p: "𝕡",
+  q: "𝕢",
+};
 
 const frakturMap = createUnicodeMap(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -136,34 +142,6 @@ const negativeCircledMap = createUnicodeMap(
   "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓿❶❷❸❹❺❻❼❽❾"
 );
 
-const regionalIndicatorMap: Record<string, string> = {
-  A: "🇦",
-  B: "🇧",
-  C: "🇨",
-  D: "🇩",
-  E: "🇪",
-  F: "🇫",
-  G: "🇬",
-  H: "🇭",
-  I: "🇮",
-  J: "🇯",
-  K: "🇰",
-  L: "🇱",
-  M: "🇲",
-  N: "🇳",
-  O: "🇴",
-  P: "🇵",
-  Q: "🇶",
-  R: "🇷",
-  S: "🇸",
-  T: "🇹",
-  U: "🇺",
-  V: "🇻",
-  W: "🇼",
-  X: "🇽",
-  Y: "🇾",
-  Z: "🇿",
-};
 
 const smallCapsMap: Record<string, string> = {
   a: "ᴀ",
@@ -237,60 +215,6 @@ const upsideDownMap: Record<string, string> = {
   "!": "¡",
 };
 
-const mirrorMap: Record<string, string> = {
-  A: "A",
-  B: "ᗺ",
-  C: "Ɔ",
-  D: "ᗡ",
-  E: "Ǝ",
-  F: "ꟻ",
-  G: "Ꭾ",
-  H: "H",
-  I: "I",
-  J: "Ⴑ",
-  K: "ꓘ",
-  L: "⅃",
-  M: "M",
-  N: "И",
-  O: "O",
-  P: "ꟼ",
-  Q: "Ό",
-  R: "Я",
-  S: "Ƨ",
-  T: "T",
-  U: "U",
-  V: "V",
-  W: "W",
-  X: "X",
-  Y: "Y",
-  Z: "Z",
-  a: "ɒ",
-  b: "d",
-  c: "ɔ",
-  d: "b",
-  e: "ɘ",
-  f: "ꟻ",
-  g: "Ꭾ",
-  h: "ʜ",
-  i: "i",
-  j: "Ⴑ",
-  k: "ʞ",
-  l: "l",
-  m: "m",
-  n: "n",
-  o: "o",
-  p: "q",
-  q: "p",
-  r: "ɿ",
-  s: "ƨ",
-  t: "ƚ",
-  u: "u",
-  v: "v",
-  w: "w",
-  x: "x",
-  y: "y",
-  z: "z",
-};
 
 function toFullwidth(text: string) {
   return Array.from(text)
@@ -323,18 +247,7 @@ function toUpsideDown(text: string) {
     .join("");
 }
 
-function toMirror(text: string) {
-  return Array.from(text)
-    .map((char) => mirrorMap[char] ?? char)
-    .reverse()
-    .join("");
-}
 
-function toRegionalIndicators(text: string) {
-  return Array.from(text)
-    .map((char) => regionalIndicatorMap[char.toUpperCase()] ?? char)
-    .join("");
-}
 
 function toAlternatingCase(text: string) {
   let letterIndex = 0;
@@ -399,7 +312,7 @@ const styles: TextStyle[] = [
     id: "script",
     name: "Script",
     description: "Elegant handwritten style",
-    transform: (text) => transformWithMap(text, scriptMap),
+    transform: (text) => transformWithMap(text, scriptMobileSafeMap),
   },
   {
     id: "bold-script",
@@ -411,7 +324,7 @@ const styles: TextStyle[] = [
     id: "double-struck",
     name: "Double-Struck",
     description: "Mathematical lettering style",
-    transform: (text) => transformWithMap(text, doubleStruckMap),
+    transform: (text) => transformWithMap(text, doubleStruckMobileSafeMap),
   },
   {
     id: "fraktur",
@@ -494,10 +407,13 @@ const styles: TextStyle[] = [
     transform: toSmallCaps,
   },
   {
-    id: "regional",
-    name: "Regional Letters",
-    description: "Flag-style letter characters",
-    transform: toRegionalIndicators,
+    id: "underline",
+    name: "Underline",
+    description: "Clean underlined lettering",
+    transform: (text) =>
+      Array.from(text)
+        .map((char) => (char === " " ? char : `${char}\u0332`))
+        .join(""),
   },
   {
     id: "upside-down",
@@ -506,10 +422,13 @@ const styles: TextStyle[] = [
     transform: toUpsideDown,
   },
   {
-    id: "mirror",
-    name: "Mirror",
-    description: "Mirrored character effect",
-    transform: toMirror,
+    id: "strikethrough",
+    name: "Strikethrough",
+    description: "Clean crossed-out lettering",
+    transform: (text) =>
+      Array.from(text)
+        .map((char) => (char === " " ? char : `${char}\u0336`))
+        .join(""),
   },
   {
     id: "bold-caps",
@@ -651,14 +570,14 @@ const styles: TextStyle[] = [
     name: "Double-Struck Uppercase",
     description: "Mathematical uppercase lettering",
     transform: (text) =>
-      transformWithMap(text.toUpperCase(), doubleStruckMap),
+      transformWithMap(text.toUpperCase(), doubleStruckMobileSafeMap),
   },
   {
     id: "double-struck-lowercase",
     name: "Double-Struck Lowercase",
     description: "Mathematical lowercase lettering",
     transform: (text) =>
-      transformWithMap(text.toLowerCase(), doubleStruckMap),
+      transformWithMap(text.toLowerCase(), doubleStruckMobileSafeMap),
   },
   {
     id: "fraktur-lowercase",
@@ -686,14 +605,14 @@ const styles: TextStyle[] = [
     name: "Script Uppercase",
     description: "Elegant uppercase script lettering",
     transform: (text) =>
-      transformWithMap(text.toUpperCase(), scriptMap),
+      transformWithMap(text.toUpperCase(), scriptMobileSafeMap),
   },
   {
     id: "script-lowercase",
     name: "Script Lowercase",
     description: "Elegant lowercase script lettering",
     transform: (text) =>
-      transformWithMap(text.toLowerCase(), scriptMap),
+      transformWithMap(text.toLowerCase(), scriptMobileSafeMap),
   },
   {
     id: "bold-script-uppercase",
@@ -952,10 +871,6 @@ const symbols = {
     "🎶",
     "🎼",
     "♮",
-    "𝅘𝅥𝅮",
-    "𝅘𝅥𝅯",
-    "𝅘𝅥𝅰",
-    "𝅘𝅥𝅱",
   ],
 
   Shapes: [
@@ -1168,6 +1083,11 @@ const symbols = {
     "✦",
     "❖",
   ],
+};
+
+const unicodeDisplayStyle = {
+  fontFamily:
+    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Segoe UI Symbol", "Apple Symbols", "Arial Unicode MS", sans-serif',
 };
 
 export default function FancyTextPage() {
@@ -1435,10 +1355,7 @@ export default function FancyTextPage() {
                                 {style.name}
                               </div>
 
-                              <div
-                                className="mt-1 truncate text-xs text-slate-400"
-                                style={unicodeDisplayStyle}
-                              >
+                              <div className="mt-1 truncate text-xs text-slate-400">
                                 {style.transform("Creatoriva")}
                               </div>
                             </div>
@@ -1588,10 +1505,9 @@ export default function FancyTextPage() {
                                     ? "border-slate-900 bg-slate-900 text-white"
                                     : "border-slate-200 bg-slate-50 text-slate-800 hover:border-slate-400 hover:bg-white"
                                 }`}
+                                style={unicodeDisplayStyle}
                               >
-                                <span style={unicodeDisplayStyle}>
-                                  {isCopied ? "✓" : symbol}
-                                </span>
+                                {isCopied ? "✓" : symbol}
                               </button>
                             );
                           })}
@@ -1631,7 +1547,7 @@ export default function FancyTextPage() {
                 <p>
                   Choose from 50 different text styles, including bold,
                   italic, script, circled, monospace, Fraktur, Sans,
-                  Double-Struck, fullwidth, mirrored text, uppercase styles,
+                  Double-Struck, fullwidth, underlined text, uppercase styles,
                   lowercase styles, and more. Your text is generated directly
                   in your browser, making it quick and easy to copy and use.
                 </p>
@@ -1650,7 +1566,7 @@ export default function FancyTextPage() {
 
         {/* Footer */}
         <footer className="relative left-1/2 w-screen -translate-x-1/2 border-t border-slate-200">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+  <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 Creatoriva. All rights reserved.</p>
 
             <div className="flex gap-5">
