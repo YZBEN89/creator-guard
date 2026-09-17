@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = "https://creator-guard-gamma.vercel.app";
+const baseUrl = "https://creatoriva.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -12,42 +12,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
-      url: `${baseUrl}/tiktok-checker`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-
-    {
-      url: `${baseUrl}/youtube-checker`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-
-    {
-      url: `${baseUrl}/instagram-checker`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-
-    {
-      url: `${baseUrl}/facebook-checker`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-
-    {
-      url: `${baseUrl}/x-checker`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-
-    {
       url: `${baseUrl}/script-analyzer`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+
+    {
+      url: `${baseUrl}/fancy-text`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+
+    {
+      url: `${baseUrl}/creator-calculator`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,

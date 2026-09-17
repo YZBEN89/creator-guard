@@ -13,6 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://creatoriva.com"),
+
   title: {
     default: "Creatoriva | Content Checker & Creator Tools",
     template: "%s | Creatoriva",
@@ -50,6 +52,10 @@ export const metadata: Metadata = {
 
   publisher: "Creatoriva",
 
+  alternates: {
+    canonical: "https://creatoriva.com",
+  },
+
   robots: {
     index: true,
     follow: true,
@@ -59,6 +65,7 @@ export const metadata: Metadata = {
     title: "Creatoriva | Content Checker & Creator Tools",
     description:
       "Review captions, scripts, titles, and promotional content for potential content risks before publishing.",
+    url: "https://creatoriva.com",
     siteName: "Creatoriva",
     type: "website",
   },

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
     },
 
-    sitemap: "https://creator-guard-gamma.vercel.app/sitemap.xml",
+    sitemap: "https://creatoriva.com/sitemap.xml",
   };
 }
