@@ -35,7 +35,9 @@ export default function LoginPage() {
         return;
       }
 
-      setMessage("Your account has been created. You can now log in.");
+      setMessage(
+  "Account created. Please check your email and click the confirmation link before logging in."
+);
       setIsSignUp(false);
       setLoading(false);
       return;
