@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { analyzeContent, AnalysisResult, RiskLevel } from "@/lib/analyzer";
+import { supabase } from "@/lib/supabase";
 
 import { reviewTikTokContent } from "@/lib/platform/tiktok";
 import { reviewYouTubeContent } from "@/lib/platform/youtube";
@@ -631,6 +632,59 @@ export default function Home() {
   const [result, setResult] =
     useState<AnalysisResult | null>(null);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accountEmail, setAccountEmail] = useState("");
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  useEffect(() => {
+    async function checkLoginStatus() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setIsLoggedIn(!!user);
+      setAccountEmail(user?.email ?? "");
+    }
+
+    checkLoginStatus();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user);
+      setAccountEmail(session?.user?.email ?? "");
+
+      if (!session?.user) {
+        setAccountMenuOpen(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+  if (!accountMenuOpen) {
+    return;
+  }
+
+  function handleOutsideClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest("[data-account-menu]")) {
+      setAccountMenuOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleOutsideClick);
+
+  return () => {
+    document.removeEventListener("mousedown", handleOutsideClick);
+  };
+}, [accountMenuOpen]);
+ 
   function handleCheck() {
     if (!content.trim()) {
       return;
@@ -660,6 +714,17 @@ export default function Home() {
   ) {
     setSelectedPlatform(platform);
     setOpen(false);
+  }
+
+  async function handleLogout() {
+    setLoggingOut(true);
+
+    await supabase.auth.signOut();
+
+    setAccountMenuOpen(false);
+    setIsLoggedIn(false);
+    setAccountEmail("");
+    setLoggingOut(false);
   }
 
   return (
@@ -695,6 +760,106 @@ export default function Home() {
             >
               About
             </a>
+
+            {isLoggedIn ? (
+  <div
+    className="relative"
+    data-account-menu
+  >
+    <button
+                  type="button"
+                  onClick={() =>
+                    setAccountMenuOpen(!accountMenuOpen)
+                  }
+                  className="flex items-center gap-1.5 font-medium text-zinc-900 transition hover:text-zinc-500"
+                >
+                  Account
+
+                  <span
+                    className={`text-[10px] transition-transform ${
+                      accountMenuOpen ? "rotate-180" : ""
+                    }`}
+                  >
+                    ▼
+                  </span>
+                </button>
+
+                {accountMenuOpen && (
+                  <div className="absolute right-0 top-full z-30 mt-3 w-72 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
+                    <div className="border-b border-zinc-100 px-5 py-4">
+                      <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                        Account
+                      </p>
+
+                      <p className="mt-2 break-all text-sm text-zinc-900">
+                        {accountEmail}
+                      </p>
+                    </div>
+
+                    <div className="px-5 py-4">
+                      <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                        Current plan
+                      </p>
+
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="text-sm font-semibold text-zinc-900">
+                          Free
+                        </span>
+
+                        <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600">
+                          Free
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-zinc-100 px-5 py-4">
+                      <p className="text-sm font-semibold text-zinc-900">
+                        Creatoriva Pro
+                      </p>
+
+                      <p className="mt-1 text-xs leading-5 text-zinc-500">
+                        Additional tools and usage limits.
+                      </p>
+
+                      <p className="mt-3 text-sm font-semibold text-zinc-900">
+                        $3.99
+                        <span className="ml-1 font-normal text-zinc-500">
+                          / month
+                        </span>
+                      </p>
+
+                      <button
+                        type="button"
+                        disabled
+                        className="mt-4 w-full rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white opacity-50"
+                      >
+                        Upgrade to Pro
+                      </button>
+                    </div>
+
+                    <div className="border-t border-zinc-100 p-2">
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        disabled={loggingOut}
+                        className="w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-zinc-600 transition hover:bg-zinc-50 hover:text-zinc-900 disabled:opacity-50"
+                      >
+                        {loggingOut
+                          ? "Logging out..."
+                          : "Log out"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <a
+                href="/login"
+                className="font-medium text-zinc-900 transition hover:text-zinc-500"
+              >
+                Log in
+              </a>
+            )}
           </nav>
         </div>
       </header>
@@ -839,30 +1004,30 @@ export default function Home() {
 
           <div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-3">
             {tools.map((tool) => (
-  <a
-    key={tool.name}
-    href={tool.href}
-    className="group flex min-h-[270px] flex-col rounded-3xl border border-zinc-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-  >
-    <div className="flex-1">
-      <h3 className="text-xl font-semibold tracking-tight">
-        {tool.name}
-      </h3>
+              <a
+                key={tool.name}
+                href={tool.href}
+                className="group flex min-h-[270px] flex-col rounded-3xl border border-zinc-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold tracking-tight">
+                    {tool.name}
+                  </h3>
 
-      <p className="mt-4 text-sm leading-6 text-zinc-600">
-        {tool.description}
-      </p>
+                  <p className="mt-4 text-sm leading-6 text-zinc-600">
+                    {tool.description}
+                  </p>
 
-      <p className="mt-5 text-xs leading-5 text-zinc-400">
-        {tool.details}
-      </p>
-    </div>
+                  <p className="mt-5 text-xs leading-5 text-zinc-400">
+                    {tool.details}
+                  </p>
+                </div>
 
-    <span className="mt-7 inline-flex w-fit items-center text-sm font-medium text-zinc-900 transition">
-      {tool.action}
-    </span>
-  </a>
-))}
+                <span className="mt-7 inline-flex w-fit items-center text-sm font-medium text-zinc-900 transition">
+                  {tool.action}
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
