@@ -48,7 +48,7 @@ export default function PrivacyPolicyPage() {
           </h1>
 
           <p className="mt-5 text-sm text-zinc-500">
-            Last updated: September 6, 2026
+            Last updated: September 18, 2026
           </p>
         </div>
 
@@ -106,8 +106,8 @@ export default function PrivacyPolicyPage() {
 
             <p className="mt-4">
               Content submitted to Creatoriva may be processed for the purpose
-              of providing the analysis or other functionality requested by
-              the user.
+              of providing the analysis or other functionality requested by the
+              user.
             </p>
 
             <p className="mt-4">
@@ -200,6 +200,14 @@ export default function PrivacyPolicyPage() {
               settings. Some website functionality may not work correctly if
               certain technologies are disabled.
             </p>
+
+            <p className="mt-4">
+              When advertising services are enabled, third-party advertising
+              providers may place or access cookies and similar technologies
+              on your browser to serve, measure, personalize, or limit
+              advertising, subject to applicable settings and consent
+              requirements.
+            </p>
           </section>
 
           <section>
@@ -239,36 +247,53 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <p className="mt-4">
-              When advertising services are enabled, third parties, including
-              Google and its partners, may use cookies, web beacons, IP
-              addresses, device identifiers, or similar technologies to serve,
-              measure, personalize, or limit advertising, subject to the
-              applicable service configuration, consent requirements, and user
+              When advertising services are enabled, third-party vendors,
+              including Google, may use cookies, web beacons, IP addresses,
+              device identifiers, or similar technologies to serve, measure,
+              personalize, or limit advertising.
+            </p>
+
+            <p className="mt-4">
+              Google and its advertising partners may use information about a
+              user's prior visits to Creatoriva or other websites to help serve
+              advertisements that may be relevant to the user and to measure
+              advertising performance.
+            </p>
+
+            <p className="mt-4">
+              The use of advertising cookies may allow Google and its partners
+              to serve advertisements based on a user's visits to Creatoriva
+              and/or other websites on the Internet, subject to the applicable
+              advertising configuration, consent requirements, and user
               choices.
             </p>
 
             <p className="mt-4">
-              Advertising providers may use information about visits to this
-              and other websites to help provide relevant advertisements or
-              measure advertising performance, subject to their applicable
-              policies and settings.
+              Users may opt out of personalized advertising from Google by
+              visiting Google Ads Settings. Depending on the user's location,
+              browser, and available controls, users may also have other
+              choices regarding personalized advertising and third-party
+              advertising cookies.
+            </p>
+
+            <p className="mt-4">
+              For information about how Google uses data when you use sites or
+              apps that use Google's services, users may review Google's
+              applicable privacy and data-use information.
+            </p>
+
+            <p className="mt-4">
+              If Creatoriva uses advertising networks or third-party vendors
+              other than Google, the applicable vendors and advertising
+              technologies may be identified through the relevant advertising
+              disclosures, consent mechanisms, or other applicable information
+              provided on the website.
             </p>
 
             <p className="mt-4">
               Where required, Creatoriva will provide disclosures and consent
               mechanisms applicable to the advertising technologies used on the
               website.
-            </p>
-
-            <p className="mt-4">
-              For more information about how Google may use information when
-              advertising or measurement services are present, users should
-              review Google’s applicable privacy and data-use information.
-            </p>
-
-            <p className="mt-4">
-              Users may also have access to advertising controls that allow
-              them to manage certain advertising preferences.
             </p>
           </section>
 
@@ -292,8 +317,16 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <p className="mt-4">
+              Where required for applicable Google advertising products,
+              Creatoriva may use Google's Privacy & Messaging tools or another
+              appropriate consent management platform to provide users with
+              information and choices regarding cookies, local storage,
+              advertising personalization, and related data processing.
+            </p>
+
+            <p className="mt-4">
               The specific consent experience may vary depending on the services
-              enabled, the visitor’s location, and applicable legal
+              enabled, the visitor's location, and applicable legal
               requirements.
             </p>
 
@@ -490,6 +523,12 @@ export default function PrivacyPolicyPage() {
               Requests should provide enough information for us to understand
               and evaluate the request. We may take reasonable steps to verify
               a request where required for security or legal reasons.
+            </p>
+
+            <p className="mt-4">
+              Where Google advertising services are enabled, you may also
+              manage certain Google advertising personalization preferences
+              through Google Ads Settings.
             </p>
           </section>
 
