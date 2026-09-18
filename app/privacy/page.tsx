@@ -86,6 +86,19 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <p className="mt-4">
+              If you create a Creatoriva account, we may collect information
+              such as your email address and authentication information needed
+              to create, secure, and manage your account. Passwords are used
+              for authentication and should be kept confidential by the user.
+            </p>
+
+            <p className="mt-4">
+              Creatoriva may also process information related to account
+              verification, password reset requests, and other account
+              management activities.
+            </p>
+
+            <p className="mt-4">
               Please do not enter passwords, authentication codes, payment card
               information, government identification numbers, private account
               credentials, or other highly sensitive information into content
@@ -93,9 +106,9 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <p className="mt-4">
-              Unless a particular feature states otherwise, Creatoriva does not
-              require an account merely to use the currently available content
-              review tools.
+              An account is not necessarily required to use all currently
+              available content review tools. Certain features may require an
+              account.
             </p>
           </section>
 
@@ -355,6 +368,15 @@ export default function PrivacyPolicyPage() {
               </li>
 
               <li className="list-disc">
+                creating, authenticating, securing, and managing user accounts;
+              </li>
+
+              <li className="list-disc">
+                sending account-related emails, including email confirmation and
+                password reset messages;
+              </li>
+
+              <li className="list-disc">
                 maintaining website functionality and performance;
               </li>
 
@@ -385,15 +407,22 @@ export default function PrivacyPolicyPage() {
 
             <p className="mt-4">
               Creatoriva may rely on third-party providers for services such as
-              website hosting, infrastructure, security, analytics,
-              advertising, consent management, email delivery, and other
-              technical functions.
+              website hosting, authentication, account management,
+              infrastructure, security, analytics, advertising, consent
+              management, email delivery, and other technical functions.
             </p>
 
             <p className="mt-4">
               These providers may process information necessary to provide
-              their services. Their processing may be governed by their
-              respective privacy policies, terms, and contractual arrangements.
+              their services. This may include information needed to
+              authenticate accounts, maintain account security, deliver account
+              confirmation or password reset emails, or operate other requested
+              features.
+            </p>
+
+            <p className="mt-4">
+              These providers' processing may be governed by their respective
+              privacy policies, terms, and contractual arrangements.
             </p>
           </section>
 
@@ -609,10 +638,16 @@ export default function PrivacyPolicyPage() {
             </h2>
 
             <p className="mt-4">
-              If you have questions about this Privacy Policy or Creatoriva’s
-              privacy practices, please contact us through the contact method
-              made available on the website.
-            </p>
+  If you have questions about this Privacy Policy or Creatoriva’s
+  privacy practices, please contact us at{" "}
+  <a
+    href="mailto:support@creatoriva.com"
+    className="underline underline-offset-4 hover:text-zinc-900"
+  >
+    support@creatoriva.com
+  </a>
+  .
+</p>
           </section>
 
           <section className="rounded-2xl bg-zinc-50 p-6">

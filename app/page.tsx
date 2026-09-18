@@ -1080,6 +1080,13 @@ export default function Home() {
             >
               Terms
             </a>
+
+            <a
+              href="/contact"
+              className="transition hover:text-black"
+            >
+              Contact
+            </a>
           </div>
         </div>
       </footer>

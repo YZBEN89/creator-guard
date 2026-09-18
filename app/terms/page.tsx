@@ -48,7 +48,7 @@ export default function TermsPage() {
           </h1>
 
           <p className="mt-5 text-sm text-zinc-500">
-            Last updated: September 6, 2026
+            Last updated: September 18, 2026
           </p>
         </div>
 
@@ -176,7 +176,37 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              6. Acceptable Use
+              6. Accounts
+            </h2>
+
+            <p className="mt-4">
+              Some Creatoriva features may require you to create an account
+              using an email address and password.
+            </p>
+
+            <p className="mt-4">
+              You are responsible for providing accurate account information,
+              maintaining the confidentiality of your login credentials, and
+              taking reasonable steps to protect your account from unauthorized
+              access.
+            </p>
+
+            <p className="mt-4">
+              You are responsible for activity that occurs through your account.
+              If you believe your account has been accessed without
+              authorization, you should take reasonable steps to secure it and
+              contact Creatoriva when appropriate.
+            </p>
+
+            <p className="mt-4">
+              Creatoriva may provide email confirmation, password reset, and
+              other account-related services as part of account management.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              7. Acceptable Use
             </h2>
 
             <p className="mt-4">
@@ -216,7 +246,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              7. User Content
+              8. User Content
             </h2>
 
             <p className="mt-4">
@@ -244,7 +274,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              8. Intellectual Property
+              9. Intellectual Property
             </h2>
 
             <p className="mt-4">
@@ -263,7 +293,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              9. Third-Party Services and Links
+              10. Third-Party Services and Links
             </h2>
 
             <p className="mt-4">
@@ -290,7 +320,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              10. Advertising
+              11. Advertising
             </h2>
 
             <p className="mt-4">
@@ -312,7 +342,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              11. Availability of the Service
+              12. Availability of the Service
             </h2>
 
             <p className="mt-4">
@@ -329,7 +359,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              12. Accuracy of Results
+              13. Accuracy of Results
             </h2>
 
             <p className="mt-4">
@@ -354,7 +384,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              13. Disclaimer of Warranties
+              14. Disclaimer of Warranties
             </h2>
 
             <p className="mt-4">
@@ -372,7 +402,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              14. Limitation of Liability
+              15. Limitation of Liability
             </h2>
 
             <p className="mt-4">
@@ -391,7 +421,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              15. Indemnification
+              16. Indemnification
             </h2>
 
             <p className="mt-4">
@@ -405,7 +435,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              16. Termination
+              17. Termination
             </h2>
 
             <p className="mt-4">
@@ -422,7 +452,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              17. Changes to These Terms
+              18. Changes to These Terms
             </h2>
 
             <p className="mt-4">
@@ -439,7 +469,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              18. Governing Law
+              19. Governing Law
             </h2>
 
             <p className="mt-4">
@@ -451,7 +481,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              19. Severability
+              20. Severability
             </h2>
 
             <p className="mt-4">
@@ -463,13 +493,19 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-2xl font-semibold tracking-tight">
-              20. Contact
+              21. Contact
             </h2>
 
             <p className="mt-4">
-              If you have questions about these Terms of Service, please use
-              the contact method made available on the Creatoriva website.
-            </p>
+  If you have questions about these Terms of Service, please contact us at{" "}
+  <a
+    href="mailto:support@creatoriva.com"
+    className="underline underline-offset-4 hover:text-zinc-900"
+  >
+    support@creatoriva.com
+  </a>
+  .
+</p>
           </section>
 
           <section className="rounded-2xl bg-zinc-50 p-6">

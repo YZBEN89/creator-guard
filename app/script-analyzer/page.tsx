@@ -58,15 +58,15 @@ export default function ScriptAnalyzerPage() {
       <header className="border-b border-zinc-200">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-5">
           <a href="/" className="flex items-center gap-2">
-  <img
-    src="/creatoriva-logo.png"
-    alt="Creatoriva"
-    className="h-6 w-auto"
-  />
-  <span className="text-xl font-semibold tracking-tight">
-    Creatoriva
-  </span>
-</a>
+            <img
+              src="/creatoriva-logo.png"
+              alt="Creatoriva"
+              className="h-6 w-auto"
+            />
+            <span className="text-xl font-semibold tracking-tight">
+              Creatoriva
+            </span>
+          </a>
 
           <nav className="flex items-center gap-6 text-sm text-zinc-600">
             <a
@@ -428,29 +428,52 @@ export default function ScriptAnalyzerPage() {
             </section>
           </div>
         )}
+
+        {/* Supporting Content */}
+        <section className="mt-12 border-t border-zinc-200 pt-10 sm:mt-16 sm:pt-12">
+          <div className="max-w-3xl">
+            <h2 className="text-xl font-semibold tracking-tight">
+              About Script Analyzer
+            </h2>
+
+            <p className="mt-4 text-sm leading-6 text-zinc-600">
+              Creatoriva Script Analyzer helps creators review video
+              scripts, voice-over drafts, hooks, and long-form spoken
+              content for potentially sensitive language, claims, and
+              content-related patterns before publishing.
+            </p>
+
+            <p className="mt-4 text-sm leading-6 text-zinc-600">
+              Results are based on predefined content patterns and basic
+              context signals. They are intended as general guidance and
+              do not represent or guarantee the moderation, monetization,
+              advertising, or other decisions of any platform.
+            </p>
+          </div>
+        </section>
       </section>
 
       <footer className="relative left-1/2 w-screen -translate-x-1/2 border-t border-zinc-200">
-  <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-    <p>© 2026 Creatoriva. All rights reserved.</p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 Creatoriva. All rights reserved.</p>
 
-    <div className="flex gap-5">
-      <a
-        href="/privacy"
-        className="transition hover:text-black"
-      >
-        Privacy
-      </a>
+          <div className="flex gap-5">
+            <a
+              href="/privacy"
+              className="transition hover:text-black"
+            >
+              Privacy
+            </a>
 
-      <a
-        href="/terms"
-        className="transition hover:text-black"
-      >
-        Terms
-      </a>
-    </div>
-  </div>
-</footer>
+            <a
+              href="/terms"
+              className="transition hover:text-black"
+            >
+              Terms
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
